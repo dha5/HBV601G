@@ -1,0 +1,15 @@
+# Git Workflow
+- on master branch do:
+    - `git pull`
+- create a feature branch:
+    - `git checkout -b BRANCHNAME`
+- work on feature:
+- add files and commit (do early, do often):
+    - `git add .`
+    - `git commit -m "Descriptive message"`
+- feature complete:
+    - `git push`
+- create pull request on github and then:
+    - `git checkout main`
+    - `git branch -d BRANCHNAME`
+    - `git pull`
