@@ -1,4 +1,4 @@
-package HBV601.folf
+package com.hbv601.folf
 
 import org.junit.Test
 
