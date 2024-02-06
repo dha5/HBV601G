@@ -1,5 +1,6 @@
 package com.hbv601.folf;
 
+import android.annotation.SuppressLint
 import android.app.Activity;
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -28,6 +29,7 @@ public class LoginFragment: Fragment() {
 
     }
 
+    @SuppressLint("SuspiciousIndentation") //á meðan við erum ekki búnir að útfæra bakendatengingu
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
