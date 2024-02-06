@@ -12,17 +12,30 @@
         tools:layout="@layout/fragment_first">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_FirstFragment_to_LoginFragment"
+            app:destination="@id/LoginFragment" />
     </fragment>
+
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.hbv601.folf.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        android:id="@+id/LoginFragment"
+        android:name="com.hbv601.folf.LoginFragment"
+        android:label="@string/login_fragment_label"
+        tools:layout="@layout/fragment_login">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
+            android:id="@+id/action_LoginFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
+        <action
+            android:id="@+id/action_LoginFragment_to_UserFragment"
+            app:destination="@+id/UserFragment"/>
     </fragment>
+
+    <fragment
+        android:id="@+id/UserFragment"
+        android:name="com.hbv601.folf.UserFragment"
+        android:label="User Page"
+        android:layout="@layout/fragment_user">
+
+    </fragment>
+
 </navigation>
