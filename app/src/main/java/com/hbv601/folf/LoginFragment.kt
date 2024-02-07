@@ -34,9 +34,13 @@ public class LoginFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.buttonLogin.setOnClickListener {
-            if (checkLoginCredentials(binding.editTextUsername.text.toString(), binding.editTextPassword.text.toString()))
-            findNavController().navigate(R.id.action_LoginFragment_to_UserFragment)
-                print("success")
+            if (checkLoginCredentials(binding.editTextUsername.text.toString(), binding.editTextPassword.text.toString())) {
+                var password = binding.editTextPassword.text.toString()
+                var username = binding.editTextUsername.text.toString()
+
+                findNavController().navigate(R.id.action_LoginFragment_to_UserFragment)
+
+            }
         }
     }
 
@@ -44,8 +48,6 @@ public class LoginFragment: Fragment() {
      * Þarf að útfæra betur. þarf að tala við bakenda einhvernvegin
      */
     private fun checkLoginCredentials(username: String, password: String): Boolean {
-        println(username)
-        println(password)
         return true
     }
 
