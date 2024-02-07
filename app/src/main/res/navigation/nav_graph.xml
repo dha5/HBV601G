@@ -43,7 +43,7 @@
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.hbv601.folf.RegisterFragment"
-        android:label="fragment_register"
+        android:label="Registration"
         tools:layout="@layout/fragment_register" >
         <action
             android:id="@+id/action_registerFragment_to_FirstFragment"
