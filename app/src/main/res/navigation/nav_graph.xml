@@ -29,17 +29,31 @@
             android:id="@+id/action_LoginFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
         <action
-            android:id="@+id/action_LoginFragment_to_UserFragment"
-            app:destination="@+id/UserFragment"/>
+            android:id="@+id/action_LoginFragment_to_CreateGameFragment"
+            app:destination="@+id/CreateGameFragment"/>
     </fragment>
 
     <fragment
-        android:id="@+id/UserFragment"
-        android:name="com.hbv601.folf.UserFragment"
-        android:label="User Page"
-        android:layout="@layout/fragment_user">
+        android:id="@+id/CreateGameFragment"
+        android:name="com.hbv601.folf.CreateGameFragment"
+        android:label="Create Game">
 
+        <action
+            android:id="@+id/action_CreateGameFragment_to_InputScoreFragment"
+            app:destination="@id/InputScoreFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/InputScoreFragment"
+        android:name="com.hbv601.folf.InputScoreFragment"
+        android:label="Player Input">
+
+        <action
+            android:id="@+id/action_InputScoreFragment_to_CreateGameFragment"
+            app:destination="@id/CreateGameFragment"
+            app:argType="string[]" />
+    </fragment>
+
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.hbv601.folf.RegisterFragment"
