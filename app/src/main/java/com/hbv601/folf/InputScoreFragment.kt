@@ -10,6 +10,7 @@ import com.hbv601.folf.databinding.FragmentInputScoreBinding
 class InputScoreFragment : Fragment() {
     private lateinit var binding: FragmentInputScoreBinding
     private lateinit var playerNames: Array<String>
+    private lateinit var scores: Array<String>
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -33,6 +34,19 @@ class InputScoreFragment : Fragment() {
         }
 
         binding.buttonSubmitScores.setOnClickListener {
+        }
+    }
+    fun updateScores(newScores: Array<Number>) {
+        //add some sort of service connection
+    }
+    fun updateScore(newScore: Number){
+        //add some sort of service connection
+    }
+    fun refreshScores(){
+        //call to service to check updated scores
+        if(scores.isNotEmpty()){
+
+
         }
     }
 }
