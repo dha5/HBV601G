@@ -11,6 +11,7 @@ import java.sql.Date
 private const val REGISTER_GAME = "com.hbv.folf.services.action.REGISTER_GAME"
 private const val UPDATE_GAME = "com.hbv.folf.services.action.UPDATE_GAME"
 private const val FETCH_GAME = "com.hbv.folf.services.action.FETCH_GAME"
+private const val ADD_PLAYER = "com.hbv.folf.services.action.ADD_PLAYER"
 
 // TODO: Rename parameters
 private const val EXTRA_PARAM1 = "com.hbv601.folf.services.extra.PARAM1"
@@ -43,7 +44,19 @@ class GameService : IntentService("GameService") {
                 handleActionRegisterGame(title,course,time,registeringPlayer)
             }
             UPDATE_GAME ->{
+                val gameId = intent.getIntExtra(GAME_ID,-1)
+                val title = intent.getStringExtra(GAME_TITLE)
+                val course = intent.getStringExtra(GAME_COURSE)
+                val time = Date.valueOf(intent.getStringExtra(GAME_TIME))
 
+
+                handleActionUpdateGame(gameId,title,course,time)
+            }
+            ADD_PLAYER ->{
+                val gameId = intent.getIntExtra(GAME_ID, -1)
+                val player = intent.getStringExtra(GAME_PLAYER)
+
+                handleActionAddPlayer(gameId,player)
             }
         }
     }
@@ -61,11 +74,22 @@ class GameService : IntentService("GameService") {
     }
 
     /**
-     * Handle action Baz in the provided background thread with the provided
-     * parameters.
+     * upfærum leikjarhlut. mun kalla á network service seinna til að tengjast netinu
      */
-    private fun handleActionUpdateGame(param1: String?, param2: String?) {
+    private fun handleActionUpdateGame(gameId: Int,title:String?,course:String?, time:Date?) {
+        if(gameId < 0) return
+        val game  = GamesList[gameId]
+        if(title is String) game.updateTitle(title)
+        if(course is String) game.updateCourse(course)
+        if(time is Date) game.updateTime(time)
+
         TODO("Handle action Baz")
+    }
+
+    private fun handleActionAddPlayer(gameId: Int,player:String?){
+        if(gameId < 0 || gameId >= GamesList.size) return
+        val game = GamesList[gameId]
+        if(player is String) game.addPlayer(player)
     }
 
     companion object {
@@ -87,7 +111,7 @@ class GameService : IntentService("GameService") {
             }
             context.startService(intent)
         }
-        fun startActionUpdateGame(context: Context, gameId:Number,gameTitle:String, time:String,course:String){
+        fun startActionUpdateGame(context: Context, gameId:Int,gameTitle:String, time:String,course:String){
             val intent = Intent(context, GameService::class.java).apply{
                 action = UPDATE_GAME
                 putExtra(GAME_ID,gameId)
@@ -95,6 +119,15 @@ class GameService : IntentService("GameService") {
                 putExtra(GAME_COURSE, course)
                 putExtra(GAME_TIME, time)
 
+            }
+            context.startService(intent)
+        }
+
+        fun startActionAddPlayer(context: Context, gameId:Int, player:String){
+            val intent = Intent(context, GameService::class.java).apply{
+                action = ADD_PLAYER
+                putExtra(GAME_ID,gameId)
+                putExtra(GAME_PLAYER,player)
             }
             context.startService(intent)
         }

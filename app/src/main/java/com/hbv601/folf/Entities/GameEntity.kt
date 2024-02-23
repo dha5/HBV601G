@@ -5,9 +5,9 @@ import java.util.Date
 class GameEntity(var gameTitle:String, var course:String, var time:Date, var creatingPlayer:String) {
     lateinit var players:ArrayList<String>
 
-    private var gameId: Number = 0
-    fun setId(gameId: Number): Number {
-        if(this.gameId == 0){
+    private var gameId: Int = -1
+    fun setId(gameId: Int): Int {
+        if(this.gameId == -1){
             this.gameId = gameId
         }
         return this.gameId;
@@ -34,5 +34,15 @@ class GameEntity(var gameTitle:String, var course:String, var time:Date, var cre
             return player !in players
         }
         return true
+    }
+    fun updateTime(time: Date){
+        this.time = time
+    }
+    fun updateTitle(title:String){
+        this.gameTitle = title
+    }
+
+    fun updateCourse(course: String) {
+        this.course = course
     }
 }
