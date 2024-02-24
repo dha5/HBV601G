@@ -65,12 +65,13 @@ class GameService : IntentService("GameService") {
      * Handle action Foo in the provided background thread with the provided
      * parameters.
      */
-    private fun handleActionRegisterGame(title: String?, course: String?, time: Date?, registeringPlayer: String?) {
+    private fun handleActionRegisterGame(title: String?, course: String?, time: Date?, registeringPlayer: String?): GameEntity? {
         if(title is String && course is String && time is Date && registeringPlayer is String){
             val GameEntity = GameEntity(title,course,time,registeringPlayer)
             GamesList.add(GameEntity).also { GameEntity.setId(GamesList.indexOf(GameEntity)) }
+            return GameEntity
         }
-        TODO("Handle action Foo")
+        return null
     }
 
     /**
