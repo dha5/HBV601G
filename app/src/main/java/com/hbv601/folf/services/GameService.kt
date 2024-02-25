@@ -3,6 +3,7 @@ package com.hbv601.folf.services
 import android.app.IntentService
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.hbv601.folf.Entities.GameEntity
 import java.time.LocalDate
@@ -27,12 +28,7 @@ private const val GAME_PARCEL = "com.hbv601.folf.services.extra.GAME_PARCEL"
 private const val RECIEVE_GAMEPARCEL = "com.hbv601.folf.RegisterFragment.GameParcelRecieve"
 
 /**
- * An [IntentService] subclass for handling asynchronous task requests in
- * a service on a separate handler thread.
-
- * TODO: Customize class - update intent actions, extra parameters and static
- * helper methods.
-
+ * IntentService sem heldur utan um aðgerðir tengdar því að skrá leiki, bæta við spilurum í leiki og sækja upplýsingar um leiki
  */
 class GameService : IntentService("GameService") {
     private var GamesList = ArrayList<GameEntity>()
@@ -74,6 +70,8 @@ class GameService : IntentService("GameService") {
             FETCH_GAME ->{
                 val gameId = intent.getIntExtra(GAME_ID,-1)
                 if(gameId<0){
+
+                    Log.d("invalid gameId", gameId.toString())
                     return
                 }
                 handleActionFetchGame(gameId)
@@ -166,6 +164,13 @@ class GameService : IntentService("GameService") {
             context.startService(intent)
         }
 
+        fun startActionFetchGame(context: Context, gameId: Int){
+            val intent = Intent(context, GameService::class.java).apply{
+                action = FETCH_GAME
+                putExtra(GAME_ID,gameId)
+            }
+            context.startService(intent)
+        }
 
     }
 }
