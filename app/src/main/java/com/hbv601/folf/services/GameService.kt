@@ -21,6 +21,7 @@ private const val GAME_ID = "com.hbv601.folf.services.extra.GAME_ID"
 private const val GAME_COURSE = "com.hbv601.folf.services.extra.GAME_COURSE"
 private const val GAME_PLAYER = "com.hbv601.folf.services.extra.GAME_PLAYER"
 private const val GAME_TIME = "com.hbv601.folf.services.extra.GAME_PLAYER"
+private const val GAME_PARCEL = "com.hbv601.folf.services.extra.GAME_PARCEL"
 
 /**
  * An [IntentService] subclass for handling asynchronous task requests in

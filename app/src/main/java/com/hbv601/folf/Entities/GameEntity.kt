@@ -30,9 +30,18 @@ class GameParcel(
         parcel.writeString(creatingPlayer)
         parcel.writeStringList(players)
     }
-
-    
-
+    /**
+    fun parcelToGameEntity(){
+        val time:Date = time
+        val gameEntity = creatingPlayer?.let {
+            if (gameTitle != null) {
+                if (course != null) {
+                    GameEntity(gameTitle,course, time, it)
+                }
+            }
+        }
+    }
+    **/
     override fun describeContents(): Int {
         return 0
     }

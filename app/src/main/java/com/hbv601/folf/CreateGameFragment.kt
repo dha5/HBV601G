@@ -2,6 +2,7 @@ package com.hbv601.folf
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,19 +10,28 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
+import com.hbv601.folf.Entities.GameParcel
 import com.hbv601.folf.databinding.FragmentCreateGameBinding
+
+
 class CreateGameFragment : Fragment() {
+    private val GAME_PARCEL = "com.hbv601.folf.services.extra.GAME_PARCEL"
     private val RECIEVE_GAMEPARCEL = "com.hbv601.folf.RegisterFragment.GameParcelRecieve"
 
     private val bReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             if (intent.action == RECIEVE_GAMEPARCEL) {
+                val gameParcel = intent.getParcelableExtra(GAME_PARCEL,
+                    GameParcel.CREATOR::class.java
+                )
                 
                 //Do something with the string
             }
         }
     }
+    var bManager: LocalBroadcastManager? = null
 
     private var _binding: FragmentCreateGameBinding? = null
     private val binding get() = _binding!!
@@ -31,6 +41,10 @@ class CreateGameFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        bManager = this.getContext()?.let { LocalBroadcastManager.getInstance(it) }
+        val intentFilter = IntentFilter()
+        intentFilter.addAction(RECIEVE_GAMEPARCEL)
+        bManager!!.registerReceiver(bReceiver, intentFilter)
         _binding = FragmentCreateGameBinding.inflate(inflater, container, false)
         return binding.root
     }
