@@ -3,6 +3,8 @@ package com.hbv601.folf.services
 import android.app.IntentService
 import android.content.Context
 import android.content.Intent
+import android.icu.text.SimpleDateFormat
+import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.hbv601.folf.Entities.GameEntity
 import java.sql.Date
@@ -43,10 +45,22 @@ class GameService : IntentService("GameService") {
                 println("intent Recieved")
                 val title = intent.getStringExtra(GAME_TITLE)
                 val course = intent.getStringExtra(GAME_COURSE)
-                val time = Date.valueOf(intent.getStringExtra(GAME_TIME))
+                val temptime = intent.getStringExtra(GAME_TIME)
                 val registeringPlayer = intent.getStringExtra(GAME_PLAYER)
+                if (temptime != null) {
+                    Log.d("TAG", temptime)
+                }
+                val formatter = SimpleDateFormat("dd-MM-yyyy hh:mm")
+                val time = formatter.parse(temptime.toString())
 
-                handleActionRegisterGame(title,course,time,registeringPlayer)
+
+                val gameEntity = handleActionRegisterGame(title,course,time,registeringPlayer)
+                if(gameEntity != null){
+                    val gameParcel = gameEntity.gameEntityToParcel();
+                    val RTReturn: Intent = Intent(RECIEVE_GAMEPARCEL)
+                    RTReturn.putExtra(GAME_PARCEL, gameParcel);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(RTReturn)
+                }
 
             }
             UPDATE_GAME ->{
@@ -87,13 +101,17 @@ class GameService : IntentService("GameService") {
      * Handle action Foo in the provided background thread with the provided
      * parameters.
      */
-    private fun handleActionRegisterGame(title: String?, course: String?, time: Date?, registeringPlayer: String?)  {
+    private fun handleActionRegisterGame(title: String?, course: String?, time: java.util.Date, registeringPlayer: String?) :GameEntity? {
         if(title is String && course is String && time is Date && registeringPlayer is String){
-            val GameEntity = GameEntity(title,course,time,registeringPlayer)
-            GamesList.add(GameEntity).also { GameEntity.setId(GamesList.indexOf(GameEntity)) }
+            val gameEntity = GameEntity(title,course,time,registeringPlayer)
+            GamesList.add(gameEntity).also { gameEntity.setId(GamesList.indexOf(gameEntity)) }
+            println(gameEntity.toString())
+            return gameEntity
+
+
 
         }
-
+        return null
     }
 
     /**

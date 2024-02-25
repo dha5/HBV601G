@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -82,9 +83,10 @@ class CreateGameFragment : Fragment() {
 
         // Fourth layer
         binding.registerGameButton.setOnClickListener {
+            Log.d("TAG", "register game button")
             val playerNameList = playerNamesList.toList()
-            val course = binding.locationField.toString()
-            val time = binding.timeField.toString()
+            val course = binding.locationField.text.toString()
+            val time = binding.timeField.text.toString()
             val gameTitle = "no title"
             val registeringPlayer = "placeholder player"
             this.context?.let { it1 -> GameService.startActionRegisterGame(it1, registeringPlayer,gameTitle,course,time) }
