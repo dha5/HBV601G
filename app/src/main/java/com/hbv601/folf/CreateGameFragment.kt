@@ -14,11 +14,16 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import com.hbv601.folf.Entities.GameParcel
 import com.hbv601.folf.databinding.FragmentCreateGameBinding
+import com.hbv601.folf.services.GameService
 
 
 class CreateGameFragment : Fragment() {
+    private val REGISTER_GAME = "com.hbv.folf.services.action.REGISTER_GAME"
+    private val UPDATE_GAME = "com.hbv.folf.services.action.UPDATE_GAME"
+    private val FETCH_GAME = "com.hbv.folf.services.action.FETCH_GAME"
+    private val ADD_PLAYER = "com.hbv.folf.services.action.ADD_PLAYER"
     private val GAME_PARCEL = "com.hbv601.folf.services.extra.GAME_PARCEL"
-    val RECIEVE_GAMEPARCEL = "com.hbv601.folf.RegisterFragment.GameParcelRecieve"
+    private val RECIEVE_GAMEPARCEL = "com.hbv601.folf.RegisterFragment.GameParcelRecieve"
 
     private val bReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -77,6 +82,12 @@ class CreateGameFragment : Fragment() {
 
         // Fourth layer
         binding.registerGameButton.setOnClickListener {
+            val playerNameList = playerNamesList.toList()
+            val course = binding.locationField.toString()
+            val time = binding.timeField.toString()
+            val gameTitle = "no title"
+            val registeringPlayer = "placeholder player"
+            this.context?.let { it1 -> GameService.startActionRegisterGame(it1, registeringPlayer,gameTitle,course,time) }
             // Add action for Register Game button
         }
 

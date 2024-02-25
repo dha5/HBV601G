@@ -40,6 +40,7 @@ class GameService : IntentService("GameService") {
     override fun onHandleIntent(intent: Intent?) {
         when (intent?.action) {
             REGISTER_GAME -> {
+                println("intent Recieved")
                 val title = intent.getStringExtra(GAME_TITLE)
                 val course = intent.getStringExtra(GAME_COURSE)
                 val time = Date.valueOf(intent.getStringExtra(GAME_TIME))
@@ -72,7 +73,7 @@ class GameService : IntentService("GameService") {
             }
         }
     }
-    
+
     private fun handleActionFetchGame(id:Int){
         println("intent Received")
         val gameEntity = GamesList[id];
