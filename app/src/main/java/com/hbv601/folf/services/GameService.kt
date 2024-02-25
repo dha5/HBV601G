@@ -1,8 +1,8 @@
 package com.hbv601.folf.services
 
 import android.app.IntentService
-import android.content.Intent
 import android.content.Context
+import android.content.Intent
 import com.hbv601.folf.Entities.GameEntity
 import java.sql.Date
 
@@ -33,6 +33,7 @@ private const val GAME_TIME = "com.hbv601.folf.services.extra.GAME_PLAYER"
 class GameService : IntentService("GameService") {
     private lateinit var GamesList: ArrayList<GameEntity>;
 
+
     override fun onHandleIntent(intent: Intent?) {
         when (intent?.action) {
             REGISTER_GAME -> {
@@ -42,6 +43,7 @@ class GameService : IntentService("GameService") {
                 val registeringPlayer = intent.getStringExtra(GAME_PLAYER)
 
                 handleActionRegisterGame(title,course,time,registeringPlayer)
+
             }
             UPDATE_GAME ->{
                 val gameId = intent.getIntExtra(GAME_ID,-1)
@@ -65,13 +67,13 @@ class GameService : IntentService("GameService") {
      * Handle action Foo in the provided background thread with the provided
      * parameters.
      */
-    private fun handleActionRegisterGame(title: String?, course: String?, time: Date?, registeringPlayer: String?): GameEntity? {
+    private fun handleActionRegisterGame(title: String?, course: String?, time: Date?, registeringPlayer: String?)  {
         if(title is String && course is String && time is Date && registeringPlayer is String){
             val GameEntity = GameEntity(title,course,time,registeringPlayer)
             GamesList.add(GameEntity).also { GameEntity.setId(GamesList.indexOf(GameEntity)) }
-            return GameEntity
+
         }
-        return null
+
     }
 
     /**

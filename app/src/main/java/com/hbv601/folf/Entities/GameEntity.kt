@@ -1,6 +1,53 @@
 package com.hbv601.folf.Entities
 
+import android.os.Parcel
+import android.os.Parcelable
 import java.util.Date
+
+
+
+class GameParcel(
+    val gameId: Int,
+    val gameTitle: String?,
+    val course:String?,
+    val time:String?,
+    val creatingPlayer: String?, val players:List<String>?):Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readInt(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.createStringArrayList()
+    ) {
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(gameId)
+        parcel.writeString(gameTitle)
+        parcel.writeString(course)
+        parcel.writeString(time)
+        parcel.writeString(creatingPlayer)
+        parcel.writeStringList(players)
+    }
+
+    
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<GameParcel> {
+
+        override fun createFromParcel(parcel: Parcel): GameParcel {
+            return GameParcel(parcel)
+        }
+
+        override fun newArray(size: Int): Array<GameParcel?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
 
 class GameEntity(var gameTitle:String, var course:String, var time:Date, var creatingPlayer:String) {
     lateinit var players:ArrayList<String>
@@ -12,6 +59,14 @@ class GameEntity(var gameTitle:String, var course:String, var time:Date, var cre
         }
         return this.gameId;
     }
+    fun getId():Int{
+        return this.gameId
+    }
+    fun gameEntityToParcel():GameParcel{
+        val timeString = time.toString();
+        return GameParcel(gameId,gameTitle,course,timeString,creatingPlayer,players.toList())
+    }
+
     fun updateGame(gameTitle: String, course:String,time:Date){
         this.gameTitle = gameTitle
         this.course = course
