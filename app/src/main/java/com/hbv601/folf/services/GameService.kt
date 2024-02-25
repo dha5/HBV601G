@@ -34,7 +34,7 @@ private const val RECIEVE_GAMEPARCEL = "com.hbv601.folf.RegisterFragment.GamePar
 
  */
 class GameService : IntentService("GameService") {
-    private lateinit var GamesList: ArrayList<GameEntity>;
+    private lateinit var GamesList: ArrayList<GameEntity>
 
 
     override fun onHandleIntent(intent: Intent?) {
@@ -63,8 +63,16 @@ class GameService : IntentService("GameService") {
 
                 handleActionAddPlayer(gameId,player)
             }
+            FETCH_GAME ->{
+                val gameId = intent.getIntExtra(GAME_ID,-1)
+                if(gameId<0){
+                    return
+                }
+                handleActionFetchGame(gameId)
+            }
         }
     }
+    
     private fun handleActionFetchGame(id:Int){
         println("intent Received")
         val gameEntity = GamesList[id];

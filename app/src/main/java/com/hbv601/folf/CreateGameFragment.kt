@@ -26,6 +26,7 @@ class CreateGameFragment : Fragment() {
                 val gameParcel = intent.getParcelableExtra(GAME_PARCEL,
                     GameParcel.CREATOR::class.java
                 )
+                println("ParcelRecieved")
 
                 //Do something with the string
             }
