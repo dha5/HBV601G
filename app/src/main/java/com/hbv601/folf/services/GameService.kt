@@ -3,11 +3,10 @@ package com.hbv601.folf.services
 import android.app.IntentService
 import android.content.Context
 import android.content.Intent
-import android.icu.text.SimpleDateFormat
-import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.hbv601.folf.Entities.GameEntity
-import java.sql.Date
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
 // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
@@ -23,7 +22,7 @@ private const val GAME_TITLE = "com.hbv601.folf.services.extra.GAME_TITLE"
 private const val GAME_ID = "com.hbv601.folf.services.extra.GAME_ID"
 private const val GAME_COURSE = "com.hbv601.folf.services.extra.GAME_COURSE"
 private const val GAME_PLAYER = "com.hbv601.folf.services.extra.GAME_PLAYER"
-private const val GAME_TIME = "com.hbv601.folf.services.extra.GAME_PLAYER"
+private const val GAME_TIME = "com.hbv601.folf.services.extra.GAME_TIME"
 private const val GAME_PARCEL = "com.hbv601.folf.services.extra.GAME_PARCEL"
 private const val RECIEVE_GAMEPARCEL = "com.hbv601.folf.RegisterFragment.GameParcelRecieve"
 
@@ -47,12 +46,7 @@ class GameService : IntentService("GameService") {
                 val title = intent.getStringExtra(GAME_TITLE)
                 val course = intent.getStringExtra(GAME_COURSE)
                 val temptime = intent.getStringExtra(GAME_TIME)
-                Log.d("registeringPlayer from Intent",registeringPlayer.toString())
-                if (temptime != null) {
-                    Log.d("TAG", temptime)
-                }
-                val formatter = SimpleDateFormat("dd-MM-yyyy hh:mm")
-                val time = formatter.parse(temptime.toString())
+                val time = LocalDate.parse(temptime, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))
                 val gameEntity = handleActionRegisterGame(title,course,time,registeringPlayer)
                 if(gameEntity != null){
                     val gameParcel = gameEntity.gameEntityToParcel();
@@ -60,14 +54,13 @@ class GameService : IntentService("GameService") {
                     RTReturn.putExtra(GAME_PARCEL, gameParcel);
                     LocalBroadcastManager.getInstance(this).sendBroadcast(RTReturn)
                 }
-                Log.d("Register Game Fail", "Invalid gameEntity")
 
             }
             UPDATE_GAME ->{
                 val gameId = intent.getIntExtra(GAME_ID,-1)
                 val title = intent.getStringExtra(GAME_TITLE)
                 val course = intent.getStringExtra(GAME_COURSE)
-                val time = Date.valueOf(intent.getStringExtra(GAME_TIME))
+                val time = LocalDate.parse(intent.getStringExtra(GAME_TIME))
 
 
                 handleActionUpdateGame(gameId,title,course,time)
@@ -101,11 +94,7 @@ class GameService : IntentService("GameService") {
      * Handle action Foo in the provided background thread with the provided
      * parameters.
      */
-    private fun handleActionRegisterGame(title: String?, course: String?, time: java.util.Date, registeringPlayer: String?) :GameEntity? {
-        Log.d("time",time.toString())
-        Log.d("course",course.toString())
-        Log.d("registeringPlayer",registeringPlayer.toString())
-        Log.d("title",title.toString())
+    private fun handleActionRegisterGame(title: String?, course: String?, time: LocalDate, registeringPlayer: String?) :GameEntity? {
         if(title is String && course is String && registeringPlayer is String){
             val gameEntity = GameEntity(title,course,time,registeringPlayer)
             GamesList.add(gameEntity).also { gameEntity.setId(GamesList.indexOf(gameEntity)) }
@@ -121,12 +110,12 @@ class GameService : IntentService("GameService") {
     /**
      * upfærum leikjarhlut. mun kalla á network service seinna til að tengjast netinu
      */
-    private fun handleActionUpdateGame(gameId: Int,title:String?,course:String?, time:Date?) {
+    private fun handleActionUpdateGame(gameId: Int,title:String?,course:String?, time:LocalDate?) {
         if(gameId < 0) return
         val game  = GamesList[gameId]
         if(title is String) game.updateTitle(title)
         if(course is String) game.updateCourse(course)
-        if(time is Date) game.updateTime(time)
+        if(time is LocalDate) game.updateTime(time)
 
         TODO("Handle action Baz")
     }

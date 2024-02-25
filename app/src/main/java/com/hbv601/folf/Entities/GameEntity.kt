@@ -3,7 +3,6 @@ package com.hbv601.folf.Entities
 import android.os.Parcel
 import android.os.Parcelable
 import java.time.LocalDate
-import java.util.Date
 
 
 
@@ -77,7 +76,7 @@ class GameEntity(var gameTitle:String, var course:String, var time: LocalDate, v
         return GameParcel(gameId,gameTitle,course,timeString,creatingPlayer,players.toList())
     }
 
-    fun updateGame(gameTitle: String, course:String,time:Date){
+    fun updateGame(gameTitle: String, course:String,time:LocalDate){
         this.gameTitle = gameTitle
         this.course = course
         this.time = time
@@ -100,7 +99,7 @@ class GameEntity(var gameTitle:String, var course:String, var time: LocalDate, v
         }
         return true
     }
-    fun updateTime(time: Date){
+    fun updateTime(time: LocalDate){
         this.time = time
     }
     fun updateTitle(title:String){

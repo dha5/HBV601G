@@ -3,6 +3,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -30,8 +31,14 @@ class CreateGameFragment : Fragment() {
         override fun onReceive(context: Context, intent: Intent) {
             if (intent.action == RECIEVE_GAMEPARCEL) {
                 val gameParcel = intent.getParcelableExtra(GAME_PARCEL,
-                    GameParcel.CREATOR::class.java
+                    GameParcel::class.java
                 )
+                if (gameParcel != null) {
+                    Log.d("game created", gameParcel.gameTitle.toString())
+                    Log.d("gameId", gameParcel.gameId.toString())
+                    Log.d("Succesfull registeringPlayer", gameParcel.creatingPlayer.toString())
+
+                }
                 println("ParcelRecieved")
 
                 //Do something with the string
@@ -39,7 +46,7 @@ class CreateGameFragment : Fragment() {
         }
     }
     var bManager: LocalBroadcastManager? = null
-
+    private val calendar = Calendar.getInstance()
     private var _binding: FragmentCreateGameBinding? = null
     private val binding get() = _binding!!
     private val playerNamesList = mutableListOf<String>()
