@@ -18,7 +18,7 @@ import com.hbv601.folf.databinding.FragmentCreateGameBinding
 
 class CreateGameFragment : Fragment() {
     private val GAME_PARCEL = "com.hbv601.folf.services.extra.GAME_PARCEL"
-    private val RECIEVE_GAMEPARCEL = "com.hbv601.folf.RegisterFragment.GameParcelRecieve"
+    val RECIEVE_GAMEPARCEL = "com.hbv601.folf.RegisterFragment.GameParcelRecieve"
 
     private val bReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -26,7 +26,7 @@ class CreateGameFragment : Fragment() {
                 val gameParcel = intent.getParcelableExtra(GAME_PARCEL,
                     GameParcel.CREATOR::class.java
                 )
-                
+
                 //Do something with the string
             }
         }

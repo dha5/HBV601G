@@ -3,6 +3,7 @@ package com.hbv601.folf.services
 import android.app.IntentService
 import android.content.Context
 import android.content.Intent
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.hbv601.folf.Entities.GameEntity
 import java.sql.Date
 
@@ -22,6 +23,7 @@ private const val GAME_COURSE = "com.hbv601.folf.services.extra.GAME_COURSE"
 private const val GAME_PLAYER = "com.hbv601.folf.services.extra.GAME_PLAYER"
 private const val GAME_TIME = "com.hbv601.folf.services.extra.GAME_PLAYER"
 private const val GAME_PARCEL = "com.hbv601.folf.services.extra.GAME_PARCEL"
+private const val RECIEVE_GAMEPARCEL = "com.hbv601.folf.RegisterFragment.GameParcelRecieve"
 
 /**
  * An [IntentService] subclass for handling asynchronous task requests in
@@ -62,6 +64,14 @@ class GameService : IntentService("GameService") {
                 handleActionAddPlayer(gameId,player)
             }
         }
+    }
+    private fun handleActionFetchGame(id:Int){
+        println("intent Received")
+        val gameEntity = GamesList[id];
+        val gameParcel = gameEntity.gameEntityToParcel();
+        val RTReturn: Intent = Intent(RECIEVE_GAMEPARCEL)
+        RTReturn.putExtra(GAME_PARCEL, gameParcel);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(RTReturn)
     }
 
     /**
