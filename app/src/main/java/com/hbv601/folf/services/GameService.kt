@@ -36,24 +36,23 @@ private const val RECIEVE_GAMEPARCEL = "com.hbv601.folf.RegisterFragment.GamePar
 
  */
 class GameService : IntentService("GameService") {
-    private lateinit var GamesList: ArrayList<GameEntity>
+    private var GamesList = ArrayList<GameEntity>()
 
 
     override fun onHandleIntent(intent: Intent?) {
         when (intent?.action) {
             REGISTER_GAME -> {
                 println("intent Recieved")
+                val registeringPlayer = intent.getStringExtra(GAME_PLAYER)
                 val title = intent.getStringExtra(GAME_TITLE)
                 val course = intent.getStringExtra(GAME_COURSE)
                 val temptime = intent.getStringExtra(GAME_TIME)
-                val registeringPlayer = intent.getStringExtra(GAME_PLAYER)
+                Log.d("registeringPlayer from Intent",registeringPlayer.toString())
                 if (temptime != null) {
                     Log.d("TAG", temptime)
                 }
                 val formatter = SimpleDateFormat("dd-MM-yyyy hh:mm")
                 val time = formatter.parse(temptime.toString())
-
-
                 val gameEntity = handleActionRegisterGame(title,course,time,registeringPlayer)
                 if(gameEntity != null){
                     val gameParcel = gameEntity.gameEntityToParcel();
@@ -61,6 +60,7 @@ class GameService : IntentService("GameService") {
                     RTReturn.putExtra(GAME_PARCEL, gameParcel);
                     LocalBroadcastManager.getInstance(this).sendBroadcast(RTReturn)
                 }
+                Log.d("Register Game Fail", "Invalid gameEntity")
 
             }
             UPDATE_GAME ->{
@@ -102,7 +102,11 @@ class GameService : IntentService("GameService") {
      * parameters.
      */
     private fun handleActionRegisterGame(title: String?, course: String?, time: java.util.Date, registeringPlayer: String?) :GameEntity? {
-        if(title is String && course is String && time is Date && registeringPlayer is String){
+        Log.d("time",time.toString())
+        Log.d("course",course.toString())
+        Log.d("registeringPlayer",registeringPlayer.toString())
+        Log.d("title",title.toString())
+        if(title is String && course is String && registeringPlayer is String){
             val gameEntity = GameEntity(title,course,time,registeringPlayer)
             GamesList.add(gameEntity).also { gameEntity.setId(GamesList.indexOf(gameEntity)) }
             println(gameEntity.toString())

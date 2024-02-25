@@ -2,6 +2,7 @@ package com.hbv601.folf.Entities
 
 import android.os.Parcel
 import android.os.Parcelable
+import java.time.LocalDate
 import java.util.Date
 
 
@@ -58,8 +59,8 @@ class GameParcel(
     }
 }
 
-class GameEntity(var gameTitle:String, var course:String, var time:Date, var creatingPlayer:String) {
-    lateinit var players:ArrayList<String>
+class GameEntity(var gameTitle:String, var course:String, var time: LocalDate, var creatingPlayer:String) {
+    var players = ArrayList<String>()
 
     private var gameId: Int = -1
     fun setId(gameId: Int): Int {

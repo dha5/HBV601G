@@ -88,8 +88,8 @@ class CreateGameFragment : Fragment() {
             val course = binding.locationField.text.toString()
             val time = binding.timeField.text.toString()
             val gameTitle = "no title"
-            val registeringPlayer = "placeholder player"
-            this.context?.let { it1 -> GameService.startActionRegisterGame(it1, registeringPlayer,gameTitle,course,time) }
+            val testPlayer = "placeholder player"
+            this.context?.let { it1 -> GameService.startActionRegisterGame(it1, testPlayer,gameTitle,course,time) }
             // Add action for Register Game button
         }
 
