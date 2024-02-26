@@ -7,14 +7,17 @@ import com.hbv601.folf.Entities.ScoreEntity
 
 // TODO: Rename actions, choose action names that describe tasks that this
 // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
-private const val ACTION_FOO = "com.hbv601.folf.services.action.FOO"
-private const val ACTION_BAZ = "com.hbv601.folf.services.action.BAZ"
+private const val UPDATE_SCORE = "com.hbv601.folf.services.action.UPDATESCORE"
+private const val POST_SCORES = "com.hbv601.folf.services.action.POSTSCORES"
+private const val POST_SCORE = "com.hbv601.folf.services.action.POSTSCORE"
+private const val CREATE_SCOREENTITY = "com.hbv601.folf.services.action.CREATESCOREENTITY"
 
 // TODO: Rename parameters
-private const val EXTRA_PARAM1 = "com.hbv601.folf.services.extra.PARAM1"
-private const val EXTRA_PARAM2 = "com.hbv601.folf.services.extra.PARAM2"
 private const val SCORE_ARRAY = "com.hbv601.folf.services.extra.SCOREARRAY"
-private const val PLAYER_ARRAY = ""
+private const val PLAYER_ARRAY = "com.hbv601.folf.services.extra.PLAYERARRAY"
+private const val GAME_ID = "com.hbv601.folf.services.extra.GAMEID"
+private const val PLAYER = "com.hbv601.folf.services.extra.PLAYER"
+private const val SCORE = "com.hbv601.folf.services.extra.SCORE"
 /**
  * An [IntentService] subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
@@ -28,16 +31,24 @@ class ScoreService : IntentService("ScoreService") {
 
     override fun onHandleIntent(intent: Intent?) {
         when (intent?.action) {
-            ACTION_FOO -> {
-                val param1 = intent.getStringExtra(EXTRA_PARAM1)
-                val param2 = intent.getStringExtra(EXTRA_PARAM2)
-                handleActionFoo(param1, param2)
+            CREATE_SCOREENTITY -> {
+                val gameId = intent.getIntExtra(GAME_ID,-1)
+                val playerList = intent.getStringArrayListExtra(PLAYER_ARRAY)
+                if(gameId>-1) {
+                    if (playerList != null) {
+                        handleActionCreateScore(gameId, playerList)
+                    }
+                }
             }
 
-            ACTION_BAZ -> {
-                val param1 = intent.getStringExtra(EXTRA_PARAM1)
-                val param2 = intent.getStringExtra(EXTRA_PARAM2)
-                handleActionBaz(param1, param2)
+            POST_SCORE -> {
+                val gameId = intent.getIntExtra(GAME_ID, -1)
+                val player = intent.getStringExtra(PLAYER)
+                val score = intent.getIntExtra(SCORE, -1)
+                if(gameId>=0&&score>0){
+                    handleActionPostScore(gameId, player,score)
+                }
+
             }
         }
     }
@@ -46,7 +57,11 @@ class ScoreService : IntentService("ScoreService") {
      * Handle action Foo in the provided background thread with the provided
      * parameters.
      */
-    private fun handleActionFoo(param1: String?, param2: String?) {
+    private fun handleActionCreateScore(gameId:Int, playerList: ArrayList<String>) {
+        if(scoreHashMap.containsKey(gameId)){
+            val scoreEntity = ScoreEntity(gameId,null,playerList)
+            scoreHashMap.put(gameId,scoreEntity)
+        }
         TODO("Handle action Foo")
     }
 
@@ -54,7 +69,12 @@ class ScoreService : IntentService("ScoreService") {
      * Handle action Baz in the provided background thread with the provided
      * parameters.
      */
-    private fun handleActionBaz(param1: String?, param2: String?) {
+    private fun handleActionPostScore(gameId:Int, player: String?,score:Int) {
+        if(scoreHashMap.containsKey(gameId)){
+            if (player != null) {
+                scoreHashMap[gameId]!!.addScore(player,score)
+            }
+        }
         TODO("Handle action Baz")
     }
 
@@ -67,28 +87,22 @@ class ScoreService : IntentService("ScoreService") {
          */
         // TODO: Customize helper method
         @JvmStatic
-        fun startActionFoo(context: Context, param1: String, param2: String) {
+        fun startActionCreateScore(context: Context, gameId: Int, playerList: ArrayList<String>) {
             val intent = Intent(context, ScoreService::class.java).apply {
-                action = ACTION_FOO
-                putExtra(EXTRA_PARAM1, param1)
-                putExtra(EXTRA_PARAM2, param2)
+                action = CREATE_SCOREENTITY
+                putExtra(GAME_ID, gameId)
+                putExtra(PLAYER_ARRAY, playerList)
             }
             context.startService(intent)
         }
 
-        /**
-         * Starts this service to perform action Baz with the given parameters. If
-         * the service is already performing a task this action will be queued.
-         *
-         * @see IntentService
-         */
-        // TODO: Customize helper method
         @JvmStatic
-        fun startActionBaz(context: Context, param1: String, param2: String) {
+        fun startActionPostScore(context: Context, gameId: Int,player: String?, score: Int) {
             val intent = Intent(context, ScoreService::class.java).apply {
-                action = ACTION_BAZ
-                putExtra(EXTRA_PARAM1, param1)
-                putExtra(EXTRA_PARAM2, param2)
+                action = POST_SCORE
+                putExtra(GAME_ID, gameId)
+                putExtra(PLAYER, player)
+                putExtra(SCORE, score)
             }
             context.startService(intent)
         }

@@ -33,10 +33,15 @@ class ScoreParcel(val gameId:Int,val players: List<String>?,val score:List<Strin
 
 }
 
-class ScoreEntity(val gameId:Int, val course:CourseEntity?) {
-    val players = ArrayList<String>()
-    val score = HashMap<String,ArrayList<Int>>()
-
+class ScoreEntity(val gameId:Int, val course:CourseEntity?, val players: ArrayList<String>) {
+    val score:HashMap<String,ArrayList<Int>>
+    init {
+        val hashMap = HashMap<String,ArrayList<Int>>()
+        for(player in players){
+            hashMap.put(player,ArrayList<Int>())
+        }
+        score = hashMap
+    }
     fun addPlayers(players:List<String>){
         for(player in players){
             this.players.add(player)
