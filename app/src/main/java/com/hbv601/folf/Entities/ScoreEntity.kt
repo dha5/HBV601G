@@ -3,7 +3,7 @@ package com.hbv601.folf.Entities
 import android.os.Parcel
 import android.os.Parcelable
 
-class ScoreParcel(val gameId:Int,val players: List<String>?,val score:List<String>?):Parcelable{
+class ScoreParcel(val gameId:Int, val players: List<String>?, val score:List<String>?):Parcelable{
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.createStringArrayList(),
@@ -65,6 +65,15 @@ class ScoreEntity(val gameId:Int, val course:CourseEntity?, val players: ArrayLi
             score.remove(player)
             players.remove(player)
         }
+    }
+    fun getPlayers():ArrayList<String>{
+        return players
+    }
+    fun getPlayerScore(player:String):ArrayList<Int>{
+        if(player in players) {
+            return score[player]!!
+        }
+        return ArrayList()
     }
     fun addScore(player:String,score:Int){
         if(players.contains(player)){

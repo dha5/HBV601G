@@ -3,16 +3,23 @@ package com.hbv601.folf.services
 import android.app.IntentService
 import android.content.Context
 import android.content.Intent
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.hbv601.folf.Entities.ScoreEntity
 
 // TODO: Rename actions, choose action names that describe tasks that this
 // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
 private const val UPDATE_SCORE = "com.hbv601.folf.services.action.UPDATESCORE"
+private const val FETCH_SCORES = "com.hbv601.folf.services.action.FETCHSCORE"
+private const val FETCH_PLAYER_SCORE = "com.hbv601.folf.services.action.FETCHPLAYERSCORE"
 private const val POST_SCORES = "com.hbv601.folf.services.action.POSTSCORES"
 private const val POST_SCORE = "com.hbv601.folf.services.action.POSTSCORE"
 private const val CREATE_SCOREENTITY = "com.hbv601.folf.services.action.CREATESCOREENTITY"
 
+private const val RECIEVE_SCORE_PARCEL = "com.hbv601.folf.services.action.RECIEVE_SCORE_PARCEL"
+private const val RECIEVE_PLAYER_SCORE = "com.hbv601.folf.services.action.RECIEVE_PLAYER_SCORE"
+
 // TODO: Rename parameters
+private const val SCORE_PARCEL = "com.hbv601.folf.services.extra.SCOREPARCEL"
 private const val SCORE_ARRAY = "com.hbv601.folf.services.extra.SCOREARRAY"
 private const val PLAYER_ARRAY = "com.hbv601.folf.services.extra.PLAYERARRAY"
 private const val GAME_ID = "com.hbv601.folf.services.extra.GAMEID"
@@ -50,6 +57,19 @@ class ScoreService : IntentService("ScoreService") {
                 }
 
             }
+            FETCH_SCORES ->{
+                val gameId = intent.getIntExtra(GAME_ID,-1)
+                if(gameId>-1){
+                    handleActionFetchScores(gameId)
+                }
+            }
+            FETCH_PLAYER_SCORE ->{
+                val gameId = intent.getIntExtra(GAME_ID,-1)
+                val player = intent.getStringExtra(PLAYER)
+                if(gameId>-1 && player != null){
+                    handleActionFetchPlayerScore(gameId,player)
+                }
+            }
         }
     }
 
@@ -76,6 +96,27 @@ class ScoreService : IntentService("ScoreService") {
             }
         }
         TODO("Handle action Baz")
+    }
+
+    private fun handleActionFetchScores(gameId: Int){
+        if(scoreHashMap.containsKey(gameId)) {
+            val scoreEntity = scoreHashMap[gameId]
+            val scoreParcel = scoreEntity?.ScoreEntityToParcel()
+            val RTReturn: Intent = Intent(RECIEVE_SCORE_PARCEL)
+            RTReturn.putExtra(SCORE_PARCEL, scoreParcel);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(RTReturn)
+        }
+    }
+
+    private fun handleActionFetchPlayerScore(gameId: Int, player: String){
+        if(scoreHashMap.containsKey(gameId)) {
+            val scoreEntity = scoreHashMap[gameId]
+            val playerScore = scoreEntity!!.getPlayerScore(player)
+            val RTReturn: Intent = Intent(RECIEVE_PLAYER_SCORE)
+            RTReturn.putExtra(SCORE,playerScore)
+            LocalBroadcastManager.getInstance(this).sendBroadcast(RTReturn)
+
+        }
     }
 
     companion object {
