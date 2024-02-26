@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Folf"
+rootProject.name = "FolfApp"
 include(":app")
  

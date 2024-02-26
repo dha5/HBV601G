@@ -1,4 +1,4 @@
-package com.hbv601.folf
+package com.example.folfapp
 
 import org.junit.Test
 
