@@ -18,6 +18,7 @@ private const val CREATE_SCOREENTITY = "com.hbv601.folf.services.action.CREATESC
 private const val RECIEVE_SCORE_PARCEL = "com.hbv601.folf.services.action.RECIEVE_SCORE_PARCEL"
 private const val RECIEVE_PLAYER_SCORE = "com.hbv601.folf.services.action.RECIEVE_PLAYER_SCORE"
 
+
 // TODO: Rename parameters
 private const val SCORE_PARCEL = "com.hbv601.folf.services.extra.SCOREPARCEL"
 private const val SCORE_ARRAY = "com.hbv601.folf.services.extra.SCOREARRAY"
@@ -69,6 +70,8 @@ class ScoreService : IntentService("ScoreService") {
                 if(gameId>-1 && player != null){
                     handleActionFetchPlayerScore(gameId,player)
                 }
+                val RTReturn: Intent = Intent(RECIEVE_SCORE_PARCEL)
+                LocalBroadcastManager.getInstance(this).sendBroadcast(RTReturn)
             }
         }
     }
@@ -104,6 +107,9 @@ class ScoreService : IntentService("ScoreService") {
             val scoreParcel = scoreEntity?.ScoreEntityToParcel()
             val RTReturn: Intent = Intent(RECIEVE_SCORE_PARCEL)
             RTReturn.putExtra(SCORE_PARCEL, scoreParcel);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(RTReturn)
+        }else{
+            val RTReturn: Intent = Intent(RECIEVE_SCORE_PARCEL)
             LocalBroadcastManager.getInstance(this).sendBroadcast(RTReturn)
         }
     }

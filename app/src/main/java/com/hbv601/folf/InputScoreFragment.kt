@@ -11,10 +11,11 @@ class InputScoreFragment : Fragment() {
     private lateinit var binding: FragmentInputScoreBinding
     private lateinit var playerNames: Array<String>
     private lateinit var scores: Array<String>
+    private var gameId: Number? = null
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+            savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentInputScoreBinding.inflate(inflater, container, false)
         return binding.root
@@ -22,7 +23,7 @@ class InputScoreFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        gameId = arguments?.getInt("gameId")
         playerNames = arguments?.getStringArray("playerNames") ?: emptyArray()
 
         playerNames.forEach { playerName ->
@@ -35,6 +36,9 @@ class InputScoreFragment : Fragment() {
 
         binding.buttonSubmitScores.setOnClickListener {
         }
+    }
+    fun gameExists(){
+
     }
     fun updateScores(newScores: Array<Number>) {
         //add some sort of service connection
