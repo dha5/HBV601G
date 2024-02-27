@@ -26,6 +26,7 @@ class CreateGameFragment : Fragment() {
     private val ADD_PLAYER = "com.hbv.folf.services.action.ADD_PLAYER"
     private val GAME_PARCEL = "com.hbv601.folf.services.extra.GAME_PARCEL"
     private val RECIEVE_GAMEPARCEL = "com.hbv601.folf.RegisterFragment.GameParcelRecieve"
+    private var gameId:Number? = null
 
     private val bReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -36,6 +37,7 @@ class CreateGameFragment : Fragment() {
                 if (gameParcel != null) {
                     Log.d("game created", gameParcel.gameTitle.toString())
                     Log.d("gameId", gameParcel.gameId.toString())
+                    gameId = gameParcel.gameId
                     Log.d("Succesfull registeringPlayer", gameParcel.creatingPlayer.toString())
 
                 }
@@ -102,8 +104,12 @@ class CreateGameFragment : Fragment() {
 
         binding.startGameButton.setOnClickListener {
             if (playerNamesList.isNotEmpty()) {
+
                 // Create bundle with playerNamesList
                 val args = Bundle().apply {
+                    if(gameId!= null){
+                        putInt("gameId", gameId!!.toInt())
+                    }
                     putStringArray("playerNames", playerNamesList.toTypedArray())
                 }
                 // Navigate to InputScoreFragment with arguments
