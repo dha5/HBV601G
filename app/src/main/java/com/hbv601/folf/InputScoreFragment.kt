@@ -38,7 +38,7 @@ class InputScoreFragment : Fragment() {
         }
     }
     fun gameExists(){
-        
+
 
     }
     fun updateScores(newScores: Array<Number>) {
