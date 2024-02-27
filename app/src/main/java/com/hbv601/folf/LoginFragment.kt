@@ -37,7 +37,7 @@ public class LoginFragment: Fragment() {
                 var password = binding.editTextPassword.text.toString()
                 var username = binding.editTextUsername.text.toString()
 
-                findNavController().navigate(R.id.action_LoginFragment_to_CreateGameFragment)
+                findNavController().navigate(R.id.action_LoginFragment_to_userFragment)
 
             }
         }

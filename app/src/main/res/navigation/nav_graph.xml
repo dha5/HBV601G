@@ -29,8 +29,8 @@
             android:id="@+id/action_LoginFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
         <action
-            android:id="@+id/action_LoginFragment_to_CreateGameFragment"
-            app:destination="@+id/CreateGameFragment"/>
+            android:id="@+id/action_LoginFragment_to_userFragment"
+            app:destination="@id/userFragment" />
     </fragment>
 
     <fragment
@@ -62,6 +62,15 @@
         <action
             android:id="@+id/action_registerFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="com.hbv601.folf.UserFragment"
+        android:label="fragment_user"
+        tools:layout="@layout/fragment_user" >
+        <action
+            android:id="@+id/action_userFragment_to_CreateGameFragment"
+            app:destination="@id/CreateGameFragment" />
     </fragment>
 
 </navigation>
