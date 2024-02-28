@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.hbv601.folf.databinding.FragmentHomePageBinding
 
 
@@ -16,8 +17,16 @@ class HomePageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val view = inflater.inflate(R.layout.fragment_home_page, container, false)
 
+
+
+        _binding = FragmentHomePageBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val textView = view.findViewById<TextView>(R.id.textMessage)
 
         val userName = "John" // þarf að skipta út fyrir notendanafn
@@ -28,11 +37,14 @@ class HomePageFragment : Fragment() {
         if(textView != null) {
             textView.text = welcomeMessage
         }
+        super.onViewCreated(view, savedInstanceState)
+        binding.buttonNewGame.setOnClickListener {
+            findNavController().navigate(R.id.action_homePageFragment_to_CreateGameFragment)
+        }
 
         binding.buttonYourGames.setOnClickListener{
             //navigate to gameslist
         }
-        return view
     }
 
 }

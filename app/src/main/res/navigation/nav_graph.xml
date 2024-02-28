@@ -80,6 +80,9 @@
         android:id="@+id/homePageFragment"
         android:name="com.hbv601.folf.HomePageFragment"
         android:label="HomePageFragment">
+        <action
+            android:id="@+id/action_homePageFragment_to_CreateGameFragment"
+            app:destination="@id/CreateGameFragment" />
     </fragment>
 
 </navigation>
