@@ -39,8 +39,16 @@ class CreateGameFragment : Fragment() {
                     Log.d("gameId", gameParcel.gameId.toString())
                     gameId = gameParcel.gameId
                     Log.d("Succesfull registeringPlayer", gameParcel.creatingPlayer.toString())
+                    if(playerNamesList.isNotEmpty()){
+                        val players = ArrayList<String>()
+                        for(playerName in playerNamesList){
+                            players.add(playerName)
+                        }
+                        GameService.startActionAddPlayers(context, gameId as Int,players)
+                    }
 
                 }
+
                 println("ParcelRecieved")
 
                 //Do something with the string
@@ -97,7 +105,7 @@ class CreateGameFragment : Fragment() {
             val course = binding.locationField.text.toString()
             val time = binding.timeField.text.toString()
             val gameTitle = "no title"
-            val testPlayer = "placeholder player"
+            val testPlayer = "John"
             this.context?.let { it1 -> GameService.startActionRegisterGame(it1, testPlayer,gameTitle,course,time) }
             // Add action for Register Game button
         }

@@ -16,6 +16,7 @@ private const val REGISTER_GAME = "com.hbv.folf.services.action.REGISTER_GAME"
 private const val UPDATE_GAME = "com.hbv.folf.services.action.UPDATE_GAME"
 private const val FETCH_GAME = "com.hbv.folf.services.action.FETCH_GAME"
 private const val ADD_PLAYER = "com.hbv.folf.services.action.ADD_PLAYER"
+private const val ADD_PLAYERS = "com.hbv.folf.services.action.ADD_PLAYERS"
 private const val FETCH_PLAYER_GAMES = "com.hbv.folf.services.action.FETCH_PLAYER_GAMES"
 
 // TODO: Rename parameters
@@ -25,6 +26,7 @@ private const val GAME_TITLE = "com.hbv601.folf.services.extra.GAME_TITLE"
 private const val GAME_ID = "com.hbv601.folf.services.extra.GAME_ID"
 private const val GAME_COURSE = "com.hbv601.folf.services.extra.GAME_COURSE"
 private const val GAME_PLAYER = "com.hbv601.folf.services.extra.GAME_PLAYER"
+private const val PLAYER_ARRAY = "com.hbv601.folf.services.extra.PLAYER_ARRAY"
 private const val GAME_TIME = "com.hbv601.folf.services.extra.GAME_TIME"
 private const val GAME_PARCEL = "com.hbv601.folf.services.extra.GAME_PARCEL"
 private const val GAME_PARCEL_ARRAY = "com.hbv601.folf.services.extra.GAME_PARCEL_ARRAY"
@@ -71,6 +73,15 @@ class GameService : IntentService("GameService") {
 
                 handleActionAddPlayer(gameId,player)
             }
+            ADD_PLAYERS->{
+                val gameId = intent.getIntExtra(GAME_ID,-1)
+                val playerList = intent.getStringArrayListExtra(PLAYER_ARRAY)
+                if(gameId!=-1){
+                    if (playerList != null) {
+                        handleActionAddPlayers(gameId,playerList)
+                    }
+                }
+            }
             FETCH_GAME ->{
                 val gameId = intent.getIntExtra(GAME_ID,-1)
                 if(gameId<0){
@@ -92,12 +103,18 @@ class GameService : IntentService("GameService") {
     private fun handleActionFetchPlayerGames(player:String){
         val returnList = ArrayList<GameParcel>()
         for(game in GamesList){
-            if(game.players.contains(player)){
+            Log.d("course",game.course)
+            //if(game.players.contains(player)||game.creatingPlayer==player){
                 returnList.add(game.gameEntityToParcel())
-            }
+            //}
+        }
+        val parcelList = GameParcel.newArray(returnList.size)
+        var i = 0
+        for(parcel in returnList){
+            parcelList[i++] = parcel
         }
         val RTReturn: Intent = Intent(RECIEVE_GAMEARRAY)
-        RTReturn.putExtra(GAME_PARCEL_ARRAY,returnList)
+        RTReturn.putExtra(GAME_PARCEL_ARRAY,parcelList)
         LocalBroadcastManager.getInstance(this).sendBroadcast(RTReturn)
 
     }
@@ -119,7 +136,7 @@ class GameService : IntentService("GameService") {
         if(title is String && course is String && registeringPlayer is String){
             val gameEntity = GameEntity(title,course,time,registeringPlayer)
             GamesList.add(gameEntity).also { gameEntity.setId(GamesList.indexOf(gameEntity)) }
-            println(gameEntity.toString())
+            Log.d("course",gameEntity.course)
             return gameEntity
 
 
@@ -145,6 +162,18 @@ class GameService : IntentService("GameService") {
         if(gameId < 0 || gameId >= GamesList.size) return
         val game = GamesList[gameId]
         if(player is String) game.addPlayer(player)
+        GamesList[gameId] = game
+    }
+    private fun handleActionAddPlayers(gameId:Int,players: ArrayList<String>){
+        if(gameId < 0 || gameId >= GamesList.size) return
+        val game = GamesList[gameId]
+        for(player in players){
+            if(!game.players.contains(player)){
+                game.addPlayer(player)
+            }
+        }
+        GamesList[gameId] = game
+
     }
 
     companion object {
@@ -186,11 +215,26 @@ class GameService : IntentService("GameService") {
             }
             context.startService(intent)
         }
+        fun startActionAddPlayers(context:Context,gameId: Int,players:ArrayList<String>){
+            val intent = Intent(context, GameService::class.java).apply{
+                action = ADD_PLAYERS
+                putExtra(GAME_ID,gameId)
+                putExtra(PLAYER_ARRAY,players)
+            }
+        }
 
         fun startActionFetchGame(context: Context, gameId: Int){
             val intent = Intent(context, GameService::class.java).apply{
                 action = FETCH_GAME
                 putExtra(GAME_ID,gameId)
+            }
+            context.startService(intent)
+        }
+
+        fun startActionFetchPlayerGames(context: Context, player: String){
+            val intent = Intent(context, GameService::class.java).apply{
+                action = FETCH_PLAYER_GAMES
+                putExtra(GAME_PLAYER,player)
             }
             context.startService(intent)
         }

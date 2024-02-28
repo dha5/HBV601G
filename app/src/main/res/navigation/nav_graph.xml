@@ -83,6 +83,15 @@
         <action
             android:id="@+id/action_homePageFragment_to_CreateGameFragment"
             app:destination="@id/CreateGameFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_YourGamesFragment"
+            app:destination="@id/YourGamesFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/YourGamesFragment"
+        android:name="com.hbv601.folf.YourGamesFragment"
+        android:label="YourGamesFragment">
     </fragment>
 
 </navigation>
