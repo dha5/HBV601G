@@ -45,10 +45,10 @@ class YourGamesFragment : Fragment() {
                 if(games!=null){
                     Log.d("recieve", games.size.toString())
                     for((i, game) in games.withIndex()){
-                        Log.d("game",game.toString())
+                        Log.d("game",game.course!!)
                         val gameItem = GameItemViewHolder(GameItemBinding.inflate(layoutInflater))
                         gameItem.bindItem(game as GameParcel)
-                        binding.GamesList.addView(gameItem.itemView, i)
+                        binding.GamesList.addView(gameItem.itemView)
 
                     }
                 }

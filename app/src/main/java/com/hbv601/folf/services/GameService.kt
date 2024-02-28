@@ -38,6 +38,10 @@ private const val RECIEVE_GAMEARRAY = "com.hbv601.folf.services.extra.RECIEVEGAM
  */
 class GameService : IntentService("GameService") {
     private var GamesList = ArrayList<GameEntity>()
+    init {
+        GamesList.add(GameEntity("New Game","skaftahlíð", LocalDate.now(),"John"))
+        GamesList[0].addPlayer("John")
+    }
 
 
     override fun onHandleIntent(intent: Intent?) {
