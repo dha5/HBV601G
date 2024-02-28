@@ -5,9 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.hbv601.folf.databinding.FragmentHomePageBinding
 
 
 class HomePageFragment : Fragment() {
+    private var _binding: FragmentHomePageBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,6 +29,10 @@ class HomePageFragment : Fragment() {
             textView.text = welcomeMessage
         }
 
+        binding.buttonYourGames.setOnClickListener{
+            //navigate to gameslist
+        }
         return view
     }
+
 }

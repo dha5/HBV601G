@@ -6,6 +6,7 @@ import android.content.Intent
 import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.hbv601.folf.Entities.GameEntity
+import com.hbv601.folf.Entities.GameParcel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -15,6 +16,7 @@ private const val REGISTER_GAME = "com.hbv.folf.services.action.REGISTER_GAME"
 private const val UPDATE_GAME = "com.hbv.folf.services.action.UPDATE_GAME"
 private const val FETCH_GAME = "com.hbv.folf.services.action.FETCH_GAME"
 private const val ADD_PLAYER = "com.hbv.folf.services.action.ADD_PLAYER"
+private const val FETCH_PLAYER_GAMES = "com.hbv.folf.services.action.FETCH_PLAYER_GAMES"
 
 // TODO: Rename parameters
 private const val EXTRA_PARAM1 = "com.hbv601.folf.services.extra.PARAM1"
@@ -25,7 +27,9 @@ private const val GAME_COURSE = "com.hbv601.folf.services.extra.GAME_COURSE"
 private const val GAME_PLAYER = "com.hbv601.folf.services.extra.GAME_PLAYER"
 private const val GAME_TIME = "com.hbv601.folf.services.extra.GAME_TIME"
 private const val GAME_PARCEL = "com.hbv601.folf.services.extra.GAME_PARCEL"
-private const val RECIEVE_GAMEPARCEL = "com.hbv601.folf.RegisterFragment.GameParcelRecieve"
+private const val GAME_PARCEL_ARRAY = "com.hbv601.folf.services.extra.GAME_PARCEL_ARRAY"
+private const val RECIEVE_GAMEPARCEL = "com.hbv601.folf.RegisterFragment.GAMEPARCELRECIEVE"
+private const val RECIEVE_GAMEARRAY = "com.hbv601.folf.services.extra.RECIEVEGAMEARRAY"
 
 /**
  * IntentService sem heldur utan um aðgerðir tengdar því að skrá leiki, bæta við spilurum í leiki og sækja upplýsingar um leiki
@@ -76,7 +80,26 @@ class GameService : IntentService("GameService") {
                 }
                 handleActionFetchGame(gameId)
             }
+            FETCH_PLAYER_GAMES ->{
+                val player = intent.getStringExtra(GAME_PLAYER)
+                if(player!=null){
+                    handleActionFetchPlayerGames(player)
+                }
+            }
         }
+    }
+
+    private fun handleActionFetchPlayerGames(player:String){
+        val returnList = ArrayList<GameParcel>()
+        for(game in GamesList){
+            if(game.players.contains(player)){
+                returnList.add(game.gameEntityToParcel())
+            }
+        }
+        val RTReturn: Intent = Intent(RECIEVE_GAMEARRAY)
+        RTReturn.putExtra(GAME_PARCEL_ARRAY,returnList)
+        LocalBroadcastManager.getInstance(this).sendBroadcast(RTReturn)
+
     }
 
     private fun handleActionFetchGame(id:Int){

@@ -25,7 +25,7 @@ class CreateGameFragment : Fragment() {
     private val FETCH_GAME = "com.hbv.folf.services.action.FETCH_GAME"
     private val ADD_PLAYER = "com.hbv.folf.services.action.ADD_PLAYER"
     private val GAME_PARCEL = "com.hbv601.folf.services.extra.GAME_PARCEL"
-    private val RECIEVE_GAMEPARCEL = "com.hbv601.folf.RegisterFragment.GameParcelRecieve"
+    private val RECIEVE_GAMEPARCEL = "com.hbv601.folf.RegisterFragment.GAMEPARCELRECIEVE"
     private var gameId:Number? = null
 
     private val bReceiver: BroadcastReceiver = object : BroadcastReceiver() {
