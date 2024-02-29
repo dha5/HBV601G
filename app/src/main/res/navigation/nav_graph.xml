@@ -92,6 +92,10 @@
         android:id="@+id/YourGamesFragment"
         android:name="com.hbv601.folf.YourGamesFragment"
         android:label="YourGamesFragment">
+        <action
+            android:id="@+id/action_yourGamesFragment_to_CreateGameFragment"
+            app:destination="@id/CreateGameFragment"
+            app:argType="GameParcel"/>
     </fragment>
 
 </navigation>

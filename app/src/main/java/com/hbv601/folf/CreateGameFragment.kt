@@ -46,6 +46,7 @@ class CreateGameFragment : Fragment() {
                         }
                         GameService.startActionAddPlayers(context, gameId as Int,players)
                     }
+                    updateButton()
 
                 }
 
@@ -76,9 +77,15 @@ class CreateGameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Top layer
-        binding.textViewCreateGame.text = "Create a new game"
-
+        val gameParcel = arguments?.getParcelable("GAME_PARCEL",GameParcel::class.java)
+        if(gameParcel != null){
+            binding.textViewCreateGame.text = "Update Game"
+            binding.timeField.setText(gameParcel.time)
+            binding.locationField.setText(gameParcel.course)
+        }else {
+            // Top layer
+            binding.textViewCreateGame.text = "Create a new game"
+        }
         // Second layer
         binding.gameNowButton.setOnClickListener {
             // Set current date and time to timeField
@@ -88,26 +95,36 @@ class CreateGameFragment : Fragment() {
         // Third layer
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, playerNamesList)
         binding.playerListView.adapter = adapter
-
+        if(gameParcel != null){
+            for(player in gameParcel.players!!){
+                playerNamesList.add(player)
+            }
+        }
         binding.addPlayerButton.setOnClickListener {
             val playerName = binding.playerField.text.toString().trim()
             if (playerName.isNotBlank()) {
                 playerNamesList.add(playerName)
                 adapter.notifyDataSetChanged()
                 binding.playerField.text.clear()
+                if(gameId!=null){
+                    this.context?.let { it1 -> GameService.startActionAddPlayer(it1, gameId!!.toInt(),playerName) }
+                }
             }
         }
 
         // Fourth layer
-        binding.registerGameButton.setOnClickListener {
-            Log.d("TAG", "register game button")
-            val playerNameList = playerNamesList.toList()
-            val course = binding.locationField.text.toString()
-            val time = binding.timeField.text.toString()
-            val gameTitle = "no title"
-            val testPlayer = "John"
-            this.context?.let { it1 -> GameService.startActionRegisterGame(it1, testPlayer,gameTitle,course,time) }
-            // Add action for Register Game button
+        if(gameId==null){
+            binding.registerGameButton.setOnClickListener {
+                Log.d("TAG", "register game button")
+                val course = binding.locationField.text.toString()
+                val time = binding.timeField.text.toString()
+                val gameTitle = "no title"
+                val testPlayer = "John"
+                this.context?.let { it1 -> GameService.startActionRegisterGame(it1, testPlayer,gameTitle,course,time) }
+            }
+        }else{
+            updateButton()
+
         }
 
         binding.startGameButton.setOnClickListener {
@@ -132,6 +149,17 @@ class CreateGameFragment : Fragment() {
         binding.cancelButton.setOnClickListener {
             // Handle cancel button action, for example:
             findNavController().popBackStack()
+        }
+    }
+    fun updateButton(){
+        binding.registerGameButton.setText("Update")
+        binding.registerGameButton.setOnClickListener {
+            Log.d("tag","update game button")
+            val course = binding.locationField.text.toString()
+            val time = binding.timeField.text.toString()
+            val gameTitle = "no title"
+            this.context?.let { it1 -> GameService.startActionUpdateGame(it1,gameId!!.toInt(),gameTitle,time,course) }
+
         }
     }
 

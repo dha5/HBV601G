@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.navigation.fragment.findNavController
 import com.hbv601.folf.Entities.GameParcel
 import com.hbv601.folf.ViewHolders.GameItemViewHolder
 import com.hbv601.folf.databinding.FragmentYourGamesBinding
@@ -44,11 +45,25 @@ class YourGamesFragment : Fragment() {
                 Log.d("recieve","gameArray recieved")
                 if(games!=null){
                     Log.d("recieve", games.size.toString())
-                    for((i, game) in games.withIndex()){
+                    for( game in games){
                         Log.d("game",game.course!!)
                         val gameItem = GameItemViewHolder(GameItemBinding.inflate(layoutInflater))
                         gameItem.bindItem(game as GameParcel)
                         binding.GamesList.addView(gameItem.itemView)
+                        if(game.creatingPlayer!! == username){
+
+                            val yourGame = GameItemViewHolder(GameItemBinding.inflate(layoutInflater))
+                            yourGame.bindItem(game)
+                            yourGame.onClick()
+                            yourGame.itemView.setOnClickListener{
+                                val args = Bundle().apply {
+                                    putParcelable("GAME_PARCEL",game)
+                                }
+                                findNavController().navigate(R.id.action_yourGamesFragment_to_CreateGameFragment,args)
+
+                            }
+                            binding.YourCreatedGames.addView(yourGame.itemView)
+                        }
 
                     }
                 }
@@ -74,6 +89,8 @@ class YourGamesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        binding.YourCreatedGames.removeAllViews()
+        binding.GamesList.removeAllViews()
         bManager = this.context?.let { LocalBroadcastManager.getInstance(it) }
         val intentFilter = IntentFilter()
         intentFilter.addAction(RECIEVE_GAMEARRAY)
