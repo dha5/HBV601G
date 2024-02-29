@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.folfapp.ui.theme.FolfAppTheme
 
-class MainActivity : ComponentActivity() {
+class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
 
 @Preview(showBackground = true, widthDp = 320)
 @Composable
-fun MainActivityPreview() {
+fun LoginActivityPreview() {
     FolfAppTheme {
         FolfApp()
     }

@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">FolfApp</string>
+    <string name="login_title">Innskráning</string>
+    <string name="main_title">Upphafssíða</string>
+    <string name="back_button">Til baka</string>
+    <string name="cancel">Hætta við</string>
+    <string name="next">Næsta</string>
+    <string name="username_label">Tölvupóstfang</string>
+    <string name="password_label">Lykilorð</string>
+    <string name="login_button">Innskrá</string>
 </resources>
