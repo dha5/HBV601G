@@ -41,7 +41,6 @@ class HomePageFragment : Fragment() {
         binding.buttonNewGame.setOnClickListener {
             findNavController().navigate(R.id.action_homePageFragment_to_CreateGameFragment)
         }
-
         binding.buttonYourGames.setOnClickListener{
             findNavController().navigate(R.id.action_homePageFragment_to_YourGamesFragment)
             //navigate to gameslist

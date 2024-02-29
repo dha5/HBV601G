@@ -32,6 +32,11 @@ private const val GAME_PARCEL_ARRAY = "com.hbv601.folf.services.extra.GAME_PARCE
  * create an instance of this fragment.
  */
 class YourGamesFragment : Fragment() {
+
+    private var _binding: FragmentYourGamesBinding? = null
+    private val binding get() = _binding!!
+
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -74,8 +79,7 @@ class YourGamesFragment : Fragment() {
     }
     var bManager: LocalBroadcastManager? = null
     private val calendar = Calendar.getInstance()
-    private var _binding: FragmentYourGamesBinding? = null
-    private val binding get() = _binding!!
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,6 +93,7 @@ class YourGamesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        _binding = FragmentYourGamesBinding.inflate(inflater, container, false)
         binding.YourCreatedGames.removeAllViews()
         binding.GamesList.removeAllViews()
         bManager = this.context?.let { LocalBroadcastManager.getInstance(it) }
@@ -96,7 +101,7 @@ class YourGamesFragment : Fragment() {
         intentFilter.addAction(RECIEVE_GAMEARRAY)
         bManager!!.registerReceiver(bReceiver, intentFilter)
         this.context?.let { GameService.startActionFetchPlayerGames(it,username) }
-        _binding = FragmentYourGamesBinding.inflate(inflater, container, false)
+
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_your_games, container, false)
         return binding.root
