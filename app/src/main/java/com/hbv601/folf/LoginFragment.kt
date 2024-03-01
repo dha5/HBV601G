@@ -1,16 +1,23 @@
-package com.hbv601.folf;
+package com.hbv601.folf
 
-import android.annotation.SuppressLint
+
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.hbv601.folf.Entities.UserCreds
 import com.hbv601.folf.databinding.FragmentLoginBinding
+import com.hbv601.folf.network.FolfApi
+import kotlinx.coroutines.launch
+
+const val TAG = "LoginFragment"
 
 public class LoginFragment: Fragment() {
-
 
     private var _binding: FragmentLoginBinding? = null
 
@@ -21,33 +28,52 @@ public class LoginFragment: Fragment() {
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+
 
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
 
     }
 
-    @SuppressLint("SuspiciousIndentation") //á meðan við erum ekki búnir að útfæra bakendatengingu
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //val viewModel: LoginViewModel by viewModels()
         binding.buttonLogin.setOnClickListener {
-            if (checkLoginCredentials(binding.editTextUsername.text.toString(), binding.editTextPassword.text.toString())) {
-                var password = binding.editTextPassword.text.toString()
-                var username = binding.editTextUsername.text.toString()
-
-                findNavController().navigate(R.id.action_LoginFragment_to_HomePageFragment)
-
-            }
+            checkLoginCredentials(
+                binding.editTextUsername.text.toString(),
+                binding.editTextPassword.text.toString()
+            )
         }
     }
 
-    /**
-     * Þarf að útfæra betur. þarf að tala við bakenda einhvernvegin
-     */
-    private fun checkLoginCredentials(username: String, password: String): Boolean {
-        return true
+
+    private fun checkLoginCredentials(username: String, password: String) {
+        lifecycleScope.launch {
+            val res = FolfApi.retrofitService.doLogin(
+                UserCreds(
+                    binding.editTextUsername.text.toString(),
+                    binding.editTextPassword.text.toString()
+                )
+            )
+
+            Log.d(TAG, "ÞETTA ER LOGINBUTTONCLICK")
+            Log.d(TAG, res.toString())
+
+            if (res.isSuccessful && res.body() != null) {
+                Log.d(TAG, res.body()!!.accessToken)
+                findNavController().navigate(R.id.action_LoginFragment_to_HomePageFragment)
+            }
+            else {
+                val text = "Wrong username or password!"
+                val duration = Toast.LENGTH_LONG
+                val toast = Toast.makeText(this@LoginFragment.context, text, duration)
+                toast.show()
+            }
+
+        }
     }
 
     override fun onDestroyView() {
