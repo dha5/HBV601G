@@ -1,0 +1,139 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Header -->
+    <TextView
+        android:id="@+id/text_view_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Courses"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="16dp"
+        android:background="@color/light_blue"/>
+
+    <!-- Course 1 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Course Name TextView -->
+        <TextView
+            android:id="@+id/text_view_course_name_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Course 1"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:background="@color/light_blue"/>
+
+        <!-- Open Games -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="8dp">
+
+            <!-- Game 1 -->
+            <TextView
+                android:id="@+id/text_view_game_1_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Game 1 for Course 1"
+                android:gravity="center"
+                android:layout_marginTop="4dp"
+                android:background="@color/light_green"/>
+
+            <!-- Game 2 -->
+            <TextView
+                android:id="@+id/text_view_game_2_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Game 2 for Course 1"
+                android:gravity="center"
+                android:layout_marginTop="4dp"
+                android:background="@color/light_green"/>
+
+        </LinearLayout>
+
+        <!-- Show More Button -->
+        <Button
+            android:id="@+id/button_show_more_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show More"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:background="@color/grey"/>
+
+    </LinearLayout>
+
+    <!-- Course 2 (Similar structure as Course 1) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Course Name TextView -->
+        <TextView
+            android:id="@+id/text_view_course_name_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Course 2"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:background="@color/light_blue"/>
+
+        <!-- Open Games -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="8dp">
+
+            <!-- Game 1 -->
+            <TextView
+                android:id="@+id/text_view_game_1_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Game 1 for Course 2"
+                android:gravity="center"
+                android:layout_marginTop="4dp"
+                android:background="@color/light_green"/>
+
+            <!-- Game 2 -->
+            <TextView
+                android:id="@+id/text_view_game_2_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Game 2 for Course 2"
+                android:gravity="center"
+                android:layout_marginTop="4dp"
+                android:background="@color/light_green"/>
+
+        </LinearLayout>
+
+        <!-- Show More Button -->
+        <Button
+            android:id="@+id/button_show_more_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show More"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:background="@color/grey"/>
+
+    </LinearLayout>
+
+    <!-- Additional courses can be added similarly -->
+
+</LinearLayout>

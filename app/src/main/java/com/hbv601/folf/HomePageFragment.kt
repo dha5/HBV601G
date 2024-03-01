@@ -42,6 +42,11 @@ class HomePageFragment : Fragment() {
             findNavController().navigate(R.id.action_homePageFragment_to_CreateGameFragment)
         }
 
+        super.onViewCreated(view, savedInstanceState)
+        binding.buttonViewCourses.setOnClickListener {
+            findNavController().navigate(R.id.action_homePageFragment_to_CourseFragment)
+        }
+
         binding.buttonYourGames.setOnClickListener{
             //navigate to gameslist
         }
