@@ -3,6 +3,7 @@ package com.hbv601.folf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import android.util.Log
 
 data class Course(
     val name: String,
@@ -44,6 +45,8 @@ class CourseViewModel : ViewModel() {
                 Game("Game 4", "27 Mar, 5:00 PM", 7, "Dana")
             ))
         )
+
+        Log.d("CourseViewModel", "Fetched ${mockCourses.size} courses")
 
         _courses.postValue(mockCourses)
     }
