@@ -92,7 +92,5 @@
         android:id="@+id/CourseFragment"
         android:name="com.hbv601.folf.CourseFragment"
         android:label="CourseFragment">
-        <!-- Define actions if necessary -->
     </fragment>
-
 </navigation>
