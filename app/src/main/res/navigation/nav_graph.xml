@@ -84,8 +84,12 @@
             android:id="@+id/action_homePageFragment_to_CreateGameFragment"
             app:destination="@id/CreateGameFragment" />
         <action
+
             android:id="@+id/action_homePageFragment_to_YourGamesFragment"
             app:destination="@id/YourGamesFragment"/>
+            <action
+            android:id="@+id/action_homePageFragment_to_CourseFragment"
+            app:destination="@id/CourseFragment" />
     </fragment>
 
     <fragment
@@ -98,4 +102,9 @@
             app:argType="GameParcel"/>
     </fragment>
 
+    <fragment
+        android:id="@+id/CourseFragment"
+        android:name="com.hbv601.folf.CourseFragment"
+        android:label="CourseFragment">
+    </fragment>
 </navigation>
