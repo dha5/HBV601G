@@ -12,6 +12,12 @@
         <item>"JohnFolf"</item>
         <item>"Folfmeister35"</item>
     </string-array>
+    <string-array name="placeholderCourses">
+        <item>"Klambratún"</item>
+        <item>"Háskóli Reykjavíkur"</item>
+        <item>"Grafarholt"</item>
+        <item>"Fossvogsdalur"</item>
+    </string-array>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris

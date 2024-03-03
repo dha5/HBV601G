@@ -29,18 +29,16 @@
     </LinearLayout>
 
     <EditText
-        android:id="@+id/editTextText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Title"
         android:inputType="text" />
 
-    <EditText
+    <Spinner
         android:id="@+id/locationField"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Location" />
+        android:layout_height="47dp" />
 
     <EditText
         android:id="@+id/timeField"

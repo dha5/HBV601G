@@ -28,6 +28,8 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
     private val GAME_PARCEL = "com.hbv601.folf.services.extra.GAME_PARCEL"
     private val RECIEVE_GAMEPARCEL = "com.hbv601.folf.RegisterFragment.GAMEPARCELRECIEVE"
     private var gameId:Number? = null
+    private var selectedCourse:String? = null
+    private var selectedPlayer:String? = null
 
     private val bReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -82,7 +84,8 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
         if(gameParcel != null){
             binding.textViewCreateGame.text = "Update Game"
             binding.timeField.setText(gameParcel.time)
-            binding.locationField.setText(gameParcel.course)
+
+            //binding.locationField.setText(gameParcel.course)
         }else {
             // Top layer
             binding.textViewCreateGame.text = "Create a new game"
@@ -113,17 +116,37 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
             }
         }
         getFriends()
-
+        binding.addPlayerSpinnerButton.setOnClickListener {
+            if(selectedPlayer!=null){
+                playerNamesList.add(selectedPlayer!!)
+                adapter.notifyDataSetChanged()
+                if(gameId!=null){
+                    this.context?.let { it1 -> GameService.startActionAddPlayer(it1, gameId!!.toInt(),selectedPlayer!!) }
+                }
+            }
+        }
+        getCourses()
 
         // Fourth layer
         if(gameId==null){
             binding.registerGameButton.setOnClickListener {
                 Log.d("TAG", "register game button")
-                val course = binding.locationField.text.toString()
+                //val course = binding.locationField.text.toString()
+                val course = selectedCourse
                 val time = binding.timeField.text.toString()
                 val gameTitle = "no title"
                 val testPlayer = "John"
-                this.context?.let { it1 -> GameService.startActionRegisterGame(it1, testPlayer,gameTitle,course,time) }
+                if(course != null) {
+                    this.context?.let { it1 ->
+                        GameService.startActionRegisterGame(
+                            it1,
+                            testPlayer,
+                            gameTitle,
+                            course,
+                            time
+                        )
+                    }
+                }
             }
         }else{
             updateButton()
@@ -156,7 +179,6 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
     }
     fun getFriends(){
         //implement call to get friends
-        val friends = playerArray.toMutableList()
         val spinner = binding.playerSpinner
 
         ArrayAdapter.createFromResource(this.requireContext(),R.array.placeholderPlayers,android.R.layout.simple_spinner_item).also {
@@ -164,18 +186,36 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinner.adapter = adapter
         }
-        spinner.onItemSelectedListener 
+        spinner.onItemSelectedListener =this
 
+    }
+    fun getCourses(){
+        val spinner = binding.locationField
+        ArrayAdapter.createFromResource(this.requireContext(),R.array.placeholderCourses,android.R.layout.simple_spinner_item).also {
+            adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+        }
+        spinner.onItemSelectedListener=this
     }
     fun updateButton(){
         binding.registerGameButton.setText("Update")
         binding.registerGameButton.setOnClickListener {
             Log.d("tag","update game button")
-            val course = binding.locationField.text.toString()
+            val course = selectedCourse
             val time = binding.timeField.text.toString()
             val gameTitle = "no title"
-            this.context?.let { it1 -> GameService.startActionUpdateGame(it1,gameId!!.toInt(),gameTitle,time,course) }
-
+            if(course != null) {
+                this.context?.let { it1 ->
+                    GameService.startActionUpdateGame(
+                        it1,
+                        gameId!!.toInt(),
+                        gameTitle,
+                        time,
+                        course
+                    )
+                }
+            }
         }
     }
 
@@ -185,10 +225,28 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        TODO("Not yet implemented")
+        if (parent != null) {
+            when(parent.id) {
+                R.id.playerSpinner -> {
+                    selectedPlayer = parent.getItemAtPosition(position).toString()
+                }
+
+                R.id.locationField -> {
+                    selectedCourse = parent.getItemAtPosition(position).toString()
+                }
+
+
+            }
+        }
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
-        TODO("Not yet implemented")
+        if(parent != null){
+            when(parent.id){
+                R.id.playerSpinner ->{
+                    selectedPlayer = null
+                }
+            }
+        }
     }
 }

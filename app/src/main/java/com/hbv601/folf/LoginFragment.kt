@@ -42,10 +42,12 @@ public class LoginFragment: Fragment() {
 
         //val viewModel: LoginViewModel by viewModels()
         binding.buttonLogin.setOnClickListener {
+            /**
             checkLoginCredentials(
                 binding.editTextUsername.text.toString(),
                 binding.editTextPassword.text.toString()
-            )
+            )**/
+            findNavController().navigate(R.id.action_LoginFragment_to_HomePageFragment)
         }
     }
 
@@ -61,7 +63,6 @@ public class LoginFragment: Fragment() {
 
             Log.d(TAG, "ÞETTA ER LOGINBUTTONCLICK")
             Log.d(TAG, res.toString())
-
             if (res.isSuccessful && res.body() != null) {
                 Log.d(TAG, res.body()!!.accessToken)
                 findNavController().navigate(R.id.action_LoginFragment_to_HomePageFragment)
