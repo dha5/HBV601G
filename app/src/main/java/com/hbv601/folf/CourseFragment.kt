@@ -7,10 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.hbv601.folf.ViewHolders.CourseViewHolder
-import com.hbv601.folf.ViewHolders.GameItemViewHolder
 import com.hbv601.folf.databinding.CourseItemBinding
 import com.hbv601.folf.databinding.FragmentCoursesBinding
-import com.hbv601.folf.databinding.GameItemBinding
 
 class CourseFragment : Fragment() {
 
@@ -45,12 +43,12 @@ class CourseFragment : Fragment() {
             for(course in courses){
                 Log.d("courseName",course.name)
                 val courseView = CourseViewHolder(CourseItemBinding.inflate(layoutInflater))
-                courseView.bindItem(course)
-                for(game in course.games){
+                this.context?.let { courseView.bindItem(course, it) }
+                /*for(game in course.games){
                     val gameView = GameItemViewHolder(GameItemBinding.inflate(layoutInflater))
                     gameView.bindGameClass(game)
                     courseView.addGame(gameView.itemView)
-                }
+                }*/
                 binding.CourseList.addView(courseView.itemView)
             }
         }
