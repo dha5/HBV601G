@@ -1,8 +1,8 @@
 package com.hbv601.folf.ViewHolders
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,13 +16,16 @@ class CourseViewHolder (private val binding: CourseItemBinding): RecyclerView.Vi
     fun bindItem(course: Course,context: Context){
         binding.CourseName.text = course.name
         val adapter = GamesAdapter(course.games)
-        for(game in course.games){
-            Log.d("game",game.name)
-        }
         binding.gameslist.layoutManager = LinearLayoutManager(context)
         binding.gameslist.adapter = adapter
-
+        binding.bestScoreTitle.visibility = View.INVISIBLE
     }
+    fun bestScore(view:View){
+        binding.bestScore.removeAllViews()
+        binding.bestScore.addView(view)
+        binding.bestScoreTitle.visibility = View.VISIBLE
+    }
+
 }
 
 private class GamesAdapter(private val gamesList:List<Game>): RecyclerView.Adapter<GameItemViewHolder>() {

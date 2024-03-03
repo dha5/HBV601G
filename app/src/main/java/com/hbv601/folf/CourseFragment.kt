@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.hbv601.folf.ViewHolders.CourseViewHolder
+import com.hbv601.folf.ViewHolders.ScoreViewHolder
 import com.hbv601.folf.databinding.CourseItemBinding
 import com.hbv601.folf.databinding.FragmentCoursesBinding
+import com.hbv601.folf.databinding.ScoreItemBinding
 
 class CourseFragment : Fragment() {
 
@@ -49,11 +51,19 @@ class CourseFragment : Fragment() {
                     gameView.bindGameClass(game)
                     courseView.addGame(gameView.itemView)
                 }*/
+                val view = getBestScore(course.name)
+                if(view!=null) {
+                    courseView.bestScore(view)
+                }
                 binding.CourseList.addView(courseView.itemView)
             }
         }
     }
-
+    fun getBestScore(course:String):View?{
+        val scoreView = ScoreViewHolder(ScoreItemBinding.inflate(layoutInflater))
+        scoreView.onBind("Strákafrolf í hádeginu","24. Mars 2023 12:30",22,21)
+        return scoreView.itemView
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
