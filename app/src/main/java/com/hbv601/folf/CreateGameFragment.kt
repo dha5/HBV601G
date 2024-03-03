@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -19,7 +20,7 @@ import com.hbv601.folf.databinding.FragmentCreateGameBinding
 import com.hbv601.folf.services.GameService
 
 
-class CreateGameFragment : Fragment() {
+class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
     private val REGISTER_GAME = "com.hbv.folf.services.action.REGISTER_GAME"
     private val UPDATE_GAME = "com.hbv.folf.services.action.UPDATE_GAME"
     private val FETCH_GAME = "com.hbv.folf.services.action.FETCH_GAME"
@@ -27,6 +28,8 @@ class CreateGameFragment : Fragment() {
     private val GAME_PARCEL = "com.hbv601.folf.services.extra.GAME_PARCEL"
     private val RECIEVE_GAMEPARCEL = "com.hbv601.folf.RegisterFragment.GAMEPARCELRECIEVE"
     private var gameId:Number? = null
+    private var selectedCourse:String? = null
+    private var selectedPlayer:String? = null
 
     private val bReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -81,7 +84,8 @@ class CreateGameFragment : Fragment() {
         if(gameParcel != null){
             binding.textViewCreateGame.text = "Update Game"
             binding.timeField.setText(gameParcel.time)
-            binding.locationField.setText(gameParcel.course)
+
+            //binding.locationField.setText(gameParcel.course)
         }else {
             // Top layer
             binding.textViewCreateGame.text = "Create a new game"
@@ -111,16 +115,38 @@ class CreateGameFragment : Fragment() {
                 }
             }
         }
+        getFriends()
+        binding.addPlayerSpinnerButton.setOnClickListener {
+            if(selectedPlayer!=null){
+                playerNamesList.add(selectedPlayer!!)
+                adapter.notifyDataSetChanged()
+                if(gameId!=null){
+                    this.context?.let { it1 -> GameService.startActionAddPlayer(it1, gameId!!.toInt(),selectedPlayer!!) }
+                }
+            }
+        }
+        getCourses()
 
         // Fourth layer
         if(gameId==null){
             binding.registerGameButton.setOnClickListener {
                 Log.d("TAG", "register game button")
-                val course = binding.locationField.text.toString()
+                //val course = binding.locationField.text.toString()
+                val course = selectedCourse
                 val time = binding.timeField.text.toString()
                 val gameTitle = "no title"
                 val testPlayer = "John"
-                this.context?.let { it1 -> GameService.startActionRegisterGame(it1, testPlayer,gameTitle,course,time) }
+                if(course != null) {
+                    this.context?.let { it1 ->
+                        GameService.startActionRegisterGame(
+                            it1,
+                            testPlayer,
+                            gameTitle,
+                            course,
+                            time
+                        )
+                    }
+                }
             }
         }else{
             updateButton()
@@ -151,20 +177,76 @@ class CreateGameFragment : Fragment() {
             findNavController().popBackStack()
         }
     }
+    fun getFriends(){
+        //implement call to get friends
+        val spinner = binding.playerSpinner
+
+        ArrayAdapter.createFromResource(this.requireContext(),R.array.placeholderPlayers,android.R.layout.simple_spinner_item).also {
+            adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+        }
+        spinner.onItemSelectedListener =this
+
+    }
+    fun getCourses(){
+        val spinner = binding.locationField
+        ArrayAdapter.createFromResource(this.requireContext(),R.array.placeholderCourses,android.R.layout.simple_spinner_item).also {
+            adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+        }
+        spinner.onItemSelectedListener=this
+    }
     fun updateButton(){
         binding.registerGameButton.setText("Update")
         binding.registerGameButton.setOnClickListener {
             Log.d("tag","update game button")
-            val course = binding.locationField.text.toString()
+            val course = selectedCourse
             val time = binding.timeField.text.toString()
             val gameTitle = "no title"
-            this.context?.let { it1 -> GameService.startActionUpdateGame(it1,gameId!!.toInt(),gameTitle,time,course) }
-
+            if(course != null) {
+                this.context?.let { it1 ->
+                    GameService.startActionUpdateGame(
+                        it1,
+                        gameId!!.toInt(),
+                        gameTitle,
+                        time,
+                        course
+                    )
+                }
+            }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        if (parent != null) {
+            when(parent.id) {
+                R.id.playerSpinner -> {
+                    selectedPlayer = parent.getItemAtPosition(position).toString()
+                }
+
+                R.id.locationField -> {
+                    selectedCourse = parent.getItemAtPosition(position).toString()
+                }
+
+
+            }
+        }
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        if(parent != null){
+            when(parent.id){
+                R.id.playerSpinner ->{
+                    selectedPlayer = null
+                }
+            }
+        }
     }
 }
