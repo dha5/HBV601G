@@ -1,9 +1,9 @@
 package com.hbv601.folf
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import android.util.Log
 
 data class Course(
     val name: String,
@@ -33,7 +33,7 @@ class CourseViewModel : ViewModel() {
         }
     }
 
-    fun fetchCourses() {
+    fun fetchCourses():List<Course> {
         // þarf að bæta við aðferð til að sækja gögn úr bakenda
         val mockCourses = listOf(
             Course("Course 1", "5 km away", listOf(
@@ -49,5 +49,6 @@ class CourseViewModel : ViewModel() {
         Log.d("CourseViewModel", "Fetched ${mockCourses.size} courses")
 
         _courses.postValue(mockCourses)
+        return mockCourses
     }
 }

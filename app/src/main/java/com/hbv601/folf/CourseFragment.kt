@@ -1,13 +1,16 @@
 package com.hbv601.folf
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
+import com.hbv601.folf.ViewHolders.CourseViewHolder
+import com.hbv601.folf.ViewHolders.GameItemViewHolder
+import com.hbv601.folf.databinding.CourseItemBinding
 import com.hbv601.folf.databinding.FragmentCoursesBinding
-import com.hbv601.folf.CourseViewModel
+import com.hbv601.folf.databinding.GameItemBinding
 
 class CourseFragment : Fragment() {
 
@@ -21,7 +24,7 @@ class CourseFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCoursesBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(this).get(CourseViewModel::class.java)
+        viewModel = ViewModelProvider(this)[CourseViewModel::class.java]
         _binding?.viewModel = viewModel
         _binding?.lifecycleOwner = viewLifecycleOwner // Ensure you have the correct lifecycle owner
         return binding.root
@@ -36,7 +39,21 @@ class CourseFragment : Fragment() {
         }
 
         // Fetch courses
-        viewModel.fetchCourses()
+        val courses = viewModel.fetchCourses()
+        //val courses = viewModel.courses.value
+        if(courses != null){
+            for(course in courses){
+                Log.d("courseName",course.name)
+                val courseView = CourseViewHolder(CourseItemBinding.inflate(layoutInflater))
+                courseView.bindItem(course)
+                for(game in course.games){
+                    val gameView = GameItemViewHolder(GameItemBinding.inflate(layoutInflater))
+                    gameView.bindGameClass(game)
+                    courseView.addGame(gameView.itemView)
+                }
+                binding.CourseList.addView(courseView.itemView)
+            }
+        }
     }
 
     override fun onDestroyView() {
