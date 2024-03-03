@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -19,7 +20,7 @@ import com.hbv601.folf.databinding.FragmentCreateGameBinding
 import com.hbv601.folf.services.GameService
 
 
-class CreateGameFragment : Fragment() {
+class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
     private val REGISTER_GAME = "com.hbv.folf.services.action.REGISTER_GAME"
     private val UPDATE_GAME = "com.hbv.folf.services.action.UPDATE_GAME"
     private val FETCH_GAME = "com.hbv.folf.services.action.FETCH_GAME"
@@ -111,6 +112,8 @@ class CreateGameFragment : Fragment() {
                 }
             }
         }
+        getFriends()
+
 
         // Fourth layer
         if(gameId==null){
@@ -151,6 +154,19 @@ class CreateGameFragment : Fragment() {
             findNavController().popBackStack()
         }
     }
+    fun getFriends(){
+        //implement call to get friends
+        val friends = playerArray.toMutableList()
+        val spinner = binding.playerSpinner
+
+        ArrayAdapter.createFromResource(this.requireContext(),R.array.placeholderPlayers,android.R.layout.simple_spinner_item).also {
+            adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+        }
+        spinner.onItemSelectedListener 
+
+    }
     fun updateButton(){
         binding.registerGameButton.setText("Update")
         binding.registerGameButton.setOnClickListener {
@@ -166,5 +182,13 @@ class CreateGameFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        TODO("Not yet implemented")
     }
 }

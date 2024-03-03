@@ -29,6 +29,14 @@
     </LinearLayout>
 
     <EditText
+        android:id="@+id/editTextText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Title"
+        android:inputType="text" />
+
+    <EditText
         android:id="@+id/locationField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -63,10 +71,21 @@
         android:layout_height="wrap_content"
         android:text="Add Player" />
 
+    <Spinner
+        android:id="@+id/playerSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/addPlayerSpinnerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Player" />
+
     <ListView
         android:id="@+id/playerListView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="189dp" />
 
     <LinearLayout
         android:layout_width="match_parent"

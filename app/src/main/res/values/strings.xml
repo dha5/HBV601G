@@ -7,7 +7,11 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="home_page_welcome_message">Hello %1$s!\nYou have %2$d new invitations!\nThere are %3$d upcoming open matches in the next 7 days in your vicinity.</string>
-
+    <string-array name="placeholderPlayers">
+        <item>"FolfLord69"</item>
+        <item>"JohnFolf"</item>
+        <item>"Folfmeister35"</item>
+    </string-array>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
