@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_LoginFragment_to_userFragment"
             app:destination="@id/userFragment" />
+        <action
+            android:id="@+id/action_LoginFragment_to_HomePageFragment"
+            app:destination="@id/homePageFragment" />
     </fragment>
 
     <fragment
@@ -71,6 +74,28 @@
         <action
             android:id="@+id/action_userFragment_to_CreateGameFragment"
             app:destination="@id/CreateGameFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/homePageFragment"
+        android:name="com.hbv601.folf.HomePageFragment"
+        android:label="HomePageFragment">
+        <action
+            android:id="@+id/action_homePageFragment_to_CreateGameFragment"
+            app:destination="@id/CreateGameFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_YourGamesFragment"
+            app:destination="@id/YourGamesFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/YourGamesFragment"
+        android:name="com.hbv601.folf.YourGamesFragment"
+        android:label="YourGamesFragment">
+        <action
+            android:id="@+id/action_yourGamesFragment_to_CreateGameFragment"
+            app:destination="@id/CreateGameFragment"
+            app:argType="GameParcel"/>
     </fragment>
 
 </navigation>
