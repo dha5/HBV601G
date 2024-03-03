@@ -17,10 +17,9 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
-const val TAG = "LoginFragment"
-
 class LoginFragment: Fragment() {
 
+    private val TAG = "LoginFragment"
     private var _binding: FragmentLoginBinding? = null
 
     // This property is only valid between onCreateView and

@@ -17,7 +17,7 @@ import java.io.IOException
 
 class RegisterFragment : Fragment(){
 
-
+    private val TAG = "RegisterFragment"
     private var _binding: FragmentRegisterBinding? = null
 
     // This property is only valid between onCreateView and
