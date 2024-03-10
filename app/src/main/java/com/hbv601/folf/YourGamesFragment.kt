@@ -15,8 +15,10 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import com.hbv601.folf.Entities.GameParcel
 import com.hbv601.folf.ViewHolders.GameItemViewHolder
+import com.hbv601.folf.ViewHolders.ScoreViewHolder
 import com.hbv601.folf.databinding.FragmentYourGamesBinding
 import com.hbv601.folf.databinding.GameItemBinding
+import com.hbv601.folf.databinding.ScoreItemBinding
 import com.hbv601.folf.services.GameService
 
 // TODO: Rename parameter arguments, choose names that match
@@ -101,10 +103,16 @@ class YourGamesFragment : Fragment() {
         intentFilter.addAction(RECIEVE_GAMEARRAY)
         bManager!!.registerReceiver(bReceiver, intentFilter)
         this.context?.let { GameService.startActionFetchPlayerGames(it,username) }
-
+        getBestScore()
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_your_games, container, false)
         return binding.root
+    }
+    fun getBestScore(){
+        val scoreBinding = ScoreItemBinding.inflate(layoutInflater)
+        val scoreViewHolder = ScoreViewHolder(scoreBinding)
+        scoreViewHolder.onBind("FrolfMót HÍ-inga","20.Mars 2021",18,20)
+        binding.PastGamesList.addView(scoreViewHolder.itemView)
     }
 /*
     companion object {
