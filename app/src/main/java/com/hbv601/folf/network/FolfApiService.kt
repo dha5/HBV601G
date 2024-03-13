@@ -2,13 +2,14 @@ package com.hbv601.folf.network
 
 import com.hbv601.folf.Entities.AccessToken
 import com.hbv601.folf.Entities.UserCreds
+import com.hbv601.folf.Entities.UserEntity
+import com.hbv601.folf.Entities.UserRegisterCreds
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.Body
-import retrofit2.http.GET
 import retrofit2.http.POST
 
 private const val BASE_URL = "https://hbv601g-backend.onrender.com"
@@ -27,6 +28,9 @@ private val retrofit = Retrofit.Builder()
 interface FolfApiService {
     @POST("login")
     suspend fun doLogin(@Body userCreds: UserCreds): Response<AccessToken>
+
+    @POST("register")
+    suspend fun doRegister(@Body userRegisterCreds: UserRegisterCreds): Response<UserEntity>
 }
 
 /**

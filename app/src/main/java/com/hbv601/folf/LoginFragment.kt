@@ -42,12 +42,12 @@ public class LoginFragment: Fragment() {
 
         //val viewModel: LoginViewModel by viewModels()
         binding.buttonLogin.setOnClickListener {
-            /**
+
             checkLoginCredentials(
                 binding.editTextUsername.text.toString(),
                 binding.editTextPassword.text.toString()
-            )**/
-            findNavController().navigate(R.id.action_LoginFragment_to_HomePageFragment)
+            )
+            //findNavController().navigate(R.id.action_LoginFragment_to_HomePageFragment)
         }
     }
 
