@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -55,9 +56,11 @@ class RegisterFragment : Fragment(){
             if(res.isSuccessful && res.body() != null){
                 Log.d("registerPlayer","registration succesful")
                 Log.d("registered player", res.body()!!.username)
+                Toast.makeText(this@RegisterFragment.context,"user ${res.body()!!.username} created",Toast.LENGTH_SHORT).show()
                 findNavController().navigate(R.id.action_registerFragment_to_FirstFragment)
             }else{
                 Log.d("registerPlayer","registration failed, user exists already")
+                Toast.makeText(this@RegisterFragment.context,"registration failure",Toast.LENGTH_SHORT).show()
             }
         }
 
