@@ -4,6 +4,8 @@ import com.hbv601.folf.Entities.AccessToken
 import com.hbv601.folf.Entities.RegisterUser
 import com.hbv601.folf.Entities.User
 import com.hbv601.folf.Entities.UserCreds
+import com.hbv601.folf.Entities.UserEntity
+import com.hbv601.folf.Entities.UserRegisterCreds
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -31,6 +33,7 @@ interface FolfApiService {
 
     @POST("register")
     suspend fun doRegister(@Body user: RegisterUser): Response<User>
+    
 }
 
 /**

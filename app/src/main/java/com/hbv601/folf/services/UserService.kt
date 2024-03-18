@@ -2,7 +2,6 @@ package com.hbv601.folf.services
 import android.app.IntentService
 import android.content.Context
 import android.content.Intent
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.hbv601.folf.Entities.UserEntity
 private const val REGISTER_USER = "com.hbv601.folf.services.action.REGISTERUSER"
 private const val SIGN_IN = "com.hbv601.folf.services.action.SIGNIN"
@@ -27,19 +26,19 @@ class UserService :IntentService("UserActionService"){
             REGISTER_USER->{
                 val username = intent.getStringExtra(USERNAME)
                 val password = intent.getStringExtra(PASSWORD)
-                actionHandleRegisterUser(username,password)
+                //actionHandleRegisterUser(username,password)
             }
             SIGN_IN->{
                 val username = intent.getStringExtra(USERNAME)
                 val password = intent.getStringExtra(PASSWORD)
             }
             FETCH_ALL_USERS->{
-                actionHandleFetchAllUsers()
+                //actionHandleFetchAllUsers()
             }
         }
     }
 
-    fun actionHandleRegisterUser(username:String?,password:String?){
+    /*fun actionHandleRegisterUser(username:String?,password:String?){
         if(!userHashMap.containsKey(username)){
             val userEntity = UserEntity(username!!, password!!)
             userHashMap[username] = userEntity
@@ -62,7 +61,7 @@ class UserService :IntentService("UserActionService"){
         }
         val RTReturn: Intent = Intent(SIGN_FAIL_NO_SUCH_USER)
         LocalBroadcastManager.getInstance(this).sendBroadcast(RTReturn)
-    }
+    }*/
     fun actionHandleFetchAllUsers(){
         val Users = userHashMap.keys
         val retUsers = ArrayList<String>()

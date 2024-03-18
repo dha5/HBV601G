@@ -8,12 +8,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+
 import com.hbv601.folf.Entities.RegisterUser
 import com.hbv601.folf.databinding.FragmentRegisterBinding
 import com.hbv601.folf.network.FolfApi
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
+
 
 class RegisterFragment : Fragment(){
 
@@ -42,6 +44,7 @@ class RegisterFragment : Fragment(){
             registerUser()
         }
     }
+
 
     private fun registerUser() {
         lifecycleScope.launch {
