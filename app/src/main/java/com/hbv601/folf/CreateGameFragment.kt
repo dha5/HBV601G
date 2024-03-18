@@ -13,11 +13,14 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import com.hbv601.folf.Entities.GameParcel
 import com.hbv601.folf.databinding.FragmentCreateGameBinding
+import com.hbv601.folf.network.FolfApi
 import com.hbv601.folf.services.GameService
+import kotlinx.coroutines.launch
 
 
 class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
@@ -29,7 +32,9 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
     private val RECIEVE_GAMEPARCEL = "com.hbv601.folf.RegisterFragment.GAMEPARCELRECIEVE"
     private var gameId:Number? = null
     private var selectedCourse:String? = null
+    private var selectedCourseId:Int? = null
     private var selectedPlayer:String? = null
+    private var courseIds:ArrayList<Int>? = null
 
     private val bReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -191,12 +196,21 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
     }
     fun getCourses(){
         val spinner = binding.locationField
-        ArrayAdapter.createFromResource(this.requireContext(),R.array.placeholderCourses,android.R.layout.simple_spinner_item).also {
-            adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spinner.adapter = adapter
+        lifecycleScope.launch {
+            val courses = FolfApi.retrofitService.getFields()
+            val names = ArrayList<String>()
+            courseIds = ArrayList<Int>()
+            if(courses.isSuccessful && courses.body()!=null) {
+                for (course in courses.body()!!) {
+                    names.add(course.name)
+                    courseIds!!.add(course.id)
+                }
+            }
+            val arrayAdapter = ArrayAdapter<String>(this@CreateGameFragment.requireContext(),
+                android.R.layout.simple_spinner_dropdown_item,names)
+            spinner.adapter = arrayAdapter
+            spinner.onItemSelectedListener = this@CreateGameFragment
         }
-        spinner.onItemSelectedListener=this
     }
     fun updateButton(){
         binding.registerGameButton.setText("Update")
@@ -233,6 +247,7 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
                 R.id.locationField -> {
                     selectedCourse = parent.getItemAtPosition(position).toString()
+                    selectedCourseId = courseIds!![position]
                 }
 
 

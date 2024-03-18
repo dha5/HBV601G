@@ -1,6 +1,7 @@
 package com.hbv601.folf.network
 
 import com.hbv601.folf.Entities.AccessToken
+import com.hbv601.folf.Entities.CourseData
 import com.hbv601.folf.Entities.UserCreds
 import com.hbv601.folf.Entities.UserEntity
 import com.hbv601.folf.Entities.UserRegisterCreds
@@ -10,6 +11,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 private const val BASE_URL = "https://hbv601g-backend.onrender.com"
@@ -31,6 +33,9 @@ interface FolfApiService {
 
     @POST("register")
     suspend fun doRegister(@Body userRegisterCreds: UserRegisterCreds): Response<UserEntity>
+
+    @GET("fields")
+    suspend fun getFields(): Response<List<CourseData>>
 }
 
 /**
