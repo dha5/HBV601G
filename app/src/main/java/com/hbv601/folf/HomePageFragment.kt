@@ -32,14 +32,13 @@ class HomePageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val textView = view.findViewById<TextView>(R.id.textMessage)
 
-        /*
+        /**
         val dummycourse = CourseEntity.generateDummy()
         val distancefrom = dummycourse.getDistanceFrom(this.activity);
         Log.d("distancefrom",distancefrom.toString())
 
-        Notað til að testa CourseEntity classann
+        //Notað til að testa CourseEntity classann
         */
-
         val userName = "John" // þarf að skipta út fyrir notendanafn
         val numInvitations = 10 // þarf að skipta út fyrir fjölda invites sem notandi hefur fengið
         val numOpenMatches = 10 // þarf að skipta út fyrir fjölda opnra leikja
