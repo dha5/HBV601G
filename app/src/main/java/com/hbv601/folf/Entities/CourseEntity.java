@@ -106,11 +106,11 @@ public class CourseEntity {
         return 0;
     }
 
-    public int[] getCoursePars() {
+    public List<Integer> getCoursePars() {
         return coursePars;
     }
 
-    public void setCoursePars(int[] coursePars) {
+    public void setCoursePars(List<Integer> coursePars) {
         this.coursePars = coursePars;
     }
 
