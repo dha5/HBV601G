@@ -13,16 +13,21 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 public class CourseEntity {
 
     private String courceName;
-    private int[] coursePars;
+    private List<Integer> coursePars;
     private Location courseLocation;
 
 
 
-    public CourseEntity(String name, int[] par, Location coordinates){
+    public CourseEntity(String name, List<Integer> par, Location coordinates){
         this.courceName = name;
         this.coursePars = par;
         this.courseLocation = coordinates;
@@ -32,7 +37,8 @@ public class CourseEntity {
         Location loc = new Location("dummy");
         loc.setLatitude(64.1397116);
         loc.setLongitude(-21.9478740); //hnitin á háskóla íslands
-        CourseEntity dummyCourse = new CourseEntity("dummy", new int[]{2,3,4,4},loc);
+        int[] pars = {3,3,4,4,3};
+        CourseEntity dummyCourse = new CourseEntity("dummy", Arrays.stream(pars).boxed().collect(Collectors.toList()), loc);
         return dummyCourse;
     }
 
