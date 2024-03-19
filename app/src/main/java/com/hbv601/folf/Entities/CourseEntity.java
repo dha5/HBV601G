@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
@@ -18,14 +20,29 @@ public class CourseEntity {
     private int[] coursePars;
     private Location courseLocation;
 
+
+
     public CourseEntity(String name, int[] par, Location coordinates){
         this.courceName = name;
         this.coursePars = par;
         this.courseLocation = coordinates;
     }
 
+    public static CourseEntity generateDummy(){
+        Location loc = new Location("dummy");
+        loc.setLatitude(64.1397116);
+        loc.setLongitude(-21.9478740); //hnitin á háskóla íslands
+        CourseEntity dummyCourse = new CourseEntity("dummy", new int[]{2,3,4,4},loc);
+        return dummyCourse;
+    }
+
+    /**
+     * Skilar fjarlægð frá brautinni í metrum
+     * @param activity activityið sem er í keyrslu
+     * @return fjarlægð frá vellinum í metrum
+     */
     @SuppressLint("MissingPermission")
-    public double getDistanceFrom(Activity activity){
+    public int getDistanceFrom(Activity activity){
         if (isLocationPermissionGranted(activity)) {
             final Location[] currentGpsLocation = {null};
             final Location[] currentNetworkLocation = {null};
@@ -65,13 +82,21 @@ public class CourseEntity {
                 );
             }
 
+            currentGpsLocation[0] = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            currentNetworkLocation[0] = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            Log.d("currentGPSlocation",currentGpsLocation[0].toString());
+            Log.d("currentNetworklocation",currentNetworkLocation[0].toString());
+
             if(currentGpsLocation[0] != null){
-                return currentGpsLocation[0].distanceTo(courseLocation);
+
+                return (int) currentGpsLocation[0].distanceTo(courseLocation);
             } else if (currentNetworkLocation[0] != null) {
-                return currentNetworkLocation[0].distanceTo(courseLocation);
+
+                return (int)currentNetworkLocation[0].distanceTo(courseLocation);
             }
 
         }
+        Log.d("Kemst ekki í fall","cant make it");
         return 0;
     }
 
@@ -119,7 +144,7 @@ public class CourseEntity {
                     },
                     requestCode
             );
-            return false;
+            return true;
         } else {
             return true;
         }
