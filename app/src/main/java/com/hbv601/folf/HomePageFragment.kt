@@ -1,11 +1,14 @@
 package com.hbv601.folf
+import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.hbv601.folf.Entities.CourseEntity
 import com.hbv601.folf.databinding.FragmentHomePageBinding
 
 
@@ -29,8 +32,15 @@ class HomePageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val textView = view.findViewById<TextView>(R.id.textMessage)
 
+        /**
+        val dummycourse = CourseEntity.generateDummy()
+        val distancefrom = dummycourse.getDistanceFrom(this.activity);
+        Log.d("distancefrom",distancefrom.toString())
+
+        //Notað til að testa CourseEntity classann
+        */
         val userName = "John" // þarf að skipta út fyrir notendanafn
-        val numInvitations = 5 // þarf að skipta út fyrir fjölda invites sem notandi hefur fengið
+        val numInvitations = 10 // þarf að skipta út fyrir fjölda invites sem notandi hefur fengið
         val numOpenMatches = 10 // þarf að skipta út fyrir fjölda opnra leikja
 
         val welcomeMessage = getString(R.string.home_page_welcome_message, userName, numInvitations, numOpenMatches)
