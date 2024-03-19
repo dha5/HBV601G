@@ -33,7 +33,7 @@ interface FolfApiService {
 
     @POST("register")
     suspend fun doRegister(@Body user: RegisterUser): Response<User>
-    
+
 }
 
 /**
