@@ -15,10 +15,10 @@ import androidx.core.app.ActivityCompat;
 public class CourseEntity {
 
     private String courceName;
-    private String coursePars;
+    private int[] coursePars;
     private Location courseLocation;
 
-    public CourseEntity(String name, String par, Location coordinates){
+    public CourseEntity(String name, int[] par, Location coordinates){
         this.courceName = name;
         this.coursePars = par;
         this.courseLocation = coordinates;
@@ -30,7 +30,8 @@ public class CourseEntity {
             final Location[] currentGpsLocation = {null};
             final Location[] currentNetworkLocation = {null};
             LocationManager locationManager;
-            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+            assert locationManager != null;
             boolean hasGPS = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             boolean hasNetwork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
             LocationListener gpslocationListener = new LocationListener() {
@@ -74,6 +75,29 @@ public class CourseEntity {
         return 0;
     }
 
+    public int[] getCoursePars() {
+        return coursePars;
+    }
+
+    public void setCoursePars(int[] coursePars) {
+        this.coursePars = coursePars;
+    }
+
+    public String getCourceName() {
+        return courceName;
+    }
+
+    public void setCourceName(String courceName) {
+        this.courceName = courceName;
+    }
+
+    public Location getCourseLocation() {
+        return courseLocation;
+    }
+
+    public void setCourseLocation(Location courseLocation) {
+        this.courseLocation = courseLocation;
+    }
 
     private boolean isLocationPermissionGranted(Activity activity){
         if (ActivityCompat.checkSelfPermission(
