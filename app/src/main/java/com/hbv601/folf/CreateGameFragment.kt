@@ -187,7 +187,8 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
         val spinner = binding.playerSpinner
         lifecycleScope.launch {
             Log.d("accesstoken",requireActivity().getSharedPreferences("USER",0).getString("AccessToken",null)!!)
-            val res = FolfApi.retrofitService.getFriends(requireActivity().getSharedPreferences("USER",0).getString("AccessToken",null)!!)
+            val bearerToken = "Bearer ${requireActivity().getSharedPreferences("USER",0).getString("AccessToken",null)!!}"
+            val res = FolfApi.retrofitService.getFriends(bearerToken)
             if(res.isSuccessful && res.body() != null){
                 Log.d("friends","it works")
             }
