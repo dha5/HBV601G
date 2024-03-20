@@ -185,7 +185,13 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
     fun getFriends(){
         //implement call to get friends
         val spinner = binding.playerSpinner
-
+        lifecycleScope.launch {
+            Log.d("accesstoken",requireActivity().getSharedPreferences("USER",0).getString("AccessToken",null)!!)
+            val res = FolfApi.retrofitService.getFriends(requireActivity().getSharedPreferences("USER",0).getString("AccessToken",null)!!)
+            if(res.isSuccessful && res.body() != null){
+                Log.d("friends","it works")
+            }
+        }
         ArrayAdapter.createFromResource(this.requireContext(),R.array.placeholderPlayers,android.R.layout.simple_spinner_item).also {
             adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
