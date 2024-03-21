@@ -51,9 +51,10 @@ class LoginFragment: Fragment() {
     private fun checkLoginCredentials() {
         lifecycleScope.launch {
             try {
+                val username = binding.editTextUsername.text.toString()
                 val res = FolfApi.retrofitService.doLogin(
                     UserCreds(
-                        binding.editTextUsername.text.toString(),
+                        username,
                         binding.editTextPassword.text.toString()
                     )
                 )
@@ -63,6 +64,12 @@ class LoginFragment: Fragment() {
 
                 if (res.isSuccessful && res.body() != null) {
                     Log.d(TAG, res.body()!!.accessToken)
+                    val sharedPref = requireActivity().getSharedPreferences("USER",0)
+                    val editor = sharedPref.edit()
+                    editor.putString("AccessToken",res.body()!!.accessToken)
+                    editor.putString("Username",username)
+                    editor.putString("Name",res.body()!!.user.name)
+                    editor.apply()
                     findNavController().navigate(R.id.action_LoginFragment_to_HomePageFragment)
                 }
                 else {

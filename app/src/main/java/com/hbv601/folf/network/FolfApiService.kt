@@ -47,6 +47,7 @@ interface FolfApiService {
     suspend fun getHolesByFieldId(
         @Path("id") fieldId:Int): Response<List<HoleData>>
 
+    //game functions
     @GET("games/field/{id}")
     suspend fun getGamesByFieldId(
         @Path("id") fieldId:Int):Response<List<GameData>>
@@ -58,8 +59,25 @@ interface FolfApiService {
 
     @POST("games")
     suspend fun createGame(
-        @Header("Authorization") toke:String,@Body data:GameData
+        @Header("Authorization") Token:String,@Body data:GameData
     ):Response<String>
+
+    @GET("PastGames")
+    suspend fun getYourPastGames(
+        @Header("Authorization") Token:String
+    ):Response<List<GameData>>
+
+    @POST("startGame")
+    suspend fun startGame(
+        @Body id:Int
+    )
+    @POST("endGame")
+    suspend fun endGame(
+        @Body id:Int
+    )
+    //friends functions
+    @GET("friends")
+    suspend fun getFriends(@Header("Authorization") token: String):Response<List<UserEntity>>
 }
 
 /**
