@@ -28,6 +28,7 @@ private const val GAME_COURSE = "com.hbv601.folf.services.extra.GAME_COURSE"
 private const val GAME_PLAYER = "com.hbv601.folf.services.extra.GAME_PLAYER"
 private const val PLAYER_ARRAY = "com.hbv601.folf.services.extra.PLAYER_ARRAY"
 private const val GAME_TIME = "com.hbv601.folf.services.extra.GAME_TIME"
+private const val GAME_FIELD_ID = "com.hbv.folf.services.extra.GAME_FIELD_ID"
 private const val GAME_PARCEL = "com.hbv601.folf.services.extra.GAME_PARCEL"
 private const val GAME_PARCEL_ARRAY = "com.hbv601.folf.services.extra.GAME_PARCEL_ARRAY"
 private const val RECIEVE_GAMEPARCEL = "com.hbv601.folf.RegisterFragment.GAMEPARCELRECIEVE"
@@ -39,7 +40,7 @@ private const val RECIEVE_GAMEARRAY = "com.hbv601.folf.services.extra.RECIEVEGAM
 class GameService : IntentService("GameService") {
     private var GamesList = ArrayList<GameEntity>()
     init {
-        GamesList.add(GameEntity("New Game","skaftahlíð", LocalDate.now(),"John"))
+        GamesList.add(GameEntity("New Game","skaftahlíð", LocalDate.now(),"John", 1))
         GamesList[0].addPlayer("John")
     }
 
@@ -53,7 +54,8 @@ class GameService : IntentService("GameService") {
                 val course = intent.getStringExtra(GAME_COURSE)
                 val temptime = intent.getStringExtra(GAME_TIME)
                 val time = LocalDate.parse(temptime, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))
-                val gameEntity = handleActionRegisterGame(title,course,time,registeringPlayer)
+                val fieldId = intent.getIntExtra(GAME_FIELD_ID, -1)
+                val gameEntity = handleActionRegisterGame(title,course,time,registeringPlayer,fieldId)
                 if(gameEntity != null){
                     val gameParcel = gameEntity.gameEntityToParcel();
                     val RTReturn: Intent = Intent(RECIEVE_GAMEPARCEL)
@@ -136,9 +138,9 @@ class GameService : IntentService("GameService") {
      * Handle action Foo in the provided background thread with the provided
      * parameters.
      */
-    private fun handleActionRegisterGame(title: String?, course: String?, time: LocalDate, registeringPlayer: String?) :GameEntity? {
+    private fun handleActionRegisterGame(title: String?, course: String?, time: LocalDate, registeringPlayer: String?, fieldId: Int) :GameEntity? {
         if(title is String && course is String && registeringPlayer is String){
-            val gameEntity = GameEntity(title,course,time,registeringPlayer)
+            val gameEntity = GameEntity(title,course,time,registeringPlayer, fieldId)
             GamesList.add(gameEntity).also { gameEntity.setId(GamesList.indexOf(gameEntity)) }
             Log.d("course",gameEntity.course)
             return gameEntity
@@ -189,13 +191,14 @@ class GameService : IntentService("GameService") {
          */
         // TODO: Customize helper method
         @JvmStatic
-        fun startActionRegisterGame(context: Context, registeringPlayer:String, gameTitle:String, course: String, time: String) {
+        fun startActionRegisterGame(context: Context, registeringPlayer:String, gameTitle:String, course: String, time: String, fieldId: Int) {
             val intent = Intent(context, GameService::class.java).apply {
                 action = REGISTER_GAME
                 putExtra(GAME_PLAYER, registeringPlayer)
                 putExtra(GAME_TITLE, gameTitle)
                 putExtra(GAME_COURSE, course)
                 putExtra(GAME_TIME, time)
+                putExtra(GAME_FIELD_ID, fieldId)
             }
             context.startService(intent)
         }
