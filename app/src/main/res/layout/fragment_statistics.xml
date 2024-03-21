@@ -1,25 +1,35 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- fragment_statistics.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
 
+    <!-- Game Title -->
     <TextView
         android:id="@+id/textViewGameTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Game Title"
         android:textSize="24sp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp"/>
+        android:textStyle="bold" />
 
+    <!-- Game Date -->
     <TextView
         android:id="@+id/textViewGameTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Game Time"
-        android:textSize="18sp"
-        android:layout_below="@id/textViewGameTitle"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"/>
+        android:text="Date"
+        android:textSize="16sp"
+        android:textColor="@android:color/darker_gray"
+        android:paddingTop="8dp" />
 
-</RelativeLayout>
+    <!-- Hole Data Container -->
+    <LinearLayout
+        android:id="@+id/layoutHoles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="16dp" />
+
+</LinearLayout>

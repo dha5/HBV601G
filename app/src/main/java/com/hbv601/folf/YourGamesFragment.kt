@@ -78,7 +78,6 @@ class YourGamesFragment : Fragment() {
                                 findNavController().navigate(R.id.action_homePageFragment_to_StatisticsFragment, args)
                             }
                             btnViewStatistics.setOnClickListener(statisticsClickListener)
-
                             binding.PastGamesList.addView(btnViewStatistics)
                         }
 
