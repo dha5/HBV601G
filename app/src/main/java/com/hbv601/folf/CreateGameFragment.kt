@@ -24,10 +24,11 @@ import kotlinx.coroutines.launch
 
 
 class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
-    private val REGISTER_GAME = "com.hbv.folf.services.action.REGISTER_GAME"
+    //intent service deprecated, rethink
+    /*private val REGISTER_GAME = "com.hbv.folf.services.action.REGISTER_GAME"
     private val UPDATE_GAME = "com.hbv.folf.services.action.UPDATE_GAME"
     private val FETCH_GAME = "com.hbv.folf.services.action.FETCH_GAME"
-    private val ADD_PLAYER = "com.hbv.folf.services.action.ADD_PLAYER"
+    private val ADD_PLAYER = "com.hbv.folf.services.action.ADD_PLAYER"*/
     private val GAME_PARCEL = "com.hbv601.folf.services.extra.GAME_PARCEL"
     private val RECIEVE_GAMEPARCEL = "com.hbv601.folf.RegisterFragment.GAMEPARCELRECIEVE"
     private var gameId:Number? = null

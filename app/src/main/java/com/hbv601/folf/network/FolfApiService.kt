@@ -4,9 +4,10 @@ import com.hbv601.folf.Entities.AccessToken
 import com.hbv601.folf.Entities.CourseData
 import com.hbv601.folf.Entities.GameData
 import com.hbv601.folf.Entities.HoleData
+import com.hbv601.folf.Entities.RegisterUser
+import com.hbv601.folf.Entities.User
 import com.hbv601.folf.Entities.UserCreds
 import com.hbv601.folf.Entities.UserEntity
-import com.hbv601.folf.Entities.UserRegisterCreds
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -76,6 +77,8 @@ interface FolfApiService {
     //friends functions
     @GET("friends")
     suspend fun getFriends(@Header("Authorization") token: String):Response<List<UserEntity>>
+    @GET("allusers")
+    suspend fun getUsers():Response<List<UserEntity>>
 }
 
 /**
