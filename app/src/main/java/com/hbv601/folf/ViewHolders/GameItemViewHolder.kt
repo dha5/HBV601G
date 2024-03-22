@@ -22,4 +22,9 @@ class GameItemViewHolder (private val binding:GameItemBinding): RecyclerView.Vie
             binding.ViewGameButton.visibility = View.VISIBLE
     }
 
+    fun bindButton(game: GameParcel, listener: View.OnClickListener) {
+        binding.viewStatisticsButton.visibility = View.VISIBLE
+        binding.viewStatisticsButton.setOnClickListener(listener)
+    }
+
 }
