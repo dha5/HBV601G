@@ -6,6 +6,7 @@ import com.hbv601.folf.Entities.GameData
 import com.hbv601.folf.Entities.HoleData
 import com.hbv601.folf.Entities.RegisterUser
 import com.hbv601.folf.Entities.User
+import com.hbv601.folf.Entities.ScoreParcel
 import com.hbv601.folf.Entities.UserCreds
 import com.hbv601.folf.Entities.UserEntity
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -47,6 +48,14 @@ interface FolfApiService {
         @Path("id") fieldId:Int): Response<List<HoleData>>
 
     //game functions
+
+
+    @GET("scores/game/{id}")
+    suspend fun getScoreByGameId(
+        @Path("id") gameId: Int
+    ): Response<ScoreParcel>
+    
+
     @GET("games/field/{id}")
     suspend fun getGamesByFieldId(
         @Path("id") fieldId:Int):Response<List<GameData>>
@@ -83,6 +92,7 @@ interface FolfApiService {
     suspend fun addFriend(@Header("Authorization") BearerToken: String, @Body data:UserEntity):Response<String>
     @POST("friends/delete")
     suspend fun deleteFriend(@Header("Authorization")BearerToken:String, @Body data: UserEntity):Response<String>
+
 }
 
 /**

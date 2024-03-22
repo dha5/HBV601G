@@ -142,14 +142,16 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
                 val time = binding.timeField.text.toString()
                 val gameTitle = "no title"
                 val testPlayer = "John"
-                if(course != null) {
+                val fieldId = selectedCourseId
+                if(course != null && fieldId != null) {
                     this.context?.let { it1 ->
                         GameService.startActionRegisterGame(
                             it1,
                             testPlayer,
                             gameTitle,
                             course,
-                            time
+                            time,
+                            fieldId
                         )
                     }
                 }
