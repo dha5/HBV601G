@@ -1,6 +1,8 @@
 package com.hbv601.folf.network
 
 import com.hbv601.folf.Entities.AccessToken
+import com.hbv601.folf.Entities.RegisterUser
+import com.hbv601.folf.Entities.User
 import com.hbv601.folf.Entities.CourseData
 import com.hbv601.folf.Entities.GameData
 import com.hbv601.folf.Entities.HoleData
@@ -37,7 +39,7 @@ interface FolfApiService {
     suspend fun doLogin(@Body userCreds: UserCreds): Response<AccessToken>
 
     @POST("register")
-    suspend fun doRegister(@Body userRegisterCreds: UserRegisterCreds): Response<UserEntity>
+    suspend fun doRegister(@Body user: RegisterUser): Response<User>
 
     @GET("fields")
     suspend fun getFields(): Response<List<CourseData>>
