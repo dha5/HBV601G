@@ -2,6 +2,7 @@ package com.hbv601.folf.network
 
 import com.hbv601.folf.Entities.AccessToken
 import com.hbv601.folf.Entities.CourseData
+import com.hbv601.folf.Entities.GameData
 import com.hbv601.folf.Entities.HoleData
 import com.hbv601.folf.Entities.ScoreParcel
 import com.hbv601.folf.Entities.UserCreds
@@ -14,6 +15,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
 
@@ -44,11 +46,27 @@ interface FolfApiService {
     suspend fun getHolesByFieldId(
         @Path("id") fieldId:Int): Response<List<HoleData>>
 
+
     @GET("scores/game/{id}")
     suspend fun getScoreByGameId(
         @Path("id") gameId: Int
     ): Response<ScoreParcel>
     
+
+    @GET("games/field/{id}")
+    suspend fun getGamesByFieldId(
+        @Path("id") fieldId:Int):Response<List<GameData>>
+
+    @GET("games")
+    suspend fun getLoggedInUserGames(
+        @Header("Authorization") token: String
+    ):Response<List<GameData>>
+
+    @POST("games")
+    suspend fun createGame(
+        @Header("Authorization") toke:String,@Body data:GameData
+    ):Response<String>
+
 }
 
 /**
