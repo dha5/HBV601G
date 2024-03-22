@@ -1,8 +1,6 @@
 package com.hbv601.folf.network
 
 import com.hbv601.folf.Entities.AccessToken
-import com.hbv601.folf.Entities.RegisterUser
-import com.hbv601.folf.Entities.User
 import com.hbv601.folf.Entities.CourseData
 import com.hbv601.folf.Entities.GameData
 import com.hbv601.folf.Entities.HoleData
@@ -60,12 +58,12 @@ interface FolfApiService {
 
     @POST("games")
     suspend fun createGame(
-        @Header("Authorization") Token:String,@Body data:GameData
+        @Header("Authorization") BearerToken:String,@Body data:GameData
     ):Response<String>
 
     @GET("PastGames")
     suspend fun getYourPastGames(
-        @Header("Authorization") Token:String
+        @Header("Authorization") BearerToken:String
     ):Response<List<GameData>>
 
     @POST("startGame")
@@ -78,9 +76,13 @@ interface FolfApiService {
     )
     //friends functions
     @GET("friends")
-    suspend fun getFriends(@Header("Authorization") token: String):Response<List<UserEntity>>
+    suspend fun getFriends(@Header("Authorization") BearerToken: String):Response<List<UserEntity>>
     @GET("allusers")
     suspend fun getUsers():Response<List<UserEntity>>
+    @POST("friends")
+    suspend fun addFriend(@Header("Authorization") BearerToken: String, @Body data:UserEntity):Response<String>
+    @POST("friends/delete")
+    suspend fun deleteFriend(@Header("Authorization")BearerToken:String, @Body data: UserEntity):Response<String>
 }
 
 /**

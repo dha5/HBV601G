@@ -33,8 +33,8 @@
 
             <Spinner
                 android:id="@+id/UserListSpinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="156dp"
+                android:layout_height="48dp"
                 android:layout_weight="1" />
 
             <Button
@@ -42,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Add User" />
+                android:text="Add Friend" />
 
         </LinearLayout>
 
@@ -53,21 +53,23 @@
             android:background="@color/light_green"
             android:text="Your Friends" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <ListView
+            android:id="@+id/friendsList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        </androidx.recyclerview.widget.RecyclerView>
+        </ListView>
 
         <LinearLayout
+            android:id="@+id/enemyDiv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <Spinner
                 android:id="@+id/FriendsSpinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="195dp"
+                android:layout_height="48dp"
                 android:layout_weight="1" />
 
             <Button

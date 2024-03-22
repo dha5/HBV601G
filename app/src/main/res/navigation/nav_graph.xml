@@ -90,6 +90,9 @@
             <action
             android:id="@+id/action_homePageFragment_to_CourseFragment"
             app:destination="@id/CourseFragment" />
+            <action
+                android:id="@+id/action_homePageFragment_to_FriendsFragment"
+                app:destination="@id/FriendsFragment"/>
     </fragment>
 
     <fragment
@@ -100,6 +103,12 @@
             android:id="@+id/action_yourGamesFragment_to_CreateGameFragment"
             app:destination="@id/CreateGameFragment"
             app:argType="GameParcel"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/FriendsFragment"
+        android:name="com.hbv601.folf.FriendsFragment"
+        android:label="FriendsFragment">
     </fragment>
 
     <fragment

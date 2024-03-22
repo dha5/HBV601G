@@ -1,14 +1,11 @@
 package com.hbv601.folf
-import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.hbv601.folf.Entities.CourseEntity
 import com.hbv601.folf.databinding.FragmentHomePageBinding
 
 
@@ -61,6 +58,10 @@ class HomePageFragment : Fragment() {
         binding.buttonYourGames.setOnClickListener{
             findNavController().navigate(R.id.action_homePageFragment_to_YourGamesFragment)
             //navigate to gameslist
+        }
+
+        binding.buttonFriends.setOnClickListener {
+            findNavController().navigate(R.id.action_homePageFragment_to_FriendsFragment)
         }
     }
 
