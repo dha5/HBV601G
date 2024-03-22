@@ -27,6 +27,7 @@ public class CourseEntity extends ViewModel {
 
     private String description;
 
+    private List<HoleData> holes;
     private int id;
     private List<Integer> coursePars;
     private Location courseLocation;
@@ -120,6 +121,13 @@ public class CourseEntity extends ViewModel {
         return 0;
     }
 
+    public List<HoleData> getHoles() {
+        return holes;
+    }
+
+    public void setHoles(List<HoleData> holes) {
+        this.holes = holes;
+    }
 
     public String getDescription() {
         return description;
