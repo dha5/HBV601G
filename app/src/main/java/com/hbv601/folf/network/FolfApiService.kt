@@ -4,10 +4,11 @@ import com.hbv601.folf.Entities.AccessToken
 import com.hbv601.folf.Entities.CourseData
 import com.hbv601.folf.Entities.GameData
 import com.hbv601.folf.Entities.HoleData
+import com.hbv601.folf.Entities.RegisterUser
+import com.hbv601.folf.Entities.User
 import com.hbv601.folf.Entities.ScoreParcel
 import com.hbv601.folf.Entities.UserCreds
 import com.hbv601.folf.Entities.UserEntity
-import com.hbv601.folf.Entities.UserRegisterCreds
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -37,7 +38,7 @@ interface FolfApiService {
     suspend fun doLogin(@Body userCreds: UserCreds): Response<AccessToken>
 
     @POST("register")
-    suspend fun doRegister(@Body userRegisterCreds: UserRegisterCreds): Response<UserEntity>
+    suspend fun doRegister(@Body user: RegisterUser): Response<User>
 
     @GET("fields")
     suspend fun getFields(): Response<List<CourseData>>
@@ -45,6 +46,8 @@ interface FolfApiService {
     @GET("holes/field/{id}")
     suspend fun getHolesByFieldId(
         @Path("id") fieldId:Int): Response<List<HoleData>>
+
+    //game functions
 
 
     @GET("scores/game/{id}")
@@ -64,8 +67,31 @@ interface FolfApiService {
 
     @POST("games")
     suspend fun createGame(
-        @Header("Authorization") toke:String,@Body data:GameData
+        @Header("Authorization") BearerToken:String,@Body data:GameData
     ):Response<String>
+
+    @GET("PastGames")
+    suspend fun getYourPastGames(
+        @Header("Authorization") BearerToken:String
+    ):Response<List<GameData>>
+
+    @POST("startGame")
+    suspend fun startGame(
+        @Body id:Int
+    )
+    @POST("endGame")
+    suspend fun endGame(
+        @Body id:Int
+    )
+    //friends functions
+    @GET("friends")
+    suspend fun getFriends(@Header("Authorization") BearerToken: String):Response<List<UserEntity>>
+    @GET("allusers")
+    suspend fun getUsers():Response<List<UserEntity>>
+    @POST("friends")
+    suspend fun addFriend(@Header("Authorization") BearerToken: String, @Body data:UserEntity):Response<String>
+    @POST("friends/delete")
+    suspend fun deleteFriend(@Header("Authorization")BearerToken:String, @Body data: UserEntity):Response<String>
 
 }
 
