@@ -29,14 +29,12 @@ public class CourseEntity extends ViewModel {
 
     private List<HoleData> holes;
     private int id;
-    private List<Integer> coursePars;
     private Location courseLocation;
 
 
 
-    public CourseEntity(String name, List<Integer> par, String coordinates, String desc, int id){
+    public CourseEntity(String name, String coordinates, String desc, int id){
         this.courceName = name;
-        this.coursePars = par;
         this.id=id;
         this.description = desc;
         String[] parts = coordinates.split(";");
@@ -53,7 +51,7 @@ public class CourseEntity extends ViewModel {
         loc.setLatitude(64.1397116);
         loc.setLongitude(-21.9478740); //hnitin á háskóla íslands
         int[] pars = {3,3,4,4,3};
-        CourseEntity dummyCourse = new CourseEntity("dummy", Arrays.stream(pars).boxed().collect(Collectors.toList()), "64.1397116;-21.9478740","test",0);
+        CourseEntity dummyCourse = new CourseEntity("dummy", "64.1397116;-21.9478740","test",0);
         return dummyCourse;
     }
 
@@ -145,13 +143,6 @@ public class CourseEntity extends ViewModel {
         this.id = id;
     }
 
-    public List<Integer> getCoursePars() {
-        return coursePars;
-    }
-
-    public void setCoursePars(List<Integer> coursePars) {
-        this.coursePars = coursePars;
-    }
 
     public String getCourceName() {
         return courceName;
