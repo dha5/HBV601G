@@ -46,6 +46,13 @@
             android:text="View Game"
             android:visibility="invisible" />
 
+        <Button
+            android:id="@+id/viewStatisticsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="View Statistics"
+            android:visibility="gone" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

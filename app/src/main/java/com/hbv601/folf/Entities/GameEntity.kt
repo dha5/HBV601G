@@ -11,13 +11,17 @@ class GameParcel(
     val gameTitle: String?,
     val course:String?,
     val time:String?,
-    val creatingPlayer: String?, val players:List<String>?):Parcelable {
+    val creatingPlayer: String?,
+    val fieldId: Int,
+    val players:List<String>?
+):Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
+        parcel.readInt(),
         parcel.createStringArrayList()
     ) {
     }
@@ -28,6 +32,7 @@ class GameParcel(
         parcel.writeString(course)
         parcel.writeString(time)
         parcel.writeString(creatingPlayer)
+        parcel.writeInt(fieldId)
         parcel.writeStringList(players)
     }
     /**
@@ -58,7 +63,7 @@ class GameParcel(
     }
 }
 
-class GameEntity(var gameTitle:String, var course:String, var time: LocalDate, var creatingPlayer:String) {
+class GameEntity(var gameTitle:String, var course:String, var time: LocalDate, var creatingPlayer:String, var fieldId: Int) {
     var players = ArrayList<String>()
 
     private var gameId: Int = -1
@@ -73,7 +78,7 @@ class GameEntity(var gameTitle:String, var course:String, var time: LocalDate, v
     }
     fun gameEntityToParcel():GameParcel{
         val timeString = time.toString();
-        return GameParcel(gameId,gameTitle,course,timeString,creatingPlayer,players.toList())
+        return GameParcel(gameId,gameTitle,course,timeString,creatingPlayer,fieldId,players.toList())
     }
 
     fun updateGame(gameTitle: String, course:String,time:LocalDate){

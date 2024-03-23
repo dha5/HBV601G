@@ -63,8 +63,8 @@
         android:label="Registration"
         tools:layout="@layout/fragment_register" >
         <action
-            android:id="@+id/action_registerFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_registerFragment_to_homePageFragment"
+            app:destination="@id/homePageFragment" />
     </fragment>
     <fragment
         android:id="@+id/userFragment"
@@ -90,6 +90,9 @@
             <action
             android:id="@+id/action_homePageFragment_to_CourseFragment"
             app:destination="@id/CourseFragment" />
+            <action
+                android:id="@+id/action_homePageFragment_to_FriendsFragment"
+                app:destination="@id/FriendsFragment"/>
     </fragment>
 
     <fragment
@@ -97,14 +100,29 @@
         android:name="com.hbv601.folf.YourGamesFragment"
         android:label="YourGamesFragment">
         <action
+            android:id="@+id/action_homePageFragment_to_StatisticsFragment"
+            app:destination="@id/StatisticsFragment" />
+        <action
             android:id="@+id/action_yourGamesFragment_to_CreateGameFragment"
             app:destination="@id/CreateGameFragment"
             app:argType="GameParcel"/>
     </fragment>
 
     <fragment
+        android:id="@+id/FriendsFragment"
+        android:name="com.hbv601.folf.FriendsFragment"
+        android:label="FriendsFragment">
+    </fragment>
+
+    <fragment
         android:id="@+id/CourseFragment"
         android:name="com.hbv601.folf.CourseFragment"
         android:label="CourseFragment">
+    </fragment>
+
+    <fragment
+        android:id="@+id/StatisticsFragment"
+        android:name="com.hbv601.folf.StatisticsFragment"
+        android:label="StatisticsFragment">
     </fragment>
 </navigation>
