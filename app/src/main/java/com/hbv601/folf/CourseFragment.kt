@@ -6,11 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.hbv601.folf.ViewHolders.CourseViewHolder
 import com.hbv601.folf.ViewHolders.ScoreViewHolder
 import com.hbv601.folf.databinding.CourseItemBinding
 import com.hbv601.folf.databinding.FragmentCoursesBinding
 import com.hbv601.folf.databinding.ScoreItemBinding
+import com.hbv601.folf.network.FolfApi
+import kotlinx.coroutines.launch
 
 class CourseFragment : Fragment() {
 
@@ -39,23 +42,27 @@ class CourseFragment : Fragment() {
         }
 
         // Fetch courses
-        val courses = viewModel.fetchCourses()
-        //val courses = viewModel.courses.value
-        if(courses != null){
-            for(course in courses){
-                Log.d("courseName",course.courceName)
-                val courseView = CourseViewHolder(CourseItemBinding.inflate(layoutInflater))
-                this.context?.let { courseView.bindItem(course, it) }
-                /*for(game in course.games){
+
+        lifecycleScope.launch {
+            val resCourses = FolfApi.retrofitService.getFields()
+            val courses = resCourses.body()
+            //val courses = viewModel.courses.value
+            if (courses != null) {
+                for (course in courses) {
+                    Log.d("courseName", course.name)
+                    val courseView = CourseViewHolder(CourseItemBinding.inflate(layoutInflater))
+                    requireContext().let { courseView.bindItem(course, it) }
+                    /*for(game in course.games){
                     val gameView = GameItemViewHolder(GameItemBinding.inflate(layoutInflater))
                     gameView.bindGameClass(game)
                     courseView.addGame(gameView.itemView)
                 }*/
-                val view = getBestScore(course.courceName)
-                if(view!=null) {
-                    courseView.bestScore(view)
+                    val view = getBestScore(course.name)
+                    if (view != null) {
+                        courseView.bestScore(view)
+                    }
+                    binding.CourseList.addView(courseView.itemView)
                 }
-                binding.CourseList.addView(courseView.itemView)
             }
         }
     }

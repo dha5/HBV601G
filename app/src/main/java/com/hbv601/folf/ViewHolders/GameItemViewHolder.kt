@@ -2,6 +2,7 @@ package com.hbv601.folf.ViewHolders
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.hbv601.folf.Entities.GameData
 import com.hbv601.folf.Entities.GameParcel
 import com.hbv601.folf.Game
 import com.hbv601.folf.databinding.GameItemBinding
@@ -13,10 +14,10 @@ class GameItemViewHolder (private val binding:GameItemBinding): RecyclerView.Vie
         binding.DateTime.text = game.time
         binding.Creator.text = game.creatingPlayer
     }
-    fun bindGameClass(game: Game){
+    fun bindGameClass(game: GameData){
         binding.Course.text = game.name
-        binding.DateTime.text = game.dateTime
-        binding.Creator.text = game.creatorName
+        binding.DateTime.text = game.datetime
+        binding.Creator.text = game.creator.toString()
     }
     fun onClick(){
             binding.ViewGameButton.visibility = View.VISIBLE
