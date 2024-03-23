@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import com.hbv601.folf.Entities.GameParcel
+import com.hbv601.folf.Entities.UserEntity
 import com.hbv601.folf.databinding.FragmentCreateGameBinding
 import com.hbv601.folf.services.GameService
 
@@ -30,6 +31,9 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
     private var gameId:Number? = null
     private var selectedCourse:String? = null
     private var selectedPlayer:String? = null
+    private var courseIds:ArrayList<Int>? = null
+    private var friendsList: ArrayList<String>? = null
+    private var friends: ArrayList<UserEntity>? = null
 
     private val bReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -180,7 +184,18 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
     fun getFriends(){
         //implement call to get friends
         val spinner = binding.playerSpinner
-
+        lifecycleScope.launch {
+            Log.d("accesstoken",requireActivity().getSharedPreferences("USER",0).getString("AccessToken",null)!!)
+            val bearerToken = "Bearer ${requireActivity().getSharedPreferences("USER",0).getString("AccessToken",null)!!}"
+            val res = FolfApi.retrofitService.getFriends("Bearer ${bearerToken}")
+            if(res.isSuccessful && res.body() != null){
+                Log.d("friends","it works")
+                val friends = res.body()
+                for(friend in friends){
+                    
+                }
+            }
+        }
         ArrayAdapter.createFromResource(this.requireContext(),R.array.placeholderPlayers,android.R.layout.simple_spinner_item).also {
             adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
