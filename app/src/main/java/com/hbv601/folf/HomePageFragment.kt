@@ -29,8 +29,15 @@ class HomePageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val textView = view.findViewById<TextView>(R.id.textMessage)
 
-        val userName = "John" // þarf að skipta út fyrir notendanafn
-        val numInvitations = 5 // þarf að skipta út fyrir fjölda invites sem notandi hefur fengið
+        /**
+        val dummycourse = CourseEntity.generateDummy()
+        val distancefrom = dummycourse.getDistanceFrom(this.activity);
+        Log.d("distancefrom",distancefrom.toString())
+
+        //Notað til að testa CourseEntity classann
+        */
+        val userName = requireActivity().getSharedPreferences("USER",0).getString("Name",null)!! // þarf að skipta út fyrir notendanafn
+        val numInvitations = 10 // þarf að skipta út fyrir fjölda invites sem notandi hefur fengið
         val numOpenMatches = 10 // þarf að skipta út fyrir fjölda opnra leikja
 
         val welcomeMessage = getString(R.string.home_page_welcome_message, userName, numInvitations, numOpenMatches)
@@ -51,6 +58,10 @@ class HomePageFragment : Fragment() {
         binding.buttonYourGames.setOnClickListener{
             findNavController().navigate(R.id.action_homePageFragment_to_YourGamesFragment)
             //navigate to gameslist
+        }
+
+        binding.buttonFriends.setOnClickListener {
+            findNavController().navigate(R.id.action_homePageFragment_to_FriendsFragment)
         }
     }
 
