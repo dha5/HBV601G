@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.hbv601.folf.Entities.CourseEntity
 
 data class Course(
     val name: String,
@@ -33,7 +34,7 @@ class CourseViewModel : ViewModel() {
         }
     }
 
-    fun fetchCourses():List<Course> {
+    fun fetchCourses():List<CourseEntity> {
         // þarf að bæta við aðferð til að sækja gögn úr bakenda
         val mockCourses = listOf(
             Course("Course 1", "5 km away", listOf(

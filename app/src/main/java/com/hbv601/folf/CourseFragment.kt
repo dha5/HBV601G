@@ -43,7 +43,7 @@ class CourseFragment : Fragment() {
         //val courses = viewModel.courses.value
         if(courses != null){
             for(course in courses){
-                Log.d("courseName",course.name)
+                Log.d("courseName",course.courceName)
                 val courseView = CourseViewHolder(CourseItemBinding.inflate(layoutInflater))
                 this.context?.let { courseView.bindItem(course, it) }
                 /*for(game in course.games){
@@ -51,7 +51,7 @@ class CourseFragment : Fragment() {
                     gameView.bindGameClass(game)
                     courseView.addGame(gameView.itemView)
                 }*/
-                val view = getBestScore(course.name)
+                val view = getBestScore(course.courceName)
                 if(view!=null) {
                     courseView.bestScore(view)
                 }

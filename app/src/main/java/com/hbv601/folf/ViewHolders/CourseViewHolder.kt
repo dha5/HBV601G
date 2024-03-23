@@ -7,14 +7,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hbv601.folf.Course
+import com.hbv601.folf.Entities.CourseEntity
 import com.hbv601.folf.Game
 import com.hbv601.folf.databinding.CourseItemBinding
 import com.hbv601.folf.databinding.GameItemBinding
 
 
 class CourseViewHolder (private val binding: CourseItemBinding): RecyclerView.ViewHolder(binding.root) {
-    fun bindItem(course: Course,context: Context){
-        binding.CourseName.text = course.name
+    fun bindItem(course: CourseEntity,context: Context){
+        binding.CourseName.text = course.courceName
         val adapter = GamesAdapter(course.games)
         binding.gameslist.layoutManager = LinearLayoutManager(context)
         binding.gameslist.adapter = adapter
