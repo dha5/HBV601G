@@ -1,5 +1,4 @@
 package com.hbv601.folf.Entities;
-import static androidx.core.content.ContextCompat.getSystemService;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -12,25 +11,34 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.ViewModel;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
-public class CourseEntity {
+public class CourseEntity extends ViewModel {
 
     private String courceName;
-    private List<Integer> coursePars;
+
+    private String description;
+
+    private List<HoleData> holes;
+    private int id;
     private Location courseLocation;
 
 
 
-    public CourseEntity(String name, List<Integer> par, Location coordinates){
+    public CourseEntity(String name, String coordinates, String desc, int id){
         this.courceName = name;
-        this.coursePars = par;
-        this.courseLocation = coordinates;
+        this.id=id;
+        this.description = desc;
+        String[] parts = coordinates.split(";");
+        double lat = Double.parseDouble(parts[0].trim());
+        double lon = Double.parseDouble(parts[1].trim());
+        Location loc = new Location(name);
+        loc.setLatitude(lat);
+        loc.setLongitude(lon);
+        this.courseLocation = loc;
     }
 
     public static CourseEntity generateDummy(){
@@ -38,7 +46,7 @@ public class CourseEntity {
         loc.setLatitude(64.1397116);
         loc.setLongitude(-21.9478740); //hnitin á háskóla íslands
         int[] pars = {3,3,4,4,3};
-        CourseEntity dummyCourse = new CourseEntity("dummy", Arrays.stream(pars).boxed().collect(Collectors.toList()), loc);
+        CourseEntity dummyCourse = new CourseEntity("dummy", "64.1397116;-21.9478740","test",0);
         return dummyCourse;
     }
 
@@ -106,13 +114,30 @@ public class CourseEntity {
         return 0;
     }
 
-    public List<Integer> getCoursePars() {
-        return coursePars;
+    public List<HoleData> getHoles() {
+        return holes;
     }
 
-    public void setCoursePars(List<Integer> coursePars) {
-        this.coursePars = coursePars;
+    public void setHoles(List<HoleData> holes) {
+        this.holes = holes;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
 
     public String getCourceName() {
         return courceName;

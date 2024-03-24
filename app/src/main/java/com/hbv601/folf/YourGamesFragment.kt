@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
@@ -20,6 +21,8 @@ import com.hbv601.folf.databinding.FragmentYourGamesBinding
 import com.hbv601.folf.databinding.GameItemBinding
 import com.hbv601.folf.databinding.ScoreItemBinding
 import com.hbv601.folf.services.GameService
+import java.time.LocalDate
+import java.time.ZoneOffset
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -56,8 +59,30 @@ class YourGamesFragment : Fragment() {
                         Log.d("game",game.course!!)
                         val gameItem = GameItemViewHolder(GameItemBinding.inflate(layoutInflater))
                         gameItem.bindItem(game as GameParcel)
-                        binding.GamesList.addView(gameItem.itemView)
-                        if(game.creatingPlayer!! == username){
+
+                        //athuga hvort leikurinn sé búinn, leikurinn svo settur í "Past Games" ef dagsetning er liðin.
+                        val gameTimeString = game.time //sækja game time sem streng
+                        val currentTime = LocalDate.now() //sækja núverandi tíma
+                        val gameTime = LocalDate.parse(gameTimeString) //breyta game time úr streng í LocalDate
+                        val gameTimeMillis = gameTime.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli() //breyta úr LocalDate í milliseconds
+                        val currentMillis = currentTime.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
+                        if (gameTimeMillis < currentMillis) {
+                            binding.PastGamesList.addView(gameItem.itemView)
+
+                            val btnViewStatistics = Button(requireContext())
+                            btnViewStatistics.text = "View Statistics"
+                            val statisticsClickListener = View.OnClickListener {
+                                val args = Bundle().apply {
+                                    putParcelable("GAME_PARCEL", game)
+                                }
+                                findNavController().navigate(R.id.action_homePageFragment_to_StatisticsFragment, args)
+                            }
+                            btnViewStatistics.setOnClickListener(statisticsClickListener)
+                            binding.PastGamesList.addView(btnViewStatistics)
+                        }
+
+                        //leikur settur í "Your Created Games" ef notandi bjó til leikinn
+                        else if(game.creatingPlayer!! == username){
 
                             val yourGame = GameItemViewHolder(GameItemBinding.inflate(layoutInflater))
                             yourGame.bindItem(game)
@@ -70,6 +95,10 @@ class YourGamesFragment : Fragment() {
 
                             }
                             binding.YourCreatedGames.addView(yourGame.itemView)
+                        }
+                        //leikur settur í "Games you have been invited to" ef notandi er ekki eigandi leiks.
+                        else {
+                            binding.GamesList.addView(gameItem.itemView)
                         }
 
                     }
@@ -103,16 +132,9 @@ class YourGamesFragment : Fragment() {
         intentFilter.addAction(RECIEVE_GAMEARRAY)
         bManager!!.registerReceiver(bReceiver, intentFilter)
         this.context?.let { GameService.startActionFetchPlayerGames(it,username) }
-        getBestScore()
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_your_games, container, false)
         return binding.root
-    }
-    fun getBestScore(){
-        val scoreBinding = ScoreItemBinding.inflate(layoutInflater)
-        val scoreViewHolder = ScoreViewHolder(scoreBinding)
-        scoreViewHolder.onBind("FrolfMót HÍ-inga","20.Mars 2021",18,20)
-        binding.PastGamesList.addView(scoreViewHolder.itemView)
     }
 /*
     companion object {

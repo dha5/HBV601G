@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.hbv601.folf.Entities.GameData
+import com.hbv601.folf.Entities.CourseEntity
 import com.hbv601.folf.Entities.GameParcel
 import com.hbv601.folf.Entities.PlayerEntity
 import com.hbv601.folf.Entities.PostGameData
@@ -42,6 +43,7 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
     private val binding get() = _binding!!
     private val playerNamesList = ArrayList<String>()
     private val playerList = ArrayList<PlayerEntity>()
+    private val storedCourses: MutableList<CourseEntity> = mutableListOf()
 
     /*private val bReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -292,7 +294,15 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
             courseIds = ArrayList<Int>()
             if(courses.isSuccessful && courses.body()!=null) {
                 for (course in courses.body()!!) {
-                    names.add(course.name)
+                    val thisCourse = CourseEntity(course.name,course.location, course.description,course.id)
+                    storedCourses.add(thisCourse)
+                    val distanceInMeters = thisCourse.getDistanceFrom(context as Activity)
+                    val distanceInKilometers = distanceInMeters.toDouble() / 1000
+                    val formattedDistance = String.format("%.1f", distanceInKilometers)
+                    val nafnid = course.name
+                    val stringToAdd = "$nafnid  $formattedDistance km"
+
+                    names.add(stringToAdd)
                     courseIds!!.add(course.id)
                 }
             }

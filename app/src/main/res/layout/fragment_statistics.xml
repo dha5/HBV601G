@@ -1,0 +1,35 @@
+<!-- fragment_statistics.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Game Title -->
+    <TextView
+        android:id="@+id/textViewGameTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Game Title"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <!-- Game Date -->
+    <TextView
+        android:id="@+id/textViewGameTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date"
+        android:textSize="16sp"
+        android:textColor="@android:color/darker_gray"
+        android:paddingTop="8dp" />
+
+    <!-- Hole Data Container -->
+    <LinearLayout
+        android:id="@+id/layoutHoles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="16dp" />
+
+</LinearLayout>
