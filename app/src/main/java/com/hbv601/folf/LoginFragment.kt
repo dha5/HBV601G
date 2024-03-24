@@ -69,6 +69,7 @@ class LoginFragment: Fragment() {
                     editor.putString("AccessToken",res.body()!!.accessToken)
                     editor.putString("Username",username)
                     editor.putString("Name",res.body()!!.user.name)
+                    editor.putInt("UserId",res.body()!!.user.id)
                     editor.apply()
                     findNavController().navigate(R.id.action_LoginFragment_to_HomePageFragment)
                 }
