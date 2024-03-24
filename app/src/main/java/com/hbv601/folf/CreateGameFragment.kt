@@ -241,6 +241,19 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
     }
     fun startGame(){
+        if(playerNamesList.size>0){
+            val args = Bundle().apply {
+                if(existingGame != null){
+                    putInt("gameId", Math.toIntExact(existingGame!!.id!!) )
+                }
+                putStringArray("playerNames", playerNamesList.toTypedArray())
+            }
+            // Navigate to InputScoreFragment with arguments
+            findNavController().navigate(R.id.action_CreateGameFragment_to_InputScoreFragment, args)
+        } else {
+        // Handle case where no players are added
+        Toast.makeText(this@CreateGameFragment.requireContext(), "Please add at least one player", Toast.LENGTH_SHORT).show()
+    }
         //útfæra
     }
     fun addPlayerFromSpinner(){
@@ -275,15 +288,17 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
             val prefs = requireActivity().getSharedPreferences("USER",0)
             val bearerToken = prefs.getString("AccessToken",null)!!
             val userId = prefs.getInt("UserId",-1).toLong()
-            val name = binding.playerField.toString()
+            val name = binding.playerField.text.toString()
             val player = PlayerEntity(null,userId,name,existingGame!!.id!!)
             val res = FolfApi.retrofitService.addPlayer("Bearer ${bearerToken}",player)
             Log.d("addPlayerFromTextField",res.toString())
             if(!res.isSuccessful){
                 Toast.makeText(this@CreateGameFragment.requireContext(),"ekki tókst að bæta þessu nafni við lista spilara",Toast.LENGTH_SHORT).show()
             }else{
+                Toast.makeText(this@CreateGameFragment.requireContext(),"Spilara bætt við leik",Toast.LENGTH_SHORT).show()
                 playerNamesList.add(name)
                 playerList.add(res.body()!!)
+                binding.playerField.text.clear()
             }
         }
     }
