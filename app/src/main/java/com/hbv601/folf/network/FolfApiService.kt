@@ -4,7 +4,10 @@ import com.hbv601.folf.Entities.AccessToken
 import com.hbv601.folf.Entities.CourseData
 import com.hbv601.folf.Entities.GameData
 import com.hbv601.folf.Entities.HoleData
+import com.hbv601.folf.Entities.PlayerEntity
+import com.hbv601.folf.Entities.PostGameData
 import com.hbv601.folf.Entities.RegisterUser
+import com.hbv601.folf.Entities.ResponseMessage
 import com.hbv601.folf.Entities.User
 import com.hbv601.folf.Entities.UserCreds
 import com.hbv601.folf.Entities.UserEntity
@@ -14,9 +17,11 @@ import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 private const val BASE_URL = "https://hbv601g-backend.onrender.com"
@@ -56,11 +61,16 @@ interface FolfApiService {
         @Header("Authorization") token: String
     ):Response<List<GameData>>
 
+    @GET("games/{gameid}")
+    suspend fun getGameById(@Path("gameid") gameid: Long):Response<GameData>
     @POST("games")
     suspend fun createGame(
-        @Header("Authorization") BearerToken:String,@Body data:GameData
-    ):Response<String>
+        @Header("Authorization") BearerToken:String,@Body data:PostGameData
+    ):Response<GameData>
 
+    @PUT("games/{gameid}")
+    suspend fun updateGame(@Path("gameid") gameid:Long,
+                           @Body data:GameData):Response<ResponseMessage>
     @GET("PastGames")
     suspend fun getYourPastGames(
         @Header("Authorization") BearerToken:String
@@ -74,15 +84,23 @@ interface FolfApiService {
     suspend fun endGame(
         @Body id:Int
     )
+    @GET("/players/gameid/{game_id}")
+    suspend fun getGamePlayers(@Path("game_id")gameid:Long):Response<List<PlayerEntity>>
+    @POST("players")
+    suspend fun addPlayer(@Header("Authorization")BearerToken: String,@Body data: PlayerEntity):Response<PlayerEntity>
+
+    @DELETE("players/{player_id}")
+    suspend fun removePlayer(@Path("player_id")playerid:Long):Response<ResponseMessage>
+
     //friends functions
     @GET("friends")
     suspend fun getFriends(@Header("Authorization") BearerToken: String):Response<List<UserEntity>>
     @GET("allusers")
     suspend fun getUsers():Response<List<UserEntity>>
     @POST("friends")
-    suspend fun addFriend(@Header("Authorization") BearerToken: String, @Body data:UserEntity):Response<String>
+    suspend fun addFriend(@Header("Authorization") BearerToken: String, @Body data:UserEntity):Response<ResponseMessage>
     @POST("friends/delete")
-    suspend fun deleteFriend(@Header("Authorization")BearerToken:String, @Body data: UserEntity):Response<String>
+    suspend fun deleteFriend(@Header("Authorization")BearerToken:String, @Body data: UserEntity):Response<ResponseMessage>
 }
 
 /**

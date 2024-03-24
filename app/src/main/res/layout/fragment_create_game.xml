@@ -29,6 +29,7 @@
     </LinearLayout>
 
     <EditText
+        android:id="@+id/titleField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -52,38 +53,45 @@
         android:layout_height="wrap_content"
         android:text="Game Now" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Players:" />
-
-    <EditText
-        android:id="@+id/playerField"
+    <LinearLayout
+        android:id="@+id/playerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Add player" />
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/addPlayerButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Player" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Players:" />
 
-    <Spinner
-        android:id="@+id/playerSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/playerField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Add player" />
 
-    <Button
-        android:id="@+id/addPlayerSpinnerButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Player" />
+        <Button
+            android:id="@+id/addPlayerButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Player" />
 
-    <ListView
-        android:id="@+id/playerListView"
-        android:layout_width="match_parent"
-        android:layout_height="189dp" />
+        <Spinner
+            android:id="@+id/playerSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/addPlayerSpinnerButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Player" />
+
+        <ListView
+            android:id="@+id/playerListView"
+            android:layout_width="match_parent"
+            android:layout_height="189dp" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
