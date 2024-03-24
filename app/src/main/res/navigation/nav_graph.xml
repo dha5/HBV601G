@@ -119,7 +119,11 @@
         android:name="com.hbv601.folf.CourseFragment"
         android:label="CourseFragment">
     </fragment>
-
+    <fragment
+        android:id="@+id/LeaderboardFragment"
+        android:name="com.hbv601.folf.LeaderboardFragment"
+        android:label="StatisticsFragment">
+    </fragment>
     <fragment
         android:id="@+id/StatisticsFragment"
         android:name="com.hbv601.folf.StatisticsFragment"
