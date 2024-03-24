@@ -1,5 +1,5 @@
 package com.hbv601.folf.Entities;
-import static androidx.core.content.ContextCompat.getSystemService;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -8,17 +8,12 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-import androidx.lifecycle.LifecycleOwnerKt;
 import androidx.lifecycle.ViewModel;
-import com.hbv601.folf.network.FolfApi;
-import com.hbv601.folf.network.FolfApiService;
-import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.List;
-import java.util.stream.Collectors;
-import retrofit2.Response;
 
 
 public class CourseEntity extends ViewModel {
