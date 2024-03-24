@@ -132,18 +132,9 @@ class YourGamesFragment : Fragment() {
         intentFilter.addAction(RECIEVE_GAMEARRAY)
         bManager!!.registerReceiver(bReceiver, intentFilter)
         this.context?.let { GameService.startActionFetchPlayerGames(it,username) }
-        getBestScore()
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_your_games, container, false)
         return binding.root
-    }
-    fun getBestScore(){
-        val scoreBinding = ScoreItemBinding.inflate(layoutInflater)
-        val scoreViewHolder = ScoreViewHolder(scoreBinding)
-        scoreViewHolder.onBind("FrolfMót HÍ-inga","20.Mars 2021",18,20)
-        binding.PastGamesList.addView(scoreViewHolder.itemView)
-
-
     }
 /*
     companion object {
