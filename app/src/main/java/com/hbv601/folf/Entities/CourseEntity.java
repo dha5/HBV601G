@@ -98,8 +98,8 @@ public class CourseEntity extends ViewModel {
 
             currentGpsLocation[0] = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             currentNetworkLocation[0] = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            Log.d("currentGPSlocation",currentGpsLocation[0].toString());
-            Log.d("currentNetworklocation",currentNetworkLocation[0].toString());
+            //Log.d("currentGPSlocation",currentGpsLocation[0].toString());
+            //Log.d("currentNetworklocation",currentNetworkLocation[0].toString());
 
             if(currentGpsLocation[0] != null){
 
