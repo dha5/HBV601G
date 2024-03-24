@@ -1,4 +1,5 @@
 package com.hbv601.folf
+import android.app.Activity
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
@@ -11,8 +12,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.hbv601.folf.Entities.GameData
 import com.hbv601.folf.Entities.CourseEntity
+import com.hbv601.folf.Entities.GameData
 import com.hbv601.folf.Entities.GameParcel
 import com.hbv601.folf.Entities.PlayerEntity
 import com.hbv601.folf.Entities.PostGameData
