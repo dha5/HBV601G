@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.hbv601.folf.databinding.FragmentInputScoreBinding
 
 class InputScoreFragment : Fragment() {
@@ -45,6 +46,12 @@ class InputScoreFragment : Fragment() {
 
             binding.playerScoresLayout.addView(rowView)
         }
+        binding.buttonFinishGame.setOnClickListener {
+            findNavController().navigate(R.id.action_InputScoreFragment_to_LeaderboardFragment)
+        }
+
+
     }
+
 
 }

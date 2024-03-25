@@ -52,10 +52,10 @@
         android:label="Player Input">
 
         <action
-            android:id="@+id/action_InputScoreFragment_to_CreateGameFragment"
-            app:destination="@id/CreateGameFragment"
-            app:argType="string[]" />
+            android:id="@+id/action_InputScoreFragment_to_LeaderboardFragment"
+        app:destination="@id/LeaderboardFragment" />
     </fragment>
+
 
     <fragment
         android:id="@+id/registerFragment"

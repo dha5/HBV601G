@@ -1,11 +1,9 @@
-<!-- item_player_score.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="8dp">
 
-    <!-- Player Name TextView -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -16,11 +14,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Player Name"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
     </LinearLayout>
 
-    <!-- Score EditText -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -31,18 +28,16 @@
             android:layout_width="69dp"
             android:layout_height="wrap_content"
             android:hint="Score"
-            android:inputType="number" />
+            android:inputType="number"/>
 
     </LinearLayout>
 
-    <!-- Submit Button -->
     <Button
         android:id="@+id/buttonSubmitScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/submit" />
+        android:text="@string/submit"/>
 
-    <!-- Total score TextView -->
     <TextView
         android:id="@+id/textViewTotalScore"
         android:layout_width="wrap_content"
@@ -50,12 +45,11 @@
         android:text="@string/total_score"
         android:layout_marginStart="16dp"/>
 
-    <!-- Total score EditText -->
     <EditText
         android:id="@+id/editTextTotalScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="number"
-        android:enabled="false" />
+        android:enabled="false"/>
 
 </LinearLayout>

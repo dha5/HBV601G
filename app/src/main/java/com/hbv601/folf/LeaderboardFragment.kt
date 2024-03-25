@@ -24,18 +24,23 @@ class LeaderboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        playerNames = arguments?.getStringArray("playerNames") ?: emptyArray()
-        playerScores = arguments?.getIntArray("playerScores") ?: IntArray(playerNames.size)
+        playerNames = requireArguments().getStringArray("playerNames") ?: emptyArray()
+        playerScores = requireArguments().getIntArray("playerScores") ?: IntArray(playerNames.size)
 
-        for (i in playerNames.indices) {
+        val playerNameList = playerNames.toList()
+        val playerScoreList = playerScores.toList()
+
+        val sortedPlayers = playerNameList.zip(playerScoreList).sortedBy { it.second }
+
+        sortedPlayers.forEachIndexed { index, (name, score) ->
             val rowView = layoutInflater.inflate(R.layout.item_leaderboard_player, null)
             val playerNameTextView = rowView.findViewById<TextView>(R.id.textViewPlayerName)
             val playerScoreTextView = rowView.findViewById<TextView>(R.id.textViewPlayerScore)
 
-            playerNameTextView.text = playerNames[i]
-            playerScoreTextView.text = playerScores[i].toString()
+            playerNameTextView.text = name
+            playerScoreTextView.text = score.toString()
 
-            binding.leaderboardLayout.addView(rowView)
+            binding.tableLeaderboard.addView(rowView, index)
         }
     }
 }
