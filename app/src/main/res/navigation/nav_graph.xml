@@ -52,10 +52,10 @@
         android:label="Player Input">
 
         <action
-            android:id="@+id/action_InputScoreFragment_to_CreateGameFragment"
-            app:destination="@id/CreateGameFragment"
-            app:argType="string[]" />
+            android:id="@+id/action_InputScoreFragment_to_LeaderboardFragment"
+        app:destination="@id/LeaderboardFragment" />
     </fragment>
+
 
     <fragment
         android:id="@+id/registerFragment"
@@ -119,7 +119,11 @@
         android:name="com.hbv601.folf.CourseFragment"
         android:label="CourseFragment">
     </fragment>
-
+    <fragment
+        android:id="@+id/LeaderboardFragment"
+        android:name="com.hbv601.folf.LeaderboardFragment"
+        android:label="StatisticsFragment">
+    </fragment>
     <fragment
         android:id="@+id/StatisticsFragment"
         android:name="com.hbv601.folf.StatisticsFragment"

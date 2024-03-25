@@ -1,21 +1,24 @@
 package com.hbv601.folf
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.hbv601.folf.databinding.FragmentInputScoreBinding
 
 class InputScoreFragment : Fragment() {
     private lateinit var binding: FragmentInputScoreBinding
     private lateinit var playerNames: Array<String>
-    private lateinit var scores: Array<String>
-    private var gameId: Number? = null
+    private val playerScores: MutableMap<String, Int> = mutableMapOf()
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?,
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         binding = FragmentInputScoreBinding.inflate(inflater, container, false)
         return binding.root
@@ -23,7 +26,7 @@ class InputScoreFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        gameId = arguments?.getInt("gameId")
+        val gameId = arguments?.getInt("gameId")
         playerNames = arguments?.getStringArray("playerNames") ?: emptyArray()
 
         playerNames.forEach { playerName ->
@@ -31,27 +34,24 @@ class InputScoreFragment : Fragment() {
             val playerNameTextView = rowView.findViewById<TextView>(R.id.textViewPlayerName)
             playerNameTextView.text = playerName
 
+            val scoreEditText = rowView.findViewById<EditText>(R.id.editTextScore)
+            val totalScoreEditText = rowView.findViewById<EditText>(R.id.editTextTotalScore)
+
+            val submitButton = rowView.findViewById<Button>(R.id.buttonSubmitScore)
+            submitButton.setOnClickListener {
+                val score = scoreEditText.text.toString().toIntOrNull() ?: return@setOnClickListener
+                playerScores[playerName] = (playerScores[playerName] ?: 0) + score
+                totalScoreEditText.setText(playerScores[playerName].toString())
+            }
+
             binding.playerScoresLayout.addView(rowView)
         }
-
-        binding.buttonSubmitScores.setOnClickListener {
+        binding.buttonFinishGame.setOnClickListener {
+            findNavController().navigate(R.id.action_InputScoreFragment_to_LeaderboardFragment)
         }
-    }
-    fun gameExists(){
 
 
     }
-    fun updateScores(newScores: Array<Number>) {
-        //add some sort of service connection
-    }
-    fun updateScore(newScore: Number){
-        //add some sort of service connection
-    }
-    fun refreshScores(){
-        //call to service to check updated scores
-        if(scores.isNotEmpty()){
 
 
-        }
-    }
 }
