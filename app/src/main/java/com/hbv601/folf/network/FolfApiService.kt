@@ -54,8 +54,25 @@ interface FolfApiService {
 
     //game functions
 
+    @GET("games/yourOngoingGames")
+    suspend fun getYourOngoingGames(
+        @Header("Authorization")BearerToken: String)
+        :Response<List<GameData>>
 
+    @GET("games/yourUpcomingGames")
+    suspend fun getYourUpcomingGames(
+        @Header("Authorization")BearerToken: String)
+        :Response<List<GameData>>
 
+    @GET("games/yourPastGames")
+    suspend fun getYourPastGames(
+        @Header("Authorization") BearerToken:String)
+        :Response<List<GameData>>
+
+    @GET("games/yourCreatedGames")
+    suspend fun getYourCreatedGames(
+        @Header("Authorization") BearerToken: String
+    ):Response<List<GameData>>
 
     @GET("games/field/{id}")
     suspend fun getGamesByFieldId(
@@ -76,16 +93,12 @@ interface FolfApiService {
     @PUT("games/{gameid}")
     suspend fun updateGame(@Path("gameid") gameid:Long,
                            @Body data:GameData):Response<ResponseMessage>
-    @GET("PastGames")
-    suspend fun getYourPastGames(
-        @Header("Authorization") BearerToken:String
-    ):Response<List<GameData>>
 
-    @POST("startGame")
+    @POST("games/startGame")
     suspend fun startGame(
         @Body id:Int
     )
-    @POST("endGame")
+    @POST("games/endGame")
     suspend fun endGame(
         @Body id:Int
     )
