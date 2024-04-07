@@ -69,13 +69,13 @@ class StatisticsFragment : Fragment() {
     private fun fetchScoreByGameId(gameId: Int) {
         GlobalScope.launch(Dispatchers.Main) {
             val response = withContext(Dispatchers.IO) {
-                FolfApi.retrofitService.getScoreByGameId(gameId)
+                FolfApi.retrofitService.getScoreByGameId(gameId.toLong())
             }
             if (response.isSuccessful) {
-                scoreParcel = response.body()
+                /*scoreParcel = response.body()
                 scoreParcel?.let {
                     displayScoreData(it)
-                }
+                }*/
             } else {
                 Log.e("StatisticsFragment", "Failed to fetch score for game ID: $gameId")
             }

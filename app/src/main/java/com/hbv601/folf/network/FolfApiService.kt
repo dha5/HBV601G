@@ -8,8 +8,8 @@ import com.hbv601.folf.Entities.PlayerEntity
 import com.hbv601.folf.Entities.PostGameData
 import com.hbv601.folf.Entities.RegisterUser
 import com.hbv601.folf.Entities.ResponseMessage
+import com.hbv601.folf.Entities.ScoreData
 import com.hbv601.folf.Entities.User
-import com.hbv601.folf.Entities.ScoreParcel
 import com.hbv601.folf.Entities.UserCreds
 import com.hbv601.folf.Entities.UserEntity
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -55,11 +55,7 @@ interface FolfApiService {
     //game functions
 
 
-    @GET("scores/game/{id}")
-    suspend fun getScoreByGameId(
-        @Path("id") gameId: Int
-    ): Response<ScoreParcel>
-    
+
 
     @GET("games/field/{id}")
     suspend fun getGamesByFieldId(
@@ -93,7 +89,7 @@ interface FolfApiService {
     suspend fun endGame(
         @Body id:Int
     )
-    @GET("/players/gameid/{game_id}")
+    @GET("players/gameid/{game_id}")
     suspend fun getGamePlayers(@Path("game_id")gameid:Long):Response<List<PlayerEntity>>
     @POST("players")
     suspend fun addPlayer(@Header("Authorization")BearerToken: String,@Body data: PlayerEntity):Response<PlayerEntity>
@@ -110,6 +106,21 @@ interface FolfApiService {
     suspend fun addFriend(@Header("Authorization") BearerToken: String, @Body data:UserEntity):Response<ResponseMessage>
     @POST("friends/delete")
     suspend fun deleteFriend(@Header("Authorization")BearerToken:String, @Body data: UserEntity):Response<ResponseMessage>
+
+    //score functions
+    @GET("scores/game/{id}")
+    suspend fun getScoreByGameId(
+        @Path("id") gameId: Long
+    ): Response<List<ScoreData>>
+
+    @POST("scores")
+    suspend fun postNewScore(@Header("Authorization")BearerToken: String, @Body score:ScoreData):Response<ScoreData>
+
+    @PUT("scores/{id}")
+    suspend fun updateScore(@Header("Authorization")BearerToken: String,@Body score:ScoreData): Response<ScoreData>
+
+    @DELETE("scores/{id}")
+    suspend fun deleteScore(@Header("Authorization")BearerToken: String,@Path("id") scoreId:Long): Response<ResponseMessage>
 }
 
 /**
