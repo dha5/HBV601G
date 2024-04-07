@@ -7,13 +7,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.hbv601.folf.Entities.CourseData
 import com.hbv601.folf.Entities.HoleData
 import com.hbv601.folf.Entities.PlayerEntity
 import com.hbv601.folf.Entities.ScoreData
-import com.hbv601.folf.Entities.ScoreEntity
 import com.hbv601.folf.databinding.FragmentInputScoreBinding
 import com.hbv601.folf.network.FolfApi
 import kotlinx.coroutines.launch
@@ -23,8 +24,9 @@ class InputScoreFragment : Fragment() {
     private lateinit var playerNames: Array<String>
     private val playerScores: MutableMap<String, Int> = mutableMapOf()
     private val playerScoreItems: MutableMap<Long, MutableList<ScoreData>> = mutableMapOf()
-    private val playersMap: MutableMap<String,PlayerEntity> = mutableMapOf()
+    private val playersMap: MutableMap<Long,PlayerEntity> = mutableMapOf()
     private val holesList: MutableList<HoleData> = mutableListOf()
+    private lateinit var course:CourseData
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,10 +64,14 @@ class InputScoreFragment : Fragment() {
 
 
     }
+
     fun fetchGame(gameId:Long){
         lifecycleScope.launch {
             val game = FolfApi.retrofitService.getGameById(gameId)
-            if(!game.isSuccessful) return@launch
+            if(!game.isSuccessful){
+                Toast.makeText(this@InputScoreFragment.requireContext(),"Ekki fannst leikur með gefnu auðkenni",Toast.LENGTH_SHORT).show()
+                return@launch
+            }
             val holes = FolfApi.retrofitService.getHolesByFieldId(game.body()!!.fieldId!!)
             if(holes.isSuccessful){
                 for(hole in holes.body()!!){
@@ -75,7 +81,7 @@ class InputScoreFragment : Fragment() {
             val players = FolfApi.retrofitService.getGamePlayers(gameId)
             if(players.isSuccessful && players.body() != null){
                 for(player in players.body()!!){
-                    playersMap[player.name] = player
+                    playersMap[player.id!!] = player
                 }
             }
             val scores = FolfApi.retrofitService.getScoreByGameId(gameId)
@@ -88,10 +94,30 @@ class InputScoreFragment : Fragment() {
                     }
                 }
             }
+
         }
     }
-    fun postScore(){
 
+    fun postScore(scoreData:ScoreData){
+        lifecycleScope.launch {
+            val token = requireActivity().getSharedPreferences("USER",0).getString("AccessToken",null)
+            if(token!=null){
+                val postScore = FolfApi.retrofitService.postNewScore("Bearer $token",scoreData)
+                if(postScore.isSuccessful && postScore.body()!=null){
+                    val newScoreData = postScore.body()!!
+                    if(playerScoreItems[newScoreData.player_id]!=null) {
+                        playerScoreItems[newScoreData.player_id]!!.add(newScoreData)
+                    }else{
+                        playerScoreItems[newScoreData.player_id] = mutableListOf(newScoreData)
+                    }
+                    Toast.makeText(this@InputScoreFragment.requireContext(),"Nýtt skor skráð fyrir spilara"+ playersMap[newScoreData.player_id]!!.name,Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(this@InputScoreFragment.requireContext(),"Eitthvað fór úrskeiðis með að skrá skor",Toast.LENGTH_SHORT).show()
+                }
+            }else{
+                Toast.makeText(this@InputScoreFragment.requireContext(),"Login token fannst ekki, vinsamlegast skráið aftur inn",Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
 
