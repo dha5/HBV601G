@@ -12,7 +12,10 @@ import androidx.lifecycle.lifecycleScope
 import com.hbv601.folf.Entities.CourseData
 import com.hbv601.folf.Entities.GameData
 import com.hbv601.folf.Entities.GameEntity
+import com.hbv601.folf.Entities.GameParcel
+import com.hbv601.folf.ViewHolders.GameItemViewHolder
 import com.hbv601.folf.databinding.FragmentYourGamesBinding
+import com.hbv601.folf.databinding.GameItemBinding
 import com.hbv601.folf.network.FolfApi
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -136,15 +139,20 @@ class YourGamesFragment : Fragment() {
             getGameDataGames()
             getGameEntity()
         }
-
+        for (game in gameEntityGames){
+            val gameItem = GameItemViewHolder(GameItemBinding.inflate(layoutInflater))
+            gameItem.bindItem(game as GameParcel)
+        }
     }
 
     private suspend fun getGameDataGames(){
         val bearerToken = requireActivity().getSharedPreferences("USER",0).getString("AccessToken",null)
         if (bearerToken != null) {
+            Log.d("fyrir getloggedinUser","")
             val responceGameDataGames = FolfApi.retrofitService.getLoggedInUserGames("Bearer ${bearerToken}")
 
             if (responceGameDataGames.isSuccessful){
+                Log.d("Before asking for body", responceGameDataGames.toString())
                 val responceGameData = responceGameDataGames.body()
                 Log.d("GameDataGames", responceGameData.toString())
                 if (responceGameData != null) {
@@ -176,18 +184,18 @@ class YourGamesFragment : Fragment() {
                  fields = responceFields.body()
             }
             for(gameData in gameDataGames){
-                var dummyFieldName = "dummyfield" //TODO útfæra þetta til að sækja í bakendann. Vantar bakendakall
+                var dummyFieldName = "dummyfield"
                 if (fields != null){
                     for (field in fields){
-                        if (field.id.equals(gameData.fieldId)){
+                        if (field.id.equals(gameData.field_id)){
                             dummyFieldName = field.name
                         }
                     }
                 }
                 var gameDate = LocalDate.parse(gameData.datetime)
                 var tempFieldId = 0
-                if (gameData.fieldId != null){
-                     tempFieldId = gameData.fieldId
+                if (gameData.field_id != null){
+                     tempFieldId = gameData.field_id
                 }
                 val game = GameEntity(gameData.name, dummyFieldName, gameDate, hopefullPlayerName, tempFieldId )
                 gameEntityGames.add(game)

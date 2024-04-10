@@ -81,7 +81,7 @@ class GameEntity(var gameTitle:String, var course:String, var time: LocalDate, v
         return GameParcel(gameId,gameTitle,course,timeString,creatingPlayer,fieldId,players.toList())
     }
 
-    fun updateGame(gameTitle: String, course:String,time:LocalDate){
+    fun updateGame(gameTitle: String, course:String, time:LocalDate){
         this.gameTitle = gameTitle
         this.course = course
         this.time = time

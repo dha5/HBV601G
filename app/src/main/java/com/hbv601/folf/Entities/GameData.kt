@@ -4,9 +4,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GameData (val id:Long?,
-                     val creator:Int?,
+                     val creator:Int? = null,
                      val datetime:String,
-                     val name:String,val fieldId:Int?
+                     val name:String,val field_id:Int?
     )
 
 @Serializable
