@@ -9,11 +9,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.hbv601.folf.Entities.CourseData
 import com.hbv601.folf.Entities.GameData
 import com.hbv601.folf.Entities.GameEntity
 import com.hbv601.folf.databinding.FragmentYourGamesBinding
 import com.hbv601.folf.network.FolfApi
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -130,17 +132,21 @@ class YourGamesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lifecycleScope.launch { getGameDataGames() }
+        lifecycleScope.launch {
+            getGameDataGames()
+            getGameEntity()
+        }
 
     }
 
     private suspend fun getGameDataGames(){
-        val accessToken = requireActivity().getSharedPreferences("USER",0).getString("AccessToken",null)
-        if (accessToken != null) {
-            val responceGameDataGames = FolfApi.retrofitService.getLoggedInUserGames("Bearer ${accessToken}")
-            Log.d("GameDataGames", responceGameDataGames.toString())
+        val bearerToken = requireActivity().getSharedPreferences("USER",0).getString("AccessToken",null)
+        if (bearerToken != null) {
+            val responceGameDataGames = FolfApi.retrofitService.getLoggedInUserGames("Bearer ${bearerToken}")
+
             if (responceGameDataGames.isSuccessful){
                 val responceGameData = responceGameDataGames.body()
+                Log.d("GameDataGames", responceGameData.toString())
                 if (responceGameData != null) {
                     for (gameData in responceGameData){
                         gameDataGames.add(gameData)
@@ -157,6 +163,36 @@ class YourGamesFragment : Fragment() {
             return
         }
 
+    }
+
+    private suspend fun getGameEntity(){
+        val bearerToken = requireActivity().getSharedPreferences("USER",0).getString("AccessToken",null)
+        if (bearerToken != null) {
+            var hopefullPlayerName = requireActivity().getSharedPreferences("USER", 0).getString("Username", null)
+            if (hopefullPlayerName == null){hopefullPlayerName = "noName"}
+            var fields: List<CourseData>? = null
+            val responceFields = FolfApi.retrofitService.getFields()
+            if (responceFields.isSuccessful){
+                 fields = responceFields.body()
+            }
+            for(gameData in gameDataGames){
+                var dummyFieldName = "dummyfield" //TODO útfæra þetta til að sækja í bakendann. Vantar bakendakall
+                if (fields != null){
+                    for (field in fields){
+                        if (field.id.equals(gameData.fieldId)){
+                            dummyFieldName = field.name
+                        }
+                    }
+                }
+                var gameDate = LocalDate.parse(gameData.datetime)
+                var tempFieldId = 0
+                if (gameData.fieldId != null){
+                     tempFieldId = gameData.fieldId
+                }
+                val game = GameEntity(gameData.name, dummyFieldName, gameDate, hopefullPlayerName, tempFieldId )
+                gameEntityGames.add(game)
+            }
+        }
     }
     override fun onDestroyView() {
         super.onDestroyView()
