@@ -107,6 +107,7 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
         binding.gameNowButton.setOnClickListener {
             // Set current date and time to timeField
             binding.timeField.setText(LocalDate.now().toString())
+            Log.d("Localdate",LocalDate.now().toString())
         }
 
         // Third layer
