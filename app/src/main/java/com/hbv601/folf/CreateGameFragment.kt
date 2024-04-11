@@ -316,6 +316,7 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
                     val distanceInKilometers = distanceInMeters.toDouble() / 1000
                     val formattedDistance = String.format("%.1f", distanceInKilometers)
                     val nafnid = course.name
+                    Log.d("formattedDistance",formattedDistance)
                     val stringToAdd = "$nafnid  $formattedDistance km"
 
                     names.add(stringToAdd)

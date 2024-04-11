@@ -72,7 +72,7 @@ class InputScoreFragment : Fragment() {
                 Toast.makeText(this@InputScoreFragment.requireContext(),"Ekki fannst leikur með gefnu auðkenni",Toast.LENGTH_SHORT).show()
                 return@launch
             }
-            val holes = FolfApi.retrofitService.getHolesByFieldId(game.body()!!.fieldId!!)
+            val holes = FolfApi.retrofitService.getHolesByFieldId(game.body()!!.field_id!!)
             if(holes.isSuccessful){
                 for(hole in holes.body()!!){
                     holesList.add(hole)
