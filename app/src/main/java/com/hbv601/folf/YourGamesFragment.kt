@@ -140,30 +140,33 @@ class YourGamesFragment : Fragment() {
         lifecycleScope.launch {
             getGameDataGames()
             getGameEntity()
-            for (game in gameEntityGames){
-                Log.d("Game in gameEntityGames",game.toString())
-                val gameItem = GameItemViewHolder(GameItemBinding.inflate(layoutInflater))
-                gameItem.bindItem(game)
-
-                binding.GamesList.addView(gameItem.itemView)
-
-                val btnViewStatistics = Button(requireContext())
-                btnViewStatistics.text = "View Statistics"
-                val statisticsClickListener = View.OnClickListener {
-                    val args = Bundle().apply {
-                        putParcelable("GAME_PARCEL", game.toGameParcel())
-                    }
-                    findNavController().navigate(R.id.action_homePageFragment_to_StatisticsFragment, args)
-                }
-                btnViewStatistics.setOnClickListener(statisticsClickListener)
-                binding.GamesList.addView(btnViewStatistics)
-
-            }
+            updateGameLists()
         }
         Log.d("eftir lifecycleScope",gameDataGames.toString())
 
     }
 
+    private suspend fun updateGameLists(){
+        for (game in gameEntityGames){
+            Log.d("Game in gameEntityGames",game.toString())
+            val gameItem = GameItemViewHolder(GameItemBinding.inflate(layoutInflater))
+            gameItem.bindItem(game)
+
+            binding.GamesList.addView(gameItem.itemView)
+
+            val btnViewStatistics = Button(requireContext())
+            btnViewStatistics.text = "View Statistics"
+            val statisticsClickListener = View.OnClickListener {
+                val args = Bundle().apply {
+                    putParcelable("GAME_PARCEL", game.toGameParcel())
+                }
+                findNavController().navigate(R.id.action_homePageFragment_to_StatisticsFragment, args)
+            }
+            btnViewStatistics.setOnClickListener(statisticsClickListener)
+            binding.GamesList.addView(btnViewStatistics)
+
+        }
+    }
     private suspend fun getGameDataGames(){
         val bearerToken = requireActivity().getSharedPreferences("USER",0).getString("AccessToken",null)
         if (bearerToken != null) {
