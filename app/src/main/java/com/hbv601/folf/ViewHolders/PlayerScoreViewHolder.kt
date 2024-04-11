@@ -60,6 +60,7 @@ class PlayerScoreViewHolder(private val binding:ItemPlayerScoreBinding):Recycler
             if(scoreMap[holeMap[i]!!.id.toLong()]!=null){
                 scoreArray.add(PostedScoreItem(i,holeMap[i]!!.par,scoreMap[holeMap[i]!!.id.toLong()]!!.strokes.toInt()))
             }
+            i++;
         }
 
     }
