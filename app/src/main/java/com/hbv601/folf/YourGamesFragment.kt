@@ -168,6 +168,7 @@ class YourGamesFragment : Fragment() {
         }
     }
     private suspend fun getGameDataGames(){
+        gameDataGames.clear()
         val bearerToken = requireActivity().getSharedPreferences("USER",0).getString("AccessToken",null)
         if (bearerToken != null) {
             Log.d("fyrir getloggedinUser","")
@@ -197,6 +198,7 @@ class YourGamesFragment : Fragment() {
     }
 
     private suspend fun getGameEntity(){
+        gameEntityGames.clear()
         val bearerToken = requireActivity().getSharedPreferences("USER",0).getString("AccessToken",null)
         if (bearerToken != null) {
             var hopefullPlayerName = requireActivity().getSharedPreferences("USER", 0).getString("Username", null)
