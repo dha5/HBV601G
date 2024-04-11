@@ -6,9 +6,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.hbv601.folf.Entities.CourseData
 import com.hbv601.folf.Entities.GameData
 import com.hbv601.folf.Entities.GameEntity
@@ -138,11 +140,28 @@ class YourGamesFragment : Fragment() {
         lifecycleScope.launch {
             getGameDataGames()
             getGameEntity()
+            for (game in gameEntityGames){
+                Log.d("Game in gameEntityGames",game.toString())
+                val gameItem = GameItemViewHolder(GameItemBinding.inflate(layoutInflater))
+                gameItem.bindItem(game)
+
+                binding.GamesList.addView(gameItem.itemView)
+
+                val btnViewStatistics = Button(requireContext())
+                btnViewStatistics.text = "View Statistics"
+                val statisticsClickListener = View.OnClickListener {
+                    val args = Bundle().apply {
+                        putParcelable("GAME_PARCEL", game.toGameParcel())
+                    }
+                    findNavController().navigate(R.id.action_homePageFragment_to_StatisticsFragment, args)
+                }
+                btnViewStatistics.setOnClickListener(statisticsClickListener)
+                binding.GamesList.addView(btnViewStatistics)
+
+            }
         }
-        for (game in gameEntityGames){
-            val gameItem = GameItemViewHolder(GameItemBinding.inflate(layoutInflater))
-            gameItem.bindItem(game as GameParcel)
-        }
+        Log.d("eftir lifecycleScope",gameDataGames.toString())
+
     }
 
     private suspend fun getGameDataGames(){
@@ -159,6 +178,7 @@ class YourGamesFragment : Fragment() {
                     for (gameData in responceGameData){
                         gameDataGames.add(gameData)
                     }
+                    Log.d("eftir foor loop", gameDataGames.toString())
                 }
             }else{
                 Toast.makeText(requireContext(),
@@ -192,7 +212,14 @@ class YourGamesFragment : Fragment() {
                         }
                     }
                 }
-                var gameDate = LocalDate.parse(gameData.datetime)
+                var gameDate : LocalDate = LocalDate.now()
+                try {
+                     gameDate = LocalDate.parse(gameData.datetime)
+                }catch (e: java.time.DateTimeException){
+                    Log.e("LocalDateError",e.toString())
+                    gameDate = LocalDate.parse("1996-01-20")
+                }
+
                 var tempFieldId = 0
                 if (gameData.field_id != null){
                      tempFieldId = gameData.field_id

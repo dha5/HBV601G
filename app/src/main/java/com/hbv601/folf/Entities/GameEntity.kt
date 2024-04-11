@@ -76,7 +76,7 @@ class GameEntity(var gameTitle:String, var course:String, var time: LocalDate, v
     fun getId():Int{
         return this.gameId
     }
-    fun gameEntityToParcel():GameParcel{
+    fun toGameParcel():GameParcel{
         val timeString = time.toString();
         return GameParcel(gameId,gameTitle,course,timeString,creatingPlayer,fieldId,players.toList())
     }

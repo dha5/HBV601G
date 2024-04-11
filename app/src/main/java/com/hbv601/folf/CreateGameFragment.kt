@@ -147,6 +147,7 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
         }
     }
     fun extantGame(){
+        Log.d("extantGame","Kemst í extantGame")
         binding.timeField.setText(existingGame!!.datetime.toString())
         binding.titleField.setText(existingGame!!.name.toString())
         binding.playerLayout.visibility = View.VISIBLE
@@ -163,7 +164,7 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
                 Toast.makeText(this@CreateGameFragment.requireContext(),"vinsamlegast skráið völl fyrir leik",Toast.LENGTH_SHORT).show()
                 return@launch
             }
-            val newGame = PostGameData(binding.titleField.text.toString(),selectedCourseId!!.toLong(),null,ArrayList<Long>())
+            val newGame = PostGameData(binding.titleField.text.toString(),selectedCourseId!!.toLong(),binding.timeField.text.toString(),ArrayList<Long>())
             Log.d("createGame",newGame.toString())
             val bearerToken = requireActivity().getSharedPreferences("USER",0).getString("AccessToken",null)
             if(bearerToken!=null){

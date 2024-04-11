@@ -3,15 +3,16 @@ package com.hbv601.folf.ViewHolders
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.hbv601.folf.Entities.GameData
+import com.hbv601.folf.Entities.GameEntity
 import com.hbv601.folf.Entities.GameParcel
 import com.hbv601.folf.Game
 import com.hbv601.folf.databinding.GameItemBinding
 
 class GameItemViewHolder (private val binding:GameItemBinding): RecyclerView.ViewHolder(binding.root){
 
-    fun bindItem(game: GameParcel){
+    fun bindItem(game: GameEntity){
         binding.Course.text = game.course
-        binding.DateTime.text = game.time
+        binding.DateTime.text = game.time.toString()
         binding.Creator.text = game.creatingPlayer
     }
     fun bindGameClass(game: GameData){
