@@ -137,13 +137,14 @@ class YourGamesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lifecycleScope.launch {
-            getGameDataGames()
-            getGameEntity()
-            updateGameLists()
+        if (gameDataGames.isEmpty() || gameEntityGames.isEmpty()) { // til að vera ekki alltaf að byðja um upplýsingar
+            lifecycleScope.launch {
+                getGameDataGames()
+                getGameEntity()
+                updateGameLists()
+            }
+            Log.d("eftir lifecycleScope", gameDataGames.toString())
         }
-        Log.d("eftir lifecycleScope",gameDataGames.toString())
-
     }
 
     private suspend fun updateGameLists(){
