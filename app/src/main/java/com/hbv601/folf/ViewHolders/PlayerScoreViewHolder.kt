@@ -53,6 +53,7 @@ class PlayerScoreViewHolder(private val binding:ItemPlayerScoreBinding):Recycler
         }
         currentParDisp.text = holeMap[currentHolenum]!!.par.toString()
         currentHoleDisp.text = currentHolenum.toString()
+        newCurrentScore()
     }
     fun refreshScoreList(){
         var i = 1
@@ -68,14 +69,14 @@ class PlayerScoreViewHolder(private val binding:ItemPlayerScoreBinding):Recycler
             setSpecificHoleNum(holeNum) }
     }
     fun newCurrentScore(){
-        currentScoreData = ScoreData(null,binding.editTextScore.text.toString().toLong(),
+        currentScoreData = ScoreData(null,0,
             player.id!!,holeMap[currentHolenum]!!.id.toLong(),player.game_id,null)
     }
     fun updateCurrentScore(){
         val currentScore = scoreMap[holeMap[currentHolenum]!!.id.toLong()]
         if (currentScore != null) {
             currentScoreData = ScoreData(currentScore.id,binding.editTextScore.text.toString().toLong(),
-                player.id!!,currentScore.hole_id,currentScore.hole_id,currentScore.timestamp)
+                player.id!!,currentScore.hole_id,currentScore.game_id,currentScore.timestamp)
         }
         refreshScoreList()
 

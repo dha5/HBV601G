@@ -118,9 +118,12 @@ class InputScoreFragment : Fragment() {
         }
     }
     fun postViewHolderScoreData(player_id:Long){
-        if(playerScoreViewHolderList[player_id]!=null){
-        postScore(playerScoreViewHolderList[player_id]!!.currentScoreData)}
+        val view = playerScoreViewHolderList[player_id]
+        if(view!=null){
+            view.updateCurrentScore()
+            postScore(view.currentScoreData)}
     }
+
 
     fun postScore(scoreData:ScoreData){
         lifecycleScope.launch {
@@ -128,12 +131,16 @@ class InputScoreFragment : Fragment() {
             if(token!=null){
                 var newScoreData:ScoreData? = null
                 if(scoreData.id!=null){
+                    Log.d("updateScore","attempting to update score")
                     val updateScore = FolfApi.retrofitService.updateScore("Bearer $token",scoreData)
+                    Log.d("updateScoreResponse",updateScore.toString())
                     if(updateScore.isSuccessful && updateScore.body()!=null) {
                         newScoreData = updateScore.body()!!
                     }
                 }else{
-                val postScore = FolfApi.retrofitService.postNewScore("Bearer $token",scoreData)
+                    Log.d("postscore","attempting postscore")
+                    val postScore = FolfApi.retrofitService.postNewScore("Bearer $token",scoreData)
+                    Log.d("postScoreResponse",postScore.toString())
                     if(postScore.isSuccessful && postScore.body()!=null) {
                         newScoreData = postScore.body()!!
                     }
