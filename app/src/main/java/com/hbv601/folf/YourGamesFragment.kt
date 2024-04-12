@@ -217,12 +217,13 @@ class YourGamesFragment : Fragment() {
                         }
                     }
                 }
-                var gameDate : LocalDate = LocalDate.now()
+                var gameDate : LocalDate
                 try {
                      gameDate = LocalDate.parse(gameData.datetime)
                 }catch (e: java.time.DateTimeException){
                     Log.e("LocalDateError",e.toString())
-                    gameDate = LocalDate.parse("1996-01-20")
+                    gameDate = LocalDate.parse("1996-01-20") //Þurfti að setja eithvað. afmælið mitt virkar :D
+
                 }
 
                 var tempFieldId = 0
