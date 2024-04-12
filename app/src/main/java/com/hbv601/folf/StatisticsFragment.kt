@@ -1,4 +1,5 @@
-package com.hbv601.folf;
+package com.hbv601.folf
+
 
 import android.os.Bundle
 import android.util.Log
@@ -10,7 +11,6 @@ import androidx.fragment.app.Fragment
 import com.hbv601.folf.Entities.GameParcel
 import com.hbv601.folf.Entities.HoleData
 import com.hbv601.folf.Entities.ScoreParcel
-import com.hbv601.folf.R
 import com.hbv601.folf.databinding.FragmentStatisticsBinding
 import com.hbv601.folf.network.FolfApi
 import kotlinx.coroutines.Dispatchers
@@ -63,7 +63,7 @@ class StatisticsFragment : Fragment() {
                     displayHoleData(it)
                 }
             } else {
-                Log.e("StatisticsFragment", "Failed to fetch holes for field ID: $fieldId")
+                Log.e("com.hbv601.folf.StatisticsFragment", "Failed to fetch holes for field ID: $fieldId")
             }
         }
     }
@@ -79,7 +79,7 @@ class StatisticsFragment : Fragment() {
                     displayScoreData(it)
                 }*/
             } else {
-                Log.e("StatisticsFragment", "Failed to fetch score for game ID: $gameId")
+                Log.e("com.hbv601.folf.StatisticsFragment", "Failed to fetch score for game ID: $gameId")
             }
         }
     }
