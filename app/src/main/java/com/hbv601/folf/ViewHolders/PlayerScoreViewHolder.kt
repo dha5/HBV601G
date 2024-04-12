@@ -71,6 +71,7 @@ class PlayerScoreViewHolder(private val binding:ItemPlayerScoreBinding):Recycler
     fun newCurrentScore(){
         currentScoreData = ScoreData(null,0,
             player.id!!,holeMap[currentHolenum]!!.id.toLong(),player.game_id,null)
+        scoreMap[holeMap[currentHolenum]!!.id.toLong()] = currentScoreData
     }
     fun updateCurrentScore(){
         val currentScore = scoreMap[holeMap[currentHolenum]!!.id.toLong()]
@@ -107,6 +108,8 @@ class PlayerScoreViewHolder(private val binding:ItemPlayerScoreBinding):Recycler
     }
     fun addScoreData(scoreData: ScoreData){
         scoreMap[scoreData.hole_id] = scoreData
+        Log.d("playerScoreViewHolder",scoreData.toString())
+        Log.d("playerScoreThrows",this.currentScoreData.toString())
         refreshScoreList()
 
     }
