@@ -137,17 +137,19 @@ class YourGamesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (gameDataGames.isEmpty() || gameEntityGames.isEmpty()) { // til að vera ekki alltaf að byðja um upplýsingar
             lifecycleScope.launch {
-                getGameDataGames()
-                getGameEntity()
-                updateGameLists()
+                if (gameDataGames.isEmpty() || gameEntityGames.isEmpty()) { // til að vera ekki alltaf að byðja um upplýsingar
+                    getGameDataGames()
+                    getGameEntity()
+                }
+                displayGameLists()
             }
             Log.d("eftir lifecycleScope", gameDataGames.toString())
-        }
+
+
     }
 
-    private suspend fun updateGameLists(){
+    private fun displayGameLists(){
         for (game in gameEntityGames){
             Log.d("Game in gameEntityGames",game.toString())
             val gameItem = GameItemViewHolder(GameItemBinding.inflate(layoutInflater))
@@ -163,8 +165,10 @@ class YourGamesFragment : Fragment() {
                 }
                 findNavController().navigate(R.id.action_homePageFragment_to_StatisticsFragment, args)
             }
-            btnViewStatistics.setOnClickListener(statisticsClickListener)
-            binding.GamesList.addView(btnViewStatistics)
+
+            gameItem.bindButton(game.toGameParcel(), statisticsClickListener)
+            //btnViewStatistics.setOnClickListener(statisticsClickListener)
+            //binding.GamesList.addView(btnViewStatistics)
 
         }
     }

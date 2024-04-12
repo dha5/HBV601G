@@ -10,7 +10,9 @@ import com.hbv601.folf.databinding.GameItemBinding
 
 class GameItemViewHolder (private val binding:GameItemBinding): RecyclerView.ViewHolder(binding.root){
 
+    lateinit var gluedGame : GameEntity
     fun bindItem(game: GameEntity){
+        gluedGame = game
         binding.Course.text = game.course
         binding.DateTime.text = game.time.toString()
         binding.Creator.text = game.creatingPlayer
@@ -19,6 +21,10 @@ class GameItemViewHolder (private val binding:GameItemBinding): RecyclerView.Vie
         binding.Course.text = game.name
         binding.DateTime.text = game.datetime
         binding.Creator.text = game.creator.toString()
+    }
+
+    fun getGame() : GameEntity{
+        return gluedGame
     }
     fun onClick(){
             binding.ViewGameButton.visibility = View.VISIBLE
