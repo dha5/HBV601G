@@ -19,7 +19,7 @@
                 android:id="@+id/textView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Games You Have Played" />
+                android:text="Games You Have Played Recently" />
 
             <LinearLayout
                 android:id="@+id/GamesList"
@@ -27,17 +27,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Your Created Games" />
-
-            <LinearLayout
-                android:id="@+id/YourCreatedGames"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
 
             <TextView
                 android:id="@+id/textView4"
@@ -47,8 +36,8 @@
 
             <LinearLayout
                 android:id="@+id/PastGamesList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"></LinearLayout>
 
         </LinearLayout>

@@ -126,7 +126,7 @@ class YourGamesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentYourGamesBinding.inflate(inflater, container, false)
-        binding.YourCreatedGames.removeAllViews()
+        binding.PastGamesList.removeAllViews()
         binding.GamesList.removeAllViews()
 
 
@@ -150,25 +150,35 @@ class YourGamesFragment : Fragment() {
     }
 
     private fun displayGameLists(){
-        for (game in gameEntityGames){
-            Log.d("Game in gameEntityGames",game.toString())
-            val gameItem = GameItemViewHolder(GameItemBinding.inflate(layoutInflater))
-            gameItem.bindItem(game)
+        for (game in gameEntityGames) {
+            val playDate = game.time
 
-            binding.GamesList.addView(gameItem.itemView)
-
-            val btnViewStatistics = Button(requireContext())
-            btnViewStatistics.text = "View Statistics"
-            val statisticsClickListener = View.OnClickListener {
-                val args = Bundle().apply {
-                    putParcelable("GAME_PARCEL", game.toGameParcel())
+                Log.d("Game in gameEntityGames", game.toString())
+                val gameItem = GameItemViewHolder(GameItemBinding.inflate(layoutInflater))
+                gameItem.bindItem(game)
+                if (playDate > LocalDate.now().minusDays(10)) {
+                    binding.GamesList.addView(gameItem.itemView)
+                }else{
+                    binding.PastGamesList.addView(gameItem.itemView)
                 }
-                findNavController().navigate(R.id.action_homePageFragment_to_StatisticsFragment, args)
-            }
 
-            gameItem.bindButton(game.toGameParcel(), statisticsClickListener)
-            //btnViewStatistics.setOnClickListener(statisticsClickListener)
-            //binding.GamesList.addView(btnViewStatistics)
+
+                val btnViewStatistics = Button(requireContext())
+                btnViewStatistics.text = "View Statistics"
+                val statisticsClickListener = View.OnClickListener {
+                    val args = Bundle().apply {
+                        putParcelable("GAME_PARCEL", game.toGameParcel())
+                    }
+                    findNavController().navigate(
+                        R.id.action_homePageFragment_to_StatisticsFragment,
+                        args
+                    )
+                }
+
+                gameItem.bindButton(game.toGameParcel(), statisticsClickListener)
+                //btnViewStatistics.setOnClickListener(statisticsClickListener)
+                //binding.GamesList.addView(btnViewStatistics)
+
 
         }
     }
