@@ -1,5 +1,6 @@
 package com.hbv601.folf.ViewHolders
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,48 +11,48 @@ import com.hbv601.folf.databinding.ItemPlayerScoreBinding
 import com.hbv601.folf.databinding.PostedScoreItemBinding
 
 class PlayerScoreViewHolder(private val binding:ItemPlayerScoreBinding):RecyclerView.ViewHolder(binding.root) {
+    val playerName = binding.textViewPlayerName
     val currentHoleDisp = binding.CurrentHoleNumber
     var currentHolenum = 1
-    var maxHole = 0
+    val currentStrokes = binding.editTextScore
+    var maxHole = 1
     val currentParDisp = binding.ParNumber
     val postedScoreList = binding.PostedScores
-    lateinit var holeMap:MutableMap<Int,HoleData>
+    val postScore = binding.buttonSubmitScore
+    val holeMap:MutableMap<Int,HoleData> = mutableMapOf()
     lateinit var player:PlayerEntity
-    val scoreMap:MutableMap<Long,ScoreData> = mutableMapOf()
+    //scoreMap er mappað á id tölur holana á þeim forsendum að engin hola megi vera tvískráð
+    private val scoreMap:MutableMap<Long,ScoreData> = mutableMapOf()
     val newScore = true
     lateinit var currentScoreData:ScoreData
 
 
-    fun onBind(player:PlayerEntity,holes:ArrayList<HoleData>,scores:ArrayList<ScoreData>,postScore:(ScoreData)->ScoreData,updateScore:(ScoreData)->ScoreData){
-        var holeMap = mutableMapOf<Int,HoleData>()
+    fun onBind(
+        player:PlayerEntity,
+        holes: List<HoleData>,
+        scores: List<ScoreData>?){
+        Log.d("holes",holes.toString())
+        Log.d("player",player.toString())
+        playerName.text = player.name
         for(hole in holes){
             holeMap[hole.hole_number] = hole
             if(hole.hole_number>maxHole){
                 maxHole = hole.hole_number
             }
         }
-        for(score in scores){
-            scoreMap[score.hole_id] = score
+        if(scores!=null){
+            for(score in scores){
+                scoreMap[score.hole_id] = score
+            }
         }
         this.player = player
         var scorePresent = true
         while(scorePresent){
-            if(holeMap[currentHolenum]==null) scorePresent = false
-            else updateHoleNum()
+            if(scoreMap[holeMap[currentHolenum]!!.id.toLong()]==null) {scorePresent = false}
+            else {updateHoleNum()}
         }
-        binding.buttonSubmitScore.setOnClickListener {
-            if(!newScore){
-                updateCurrentScore()
-                val score = updateScore(currentScoreData)
-                scoreMap[score.hole_id] = score
-            }else{
-                newCurrentScore()
-                val score = postScore(currentScoreData)
-                scoreMap[score.hole_id] = score
-            }
-        }
-
-
+        currentParDisp.text = holeMap[currentHolenum]!!.par.toString()
+        currentHoleDisp.text = currentHolenum.toString()
     }
     fun refreshScoreList(){
         var i = 1
@@ -62,7 +63,9 @@ class PlayerScoreViewHolder(private val binding:ItemPlayerScoreBinding):Recycler
             }
             i++;
         }
-
+        binding.PostedScores.removeAllViews()
+        binding.PostedScores.adapter = postedScoreAdapter(scoreArray.toTypedArray()) { holeNum ->
+            setSpecificHoleNum(holeNum) }
     }
     fun newCurrentScore(){
         currentScoreData = ScoreData(null,binding.editTextScore.text.toString().toLong(),
@@ -74,6 +77,8 @@ class PlayerScoreViewHolder(private val binding:ItemPlayerScoreBinding):Recycler
             currentScoreData = ScoreData(currentScore.id,binding.editTextScore.text.toString().toLong(),
                 player.id!!,currentScore.hole_id,currentScore.hole_id,currentScore.timestamp)
         }
+        refreshScoreList()
+
     }
     fun holesDone(){}
     fun updateHoleNum(){
@@ -82,7 +87,9 @@ class PlayerScoreViewHolder(private val binding:ItemPlayerScoreBinding):Recycler
         }
         currentHolenum++
         currentHoleDisp.text = currentHolenum.toString()
-        currentParDisp.text = holeMap[currentHolenum]!!.par.toString()
+        if(holeMap[currentHolenum]!=null) {
+            currentParDisp.text = holeMap[currentHolenum]!!.par.toString()
+        }
     }
     fun setSpecificHoleNum(holeNum:Int){
         if(holeNum>=maxHole || holeNum<=0){
@@ -91,8 +98,18 @@ class PlayerScoreViewHolder(private val binding:ItemPlayerScoreBinding):Recycler
         currentHolenum = holeNum
         currentHoleDisp.text = currentHolenum.toString()
         currentParDisp.text = holeMap[currentHolenum]!!.par.toString()
+        if(scoreMap[holeMap[currentHolenum]!!.id.toLong()]!=null){
+            currentScoreData = scoreMap[holeMap[currentHolenum]!!.id.toLong()]!!
+            currentStrokes.setText(currentScoreData.strokes.toInt())
+        }
 
     }
+    fun addScoreData(scoreData: ScoreData){
+        scoreMap[scoreData.hole_id] = scoreData
+        refreshScoreList()
+
+    }
+
 }
 data class PostedScoreItem(val holeNum: Int,val par: Int, val strokes:Int)
 class postedScoreAdapter(private val scores:Array<PostedScoreItem>,val onClick:(Int)->Unit):
@@ -104,7 +121,7 @@ class postedScoreAdapter(private val scores:Array<PostedScoreItem>,val onClick:(
             private val holeNum = binding.HoleNum
             private val strokes = binding.KastTala
             private val skor = binding.scoreNum
-            private val par: Int?=null
+            private var par: Int?=null
 
             init{
                 binding.root.setOnClickListener{
@@ -114,6 +131,7 @@ class postedScoreAdapter(private val scores:Array<PostedScoreItem>,val onClick:(
                 }
             }
             fun bind(get:PostedScoreItem){
+                par =get.par
                 holeNum.text = get.holeNum.toString()
                 parnum.text = get.par.toString()
                 strokes.text = get.strokes.toString()

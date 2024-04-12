@@ -169,6 +169,7 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
                 Log.d("creategame",res.toString())
                 if(res.isSuccessful){
                     existingGame = res.body()!!
+                    Log.d("existingGame",existingGame.toString())
                     extantGame()
                 }else{
                     Toast.makeText(this@CreateGameFragment.requireContext(),"Ekki tókst að skapa þennan leik",Toast.LENGTH_SHORT).show()
@@ -241,11 +242,9 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
     }
     fun startGame(){
-        if(playerNamesList.size>0){
+        if(playerNamesList.size>0 && existingGame!=null){
             val args = Bundle().apply {
-                if(existingGame != null){
-                    putInt("gameId", Math.toIntExact(existingGame!!.id!!) )
-                }
+                putInt("gameId", Math.toIntExact(existingGame!!.id!!) )
                 putStringArray("playerNames", playerNamesList.toTypedArray())
             }
             // Navigate to InputScoreFragment with arguments

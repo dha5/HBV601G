@@ -83,8 +83,9 @@ interface FolfApiService {
         @Header("Authorization") token: String
     ):Response<List<GameData>>
 
-    @GET("games/{gameid}")
-    suspend fun getGameById(@Path("gameid") gameid: Long):Response<GameData>
+    @GET("games/{gameId}")
+    suspend fun getGameById(@Path("gameId") gameid: Long):Response<GameData>
+
     @POST("games")
     suspend fun createGame(
         @Header("Authorization") BearerToken:String,@Body data:PostGameData
