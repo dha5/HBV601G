@@ -40,28 +40,10 @@ class InputScoreFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val gameId = arguments?.getInt("gameId")
-        if (gameId != null) fetchGame(gameId.toLong());
-        /*playerNames = arguments?.getStringArray("playerNames") ?: emptyArray()
-
-        playerNames.forEach { playerName ->
-            val rowView = layoutInflater.inflate(R.layout.item_player_score, null)
-            val playerNameTextView = rowView.findViewById<TextView>(R.id.textViewPlayerName)
-            playerNameTextView.text = playerName
-
-            val scoreEditText = rowView.findViewById<EditText>(R.id.editTextScore)
-            val totalScoreEditText = rowView.findViewById<EditText>(R.id.editTextTotalScore)
-
-            val submitButton = rowView.findViewById<Button>(R.id.buttonSubmitScore)
-            submitButton.setOnClickListener {
-                val score = scoreEditText.text.toString().toIntOrNull() ?: return@setOnClickListener
-                playerScores[playerName] = (playerScores[playerName] ?: 0) + score
-                totalScoreEditText.setText(playerScores[playerName].toString())
+        if (gameId != null){ fetchGame(gameId.toLong());
+            binding.buttonFinishGame.setOnClickListener {
+                finishGame(gameId)
             }
-
-            binding.playerScoresLayout.addView(rowView)
-        }*/
-        binding.buttonFinishGame.setOnClickListener {
-            findNavController().navigate(R.id.action_InputScoreFragment_to_LeaderboardFragment)
         }
 
 
@@ -122,6 +104,12 @@ class InputScoreFragment : Fragment() {
         if(view!=null){
             view.updateCurrentScore()
             postScore(view.currentScoreData)}
+    }
+    fun finishGame(gameId: Int){
+        lifecycleScope.launch {
+            FolfApi.retrofitService.endGame(gameId)
+            findNavController().navigate(R.id.action_InputScoreFragment_to_LeaderboardFragment)
+        }
     }
 
 

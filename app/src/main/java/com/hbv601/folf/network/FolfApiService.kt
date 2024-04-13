@@ -103,6 +103,11 @@ interface FolfApiService {
     suspend fun endGame(
         @Body id:Int
     )
+
+    @GET("games/gameStatus")
+    suspend fun gameStatus(
+        @Body id:Int
+    ): Response<String>
     @GET("players/gameid/{game_id}")
     suspend fun getGamePlayers(@Path("game_id")gameid:Long):Response<List<PlayerEntity>>
     @POST("players")
