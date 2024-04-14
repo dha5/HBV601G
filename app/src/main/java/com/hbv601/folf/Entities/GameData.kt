@@ -3,6 +3,7 @@ package com.hbv601.folf.Entities
 import kotlinx.serialization.Serializable
 
 @Serializable
+
 data class GameData (
     val id:Long?,
     val creator:Int?,

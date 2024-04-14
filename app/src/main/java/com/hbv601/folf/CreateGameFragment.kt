@@ -21,6 +21,7 @@ import com.hbv601.folf.Entities.UserEntity
 import com.hbv601.folf.databinding.FragmentCreateGameBinding
 import com.hbv601.folf.network.FolfApi
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 
 class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
@@ -105,7 +106,8 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
         // Second layer
         binding.gameNowButton.setOnClickListener {
             // Set current date and time to timeField
-            binding.timeField.setText(java.time.LocalDateTime.now().toString())
+            binding.timeField.setText(LocalDate.now().toString())
+            Log.d("Localdate",LocalDate.now().toString())
         }
 
         // Third layer
@@ -161,7 +163,6 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
                 Toast.makeText(this@CreateGameFragment.requireContext(),"vinsamlegast skráið völl fyrir leik",Toast.LENGTH_SHORT).show()
                 return@launch
             }
-
             val date = binding.timeField.text.toString().split("/")
             val day = date[0]
             val month = date[1]
@@ -173,7 +174,6 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
                 "${year}/${month}/${day}",
                 ArrayList<Long>()
             )
-
             Log.d("createGame",newGame.toString())
             val bearerToken = requireActivity().getSharedPreferences("USER",0).getString("AccessToken",null)
             if(bearerToken!=null){
