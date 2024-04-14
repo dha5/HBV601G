@@ -1,55 +1,111 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:padding="8dp">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/light_blue"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textViewPlayerName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Player Name"
-            android:textStyle="bold"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textViewPlayerName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Player Name"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/editTextScore"
+                    android:layout_width="69dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Score"
+                    android:inputType="number" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/buttonSubmitScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/submit" />
+
+            <TextView
+                android:id="@+id/textViewTotalScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="@string/total_score" />
+
+            <EditText
+                android:id="@+id/editTextTotalScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:inputType="number" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/CurrentHoleInfo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/CurrentHoleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Current Hole:" />
+
+            <TextView
+                android:id="@+id/CurrentHoleNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="0" />
+
+            <TextView
+                android:id="@+id/parText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Par:" />
+
+            <TextView
+                android:id="@+id/ParNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="0" />
+        </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <EditText
-            android:id="@+id/editTextScore"
-            android:layout_width="69dp"
-            android:layout_height="wrap_content"
-            android:hint="Score"
-            android:inputType="number"/>
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/buttonSubmitScore"
-        android:layout_width="wrap_content"
+        android:id="@+id/PostedScores"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/submit"/>
-
-    <TextView
-        android:id="@+id/textViewTotalScore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/total_score"
-        android:layout_marginStart="16dp"/>
-
-    <EditText
-        android:id="@+id/editTextTotalScore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:enabled="false"/>
+        android:orientation="vertical" />
 
 </LinearLayout>

@@ -150,11 +150,10 @@ class YourGamesFragment : Fragment() {
     private fun displayGameLists(){
         for (game in gameEntityGames) {
             val playDate = game.time
-
-                Log.d("Game in gameEntityGames", game.toString())
-                val gameItem = GameItemViewHolder(GameItemBinding.inflate(layoutInflater))
-                gameItem.bindItem(game)
-                if (playDate > LocalDate.now().minusDays(10)) {
+            Log.d("Game in gameEntityGames", game.toString())
+            val gameItem = GameItemViewHolder(GameItemBinding.inflate(layoutInflater))
+            gameItem.bindItem(game)
+            if (playDate > LocalDate.now().minusDays(10)) {
                     binding.GamesList.addView(gameItem.itemView)
                 }else{
                     binding.PastGamesList.addView(gameItem.itemView)

@@ -5,7 +5,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hbv601.folf.Entities.GameData
 import com.hbv601.folf.Entities.GameEntity
 import com.hbv601.folf.Entities.GameParcel
-import com.hbv601.folf.Game
 import com.hbv601.folf.databinding.GameItemBinding
 
 class GameItemViewHolder (private val binding:GameItemBinding): RecyclerView.ViewHolder(binding.root){

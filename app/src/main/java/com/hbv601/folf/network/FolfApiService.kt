@@ -83,8 +83,9 @@ interface FolfApiService {
         @Header("Authorization") token: String
     ):Response<List<GameData>>
 
-    @GET("games/{gameid}")
-    suspend fun getGameById(@Path("gameid") gameid: Long):Response<GameData>
+    @GET("games/{gameId}")
+    suspend fun getGameById(@Path("gameId") gameid: Long):Response<GameData>
+
     @POST("games")
     suspend fun createGame(
         @Header("Authorization") BearerToken:String,@Body data:PostGameData
@@ -94,14 +95,19 @@ interface FolfApiService {
     suspend fun updateGame(@Path("gameid") gameid:Long,
                            @Body data:GameData):Response<ResponseMessage>
 
-    @POST("games/startGame")
+    @PUT("games/startGame/{id}")
     suspend fun startGame(
-        @Body id:Int
-    )
-    @POST("games/endGame")
+        @Path("id") id:Int
+    ):Response<String>
+    @PUT("games/endGame/{id}")
     suspend fun endGame(
-        @Body id:Int
-    )
+        @Path("id") id:Int
+    ):Response<String>
+
+    @GET("gameStatus/{id}")
+    suspend fun gameStatus(
+        @Path("id") id:Long
+    ): Response<String>
     @GET("players/gameid/{game_id}")
     suspend fun getGamePlayers(@Path("game_id")gameid:Long):Response<List<PlayerEntity>>
     @POST("players")

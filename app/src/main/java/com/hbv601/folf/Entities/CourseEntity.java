@@ -33,8 +33,12 @@ public class CourseEntity extends ViewModel {
         this.id=id;
         this.description = desc;
         String[] parts = coordinates.split(";");
-        double lat = Double.parseDouble(parts[0].trim());
-        double lon = Double.parseDouble(parts[1].trim());
+        double lat = 0.0;
+        double lon = 0.0;
+        if(parts.length==2 && parts[0].length()>0 && parts[1].length()>0) {
+            lat = Double.parseDouble(parts[0].trim());
+            lon = Double.parseDouble(parts[1].trim());
+        }
         Location loc = new Location(name);
         loc.setLatitude(lat);
         loc.setLongitude(lon);
