@@ -135,7 +135,7 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
                 Toast.makeText(this@CreateGameFragment.requireContext(),"vinsamlegast skráið völl fyrir leik",Toast.LENGTH_SHORT).show()
                 return@launch
             }
-            val date = binding.timeField.text.toString().split("/")
+            val date = binding.timeField.text.toString().split("-")
             val day = date[0]
             val month = date[1]
             val year = date[2]
@@ -143,7 +143,7 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
             val newGame = PostGameData(
                 binding.titleField.text.toString(),
                 selectedCourseId!!.toLong(),
-                "${year}/${month}/${day}",
+                "${year}-${month}-${day}",
                 ArrayList<Long>()
             )
             Log.d("createGame",newGame.toString())

@@ -59,10 +59,7 @@ class PlayerScoreViewHolder(private val binding:ItemPlayerScoreBinding):Recycler
             }
         }
         this.player = player
-        binding.PostedScores.adapter = PostedScoreAdapter(scoreList) { holeNum ->
-            setSpecificHoleNum(holeNum)
-        }
-
+        refreshPostedScores()
         setCurrentScore(currentHolenum)
 
     }
@@ -82,12 +79,23 @@ class PlayerScoreViewHolder(private val binding:ItemPlayerScoreBinding):Recycler
         currentHoleDisp.text = holeNum.toString()
         currentStrokes.setText(currentScoreData.strokes.toString())
     }
+    fun refreshPostedScores(){
+        postedScoreList.removeAllViews()
+        scoreList.forEach{
+            val scoreViewBind = PostedScoreItemBinding.inflate(LayoutInflater.from(this.itemView.context))
+            val scoreHolder = ScoreHolder(scoreViewBind){ holeNum ->
+                setSpecificHoleNum(holeNum)
+            }
+            scoreHolder.bind(it)
+            postedScoreList.addView(scoreHolder.itemView)
+        }
+    }
 
     fun updateCurrentScore(){
         currentScoreData = ScoreData(currentScoreData.id,binding.editTextScore.text.toString().toLong(),
             player.id!!,currentScoreData.hole_id,currentScoreData.game_id,currentScoreData.timestamp)
     }
-    fun addScore(scoreData: ScoreData) {
+    private fun addScore(scoreData: ScoreData) {
         val holeNum = holeIdMap[scoreData.hole_id.toInt()]
         if (holeNum != null) {
             scoreMap[scoreData.hole_id.toInt()] = scoreData
@@ -103,7 +111,8 @@ class PlayerScoreViewHolder(private val binding:ItemPlayerScoreBinding):Recycler
                     scoreData.strokes.toInt()
                 )
             )
-            binding.PostedScores.adapter!!.notifyDataSetChanged()        }
+        }
+        refreshPostedScores()
     }
     fun holesDone(){}
     fun nextHole(){
@@ -129,7 +138,6 @@ class PlayerScoreViewHolder(private val binding:ItemPlayerScoreBinding):Recycler
         }
     }
 
-    @Deprecated("no longer used redirects to addScore",ReplaceWith("addScoreData"),DeprecationLevel.WARNING)
     fun addScoreData(scoreData: ScoreData){
         addScore(scoreData)
         nextHole()
@@ -138,25 +146,24 @@ class PlayerScoreViewHolder(private val binding:ItemPlayerScoreBinding):Recycler
 }
 
 data class PostedScoreItem(val holeNum: Int,val par: Int, val strokes:Int)
+class ScoreHolder(val binding: PostedScoreItemBinding,val onClick: (Int) -> Unit):
+    RecyclerView.ViewHolder(binding.root){
+    private val parnum = binding.parNum
+    private val holeNum = binding.HoleNum
+    private val strokes = binding.KastTala
+    private val skor = binding.scoreNum
+    fun bind(get:PostedScoreItem){
+        binding.root.setOnClickListener{
+            onClick(get.par)
+        }
+        holeNum.text = get.holeNum.toString()
+        parnum.text = get.par.toString()
+        strokes.text = get.strokes.toString()
+        skor.text = (get.par - get.strokes).toString()
+    }
+}
 class PostedScoreAdapter(private val scores:ArrayList<PostedScoreItem>,val onClick:(Int)->Unit):
-    RecyclerView.Adapter<PostedScoreAdapter.ScoreHolder>() {
-
-    class ScoreHolder(val binding: PostedScoreItemBinding,val onClick: (Int) -> Unit):
-        RecyclerView.ViewHolder(binding.root){
-            private val parnum = binding.parNum
-            private val holeNum = binding.HoleNum
-            private val strokes = binding.KastTala
-            private val skor = binding.scoreNum
-        fun bind(get:PostedScoreItem){
-            binding.root.setOnClickListener{
-                onClick(get.par)
-            }
-            holeNum.text = get.holeNum.toString()
-            parnum.text = get.par.toString()
-            strokes.text = get.strokes.toString()
-            skor.text = (get.par - get.strokes).toString()
-        }
-        }
+    RecyclerView.Adapter<ScoreHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScoreHolder {
         val binding = PostedScoreItemBinding.inflate(LayoutInflater.from(parent.context))
         return ScoreHolder(binding,onClick)
