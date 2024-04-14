@@ -16,13 +16,28 @@ import com.hbv601.folf.network.FolfApi
 class CourseViewHolder (private val binding: CourseItemBinding): RecyclerView.ViewHolder(binding.root) {
     suspend fun bindItem(course: CourseData, context: Context){
         binding.CourseName.text = course.name
-        val resGames = FolfApi.retrofitService.getGamesByFieldId(course.id)
-        if (resGames.isSuccessful) {
-            val games = resGames.body()
-            val adapter = games?.let { GamesAdapter(it) }
-            binding.gameslist.layoutManager = LinearLayoutManager(context)
-            binding.gameslist.adapter = adapter
-            binding.bestScoreTitle.visibility = View.INVISIBLE
+
+        val bearerToken = context.getSharedPreferences("User", 0).getString("AccessToken", null)
+
+        val resGamesByFieldId = FolfApi.retrofitService.getGamesByFieldId(course.id)
+        val resUserGames = FolfApi.retrofitService.getLoggedInUserGames("Bearer ${bearerToken}")
+        if (resGamesByFieldId.isSuccessful && resUserGames.isSuccessful) {
+            val gamesByFieldId = resGamesByFieldId.body()
+            val userGames = resUserGames.body()
+
+            gamesByFieldId?.let { fieldGames ->
+                userGames?.let { allUserGames ->
+                    val filteredGames = fieldGames.filter { fieldGame ->
+                        allUserGames.any { userGame ->
+                            userGame.id == fieldGame.id
+                        }
+                    }
+                    val adapter = GamesAdapter(filteredGames)
+                    binding.gameslist.layoutManager = LinearLayoutManager(context)
+                    binding.gameslist.adapter = adapter
+                    binding.bestScoreTitle.visibility = View.INVISIBLE
+                }
+            }
         }
     }
     fun bestScore(view:View){

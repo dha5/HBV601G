@@ -21,7 +21,7 @@ class GameItemViewHolder (private val binding:GameItemBinding): RecyclerView.Vie
     fun bindGameClass(game: GameData){
         gluedGameData = game
         binding.Course.text = game.name
-        binding.DateTime.text = game.datetime
+        binding.DateTime.text = game.date_created
         binding.Creator.text = game.creator.toString()
     }
 
