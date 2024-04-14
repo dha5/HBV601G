@@ -1,6 +1,5 @@
 package com.hbv601.folf
 
-import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,7 +13,6 @@ import androidx.navigation.fragment.findNavController
 import com.hbv601.folf.Entities.CourseData
 import com.hbv601.folf.Entities.GameData
 import com.hbv601.folf.Entities.GameEntity
-import com.hbv601.folf.Entities.GameParcel
 import com.hbv601.folf.ViewHolders.GameItemViewHolder
 import com.hbv601.folf.databinding.FragmentYourGamesBinding
 import com.hbv601.folf.databinding.GameItemBinding
@@ -234,7 +232,7 @@ class YourGamesFragment : Fragment() {
                 }
                 var gameDate : LocalDate
                 try {
-                     gameDate = LocalDate.parse(gameData.datetime)
+                     gameDate = LocalDate.parse(gameData.date_created)
                 }catch (e: java.time.DateTimeException){
                     Log.e("LocalDateError",e.toString())
                     gameDate = LocalDate.parse("1996-01-20") //Þurfti að setja eithvað. afmælið mitt virkar :D
