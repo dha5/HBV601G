@@ -20,6 +20,8 @@ class PlayerScoreViewHolder(private val binding:ItemPlayerScoreBinding):Recycler
     val postedScoreList = binding.PostedScores
     val postScore = binding.buttonSubmitScore
     val holeMap:MutableMap<Int,HoleData> = mutableMapOf()
+    val scoreList:ArrayList<PostedScoreItem> = arrayListOf()
+    //map of hole_id ints to hole_number ints
     val holeIdMap:MutableMap<Int,Int> = mutableMapOf()
     lateinit var player:PlayerEntity
     //scoreMap er mappað á id tölur holana á þeim forsendum að engin hola megi vera tvískráð
@@ -47,87 +49,98 @@ class PlayerScoreViewHolder(private val binding:ItemPlayerScoreBinding):Recycler
 
             scorePresent = true
             for(score in scores){
-                scoreMap[score.hole_id.toInt()] = score
-                val holeNum = holeMap[holeIdMap[score.hole_id.toInt()]]!!.hole_number
-                if(holeNum > currentHolenum){
-
+                addScore(score)
+                val holeNum = holeIdMap[holeIdMap[score.hole_id.toInt()]]
+                if(scorePresent && holeNum == currentHolenum){
+                    if(currentHolenum<maxHole)currentHolenum++
+                }else{
+                    scorePresent = false
                 }
             }
         }
         this.player = player
+        binding.PostedScores.adapter = PostedScoreAdapter(scoreList) { holeNum ->
+            setSpecificHoleNum(holeNum)
+        }
 
-        while(scorePresent){
-            if(scoreMap[holeMap[currentHolenum]!!.id]==null) {scorePresent = false}
-            else {updateHoleNum()}
+        setCurrentScore(currentHolenum)
+
+    }
+    fun setCurrentScore(holeNum: Int){
+        currentHolenum = holeNum
+        if(scoreMap[holeMap[holeNum]!!.id]!=null){
+            currentScoreData = scoreMap[holeMap[holeNum]!!.id]!!
+        }else{
+            currentScoreData = ScoreData(null,
+                0,
+                player.id!!,
+                holeMap[holeNum]!!.id.toLong(),
+                player.game_id,null)
         }
-        currentParDisp.text = holeMap[currentHolenum]!!.par.toString()
-        currentHoleDisp.text = currentHolenum.toString()
-        newCurrentScore()
+        Log.d("currentScoreData",currentScoreData.toString())
+        currentParDisp.text = holeMap[holeNum]!!.par.toString()
+        currentHoleDisp.text = holeNum.toString()
+        currentStrokes.setText(currentScoreData.strokes.toString())
     }
-    fun refreshScoreList(){
-        var i = 1
-        val scoreArray = mutableListOf<PostedScoreItem>()
-        while(i>=maxHole){
-            if(scoreMap[holeMap[i]!!.id]!=null){
-                scoreArray.add(PostedScoreItem(i,holeMap[i]!!.par,scoreMap[holeMap[i]!!.id]!!.strokes.toInt()))
-            }
-            i++;
-        }
-        binding.PostedScores.removeAllViews()
-        binding.PostedScores.adapter = PostedScoreAdapter(scoreArray.toTypedArray()) { holeNum ->
-            setSpecificHoleNum(holeNum) }
-    }
-    fun newCurrentScore(){
-        currentScoreData = ScoreData(null,0,
-            player.id!!,holeMap[currentHolenum]!!.id.toLong(),player.game_id,null)
-        scoreMap[holeMap[currentHolenum]!!.id] = currentScoreData
-    }
+
     fun updateCurrentScore(){
-        val currentScore = scoreMap[holeMap[currentHolenum]!!.id]
-        if (currentScore != null) {
-            currentScoreData = ScoreData(currentScore.id,binding.editTextScore.text.toString().toLong(),
-                player.id!!,currentScore.hole_id,currentScore.game_id,currentScore.timestamp)
+        currentScoreData = ScoreData(currentScoreData.id,binding.editTextScore.text.toString().toLong(),
+            player.id!!,currentScoreData.hole_id,currentScoreData.game_id,currentScoreData.timestamp)
+    }
+    fun addScore(scoreData: ScoreData) {
+        val holeNum = holeIdMap[scoreData.hole_id.toInt()]
+        if (holeNum != null) {
+            scoreMap[scoreData.hole_id.toInt()] = scoreData
+            for (score in scoreList) {
+                if (score.holeNum == holeNum) {
+                    scoreList.remove(score)
+                }
+            }
+            scoreList.add(
+                PostedScoreItem(
+                    holeNum,
+                    holeMap[holeNum]!!.par,
+                    scoreData.strokes.toInt()
+                )
+            )
+            binding.PostedScores.adapter =
+                PostedScoreAdapter(scoreList) { hole -> setSpecificHoleNum(hole) }
         }
-        refreshScoreList()
-
     }
     fun holesDone(){}
-    fun updateHoleNum(){
-        if(currentHolenum>=maxHole){
-            holesDone()
+    fun nextHole(){
+        while(currentHolenum<maxHole){
+            if(scoreMap[holeMap[currentHolenum]?.id] !=null){
+                currentHolenum++;
+            }else
+                break
         }
-        currentHolenum++
-        currentHoleDisp.text = currentHolenum.toString()
-        if(holeMap[currentHolenum]!=null) {
-            currentParDisp.text = holeMap[currentHolenum]!!.par.toString()
-        }
+        setCurrentScore(currentHolenum)
+
     }
-    fun setSpecificHoleNum(holeNum:Int){
-        if(holeNum>=maxHole || holeNum<=0){
+    fun setSpecificHoleNum(holeNum:Int) {
+        if (holeNum >= maxHole || holeNum <= 0) {
             return
         }
         currentHolenum = holeNum
         currentHoleDisp.text = currentHolenum.toString()
         currentParDisp.text = holeMap[currentHolenum]!!.par.toString()
-        if(scoreMap[holeMap[currentHolenum]!!.id]!=null){
+        if (scoreMap[holeMap[currentHolenum]!!.id] != null) {
             currentScoreData = scoreMap[holeMap[currentHolenum]!!.id]!!
             currentStrokes.setText(currentScoreData.strokes.toInt())
         }
-
     }
-    fun addScoreData(scoreData: ScoreData){
-        scoreMap[scoreData.hole_id.toInt()] = scoreData
-        Log.d("playerScoreViewHolder",scoreData.toString())
-        Log.d("playerScoreThrows",this.currentScoreData.toString())
-        binding.PostedScores.adapter
-        refreshScoreList()
 
+    @Deprecated("no longer used redirects to addScore",ReplaceWith("addScoreData"),DeprecationLevel.WARNING)
+    fun addScoreData(scoreData: ScoreData){
+        addScore(scoreData)
+        nextHole()
     }
 
 }
 
 data class PostedScoreItem(val holeNum: Int,val par: Int, val strokes:Int)
-class PostedScoreAdapter(private val scores:Array<PostedScoreItem>,val onClick:(Int)->Unit):
+class PostedScoreAdapter(private val scores:ArrayList<PostedScoreItem>,val onClick:(Int)->Unit):
     RecyclerView.Adapter<PostedScoreAdapter.ScoreHolder>() {
 
     class ScoreHolder(val binding: PostedScoreItemBinding,val onClick: (Int) -> Unit):

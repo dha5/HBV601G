@@ -39,12 +39,26 @@ class InputScoreFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val gameId = arguments?.getInt("gameId")
-        if (gameId != null){ fetchGame(gameId.toLong());
-            binding.buttonFinishGame.setOnClickListener {
-                finishGame(gameId)
+        Log.d("Inputscore","initiliazing inputscore")
+        val gameId = arguments?.getInt("GAME_ID")
+        if (gameId != null){
+            lifecycleScope.launch{
+                Log.d("inputscorefragment","attempting gameStatus")
+                val res = FolfApi.retrofitService.gameStatus(gameId.toLong())
+                Log.d("gamestatus",res.toString())
+                if(res.isSuccessful){
+                    Log.d("inputcorefragment","gamestatus check succesful")
+                    val args = Bundle().apply {
+                        putInt("GAME_ID", gameId)
+                    }
+                    if(res.body() == "done"){
+                        findNavController().navigate(R.id.action_InputScoreFragment_to_LeaderboardFragment,args)
+                    }else if(res.body() == "not started"){
+                        findNavController().navigate(R.id.action_InputScoreFragment_to_createGameFragment,args)
+                    }else fetchGame(gameId.toLong());
+                }
             }
-        }
+        }else Toast.makeText(requireContext(),"missing gameid",Toast.LENGTH_SHORT).show()
 
 
     }
@@ -97,6 +111,10 @@ class InputScoreFragment : Fragment() {
 
             }
 
+            binding.buttonFinishGame.setOnClickListener {
+                finishGame(gameId.toInt())
+            }
+
         }
     }
     fun postViewHolderScoreData(player_id:Long){
@@ -107,8 +125,12 @@ class InputScoreFragment : Fragment() {
     }
     fun finishGame(gameId: Int){
         lifecycleScope.launch {
-            FolfApi.retrofitService.endGame(gameId)
-            findNavController().navigate(R.id.action_InputScoreFragment_to_LeaderboardFragment)
+            val args = Bundle().apply {
+                putInt("GAME_ID", gameId)
+            }
+            val res = FolfApi.retrofitService.endGame(gameId)
+            if(res.isSuccessful) findNavController().navigate(R.id.action_InputScoreFragment_to_LeaderboardFragment,args)
+            else Toast.makeText(requireContext(),"Ekki tókst að enda leik",Toast.LENGTH_SHORT).show()
         }
     }
 

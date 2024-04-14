@@ -95,18 +95,18 @@ interface FolfApiService {
     suspend fun updateGame(@Path("gameid") gameid:Long,
                            @Body data:GameData):Response<ResponseMessage>
 
-    @POST("games/startGame")
+    @PUT("games/startGame/{id}")
     suspend fun startGame(
-        @Body id:Int
-    )
-    @POST("games/endGame")
+        @Path("id") id:Int
+    ):Response<String>
+    @PUT("games/endGame/{id}")
     suspend fun endGame(
-        @Body id:Int
-    )
+        @Path("id") id:Int
+    ):Response<String>
 
-    @GET("games/gameStatus")
+    @GET("gameStatus/{id}")
     suspend fun gameStatus(
-        @Body id:Int
+        @Path("id") id:Long
     ): Response<String>
     @GET("players/gameid/{game_id}")
     suspend fun getGamePlayers(@Path("game_id")gameid:Long):Response<List<PlayerEntity>>

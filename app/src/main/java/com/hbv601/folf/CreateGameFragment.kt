@@ -46,36 +46,6 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
     private val playerList = ArrayList<PlayerEntity>()
     private val storedCourses: MutableList<CourseEntity> = mutableListOf()
 
-    /*private val bReceiver: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            if (intent.action == RECIEVE_GAMEPARCEL) {
-                val gameParcel = intent.getParcelableExtra(GAME_PARCEL,
-                    GameParcel::class.java
-                )
-                if (gameParcel != null) {
-                    Log.d("game created", gameParcel.gameTitle.toString())
-                    Log.d("gameId", gameParcel.gameId.toString())
-                    gameId = gameParcel.gameId
-                    Log.d("Succesfull registeringPlayer", gameParcel.creatingPlayer.toString())
-                    if(playerNamesList.isNotEmpty()){
-                        val players = ArrayList<String>()
-                        for(playerName in playerNamesList){
-                            players.add(playerName)
-                        }
-                        GameService.startActionAddPlayers(context, gameId as Int,players)
-                    }
-                    updateButton()
-
-                }
-
-                println("ParcelRecieved")
-
-                //Do something with the string
-            }
-        }
-    }
-    var bManager: LocalBroadcastManager? = null*/
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -93,9 +63,11 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
         super.onViewCreated(view, savedInstanceState)
         binding.startGameButton.visibility = View.INVISIBLE
         binding.playerLayout.visibility = View.INVISIBLE
-
+        val gameId = arguments?.getInt("GAME_ID")
         val gameParcel = arguments?.getParcelable("GAME_PARCEL",GameParcel::class.java)
-        if(gameParcel != null){
+        if(gameId!=null){
+            getGame(gameId.toLong())
+        }else if(gameParcel != null){
             getGame(gameParcel.gameId.toLong())
             //binding.locationField.setText(gameParcel.course)
         }else {
@@ -145,7 +117,7 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
         }
     }
     fun extantGame(){
-        binding.timeField.setText(existingGame!!.datetime.toString())
+        binding.timeField.setText(existingGame!!.date_created.toString())
         binding.titleField.setText(existingGame!!.name.toString())
         binding.playerLayout.visibility = View.VISIBLE
         binding.startGameButton.visibility = View.VISIBLE
@@ -231,10 +203,20 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
     }
     fun getGame(gameId:Long){
         lifecycleScope.launch {
-            val res = FolfApi.retrofitService.getGameById(gameId)
-            if(res.isSuccessful){
-                existingGame = res.body()!!
-                extantGame()
+            val status = FolfApi.retrofitService.gameStatus(gameId)
+            if(status.isSuccessful){
+                if(status.body() == "started"){
+                    val args = Bundle().apply {
+                        putInt("gameId", Math.toIntExact(existingGame!!.id!!))
+                    }
+                    findNavController().navigate(R.id.action_CreateGameFragment_to_InputScoreFragment,args)
+                }else{
+                    val res = FolfApi.retrofitService.getGameById(gameId)
+                    if(res.isSuccessful){
+                        existingGame = res.body()!!
+                        extantGame()
+                    }
+                }
             }else{
                 Toast.makeText(this@CreateGameFragment.requireContext(),"GameId skilaði ekki leik",Toast.LENGTH_SHORT).show()
             }
@@ -243,17 +225,20 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
     }
     fun startGame(){
         if(playerNamesList.size>0 && existingGame!=null){
-            val args = Bundle().apply {
-                putInt("gameId", Math.toIntExact(existingGame!!.id!!) )
-                putStringArray("playerNames", playerNamesList.toTypedArray())
+            lifecycleScope.launch {
+                val res = FolfApi.retrofitService.startGame(existingGame!!.id!!.toInt())
+                if(res.isSuccessful){
+                    val args = Bundle().apply {
+                        putInt("GAME_ID", Math.toIntExact(existingGame!!.id!!) )
+                    }
+                    // Navigate to InputScoreFragment with arguments
+                    findNavController().navigate(R.id.action_CreateGameFragment_to_InputScoreFragment, args)
+                }else Toast.makeText(requireContext(),"eitthvað vandamál með að byrja þennan leik",Toast.LENGTH_SHORT).show()
             }
-            // Navigate to InputScoreFragment with arguments
-            findNavController().navigate(R.id.action_CreateGameFragment_to_InputScoreFragment, args)
         } else {
         // Handle case where no players are added
         Toast.makeText(this@CreateGameFragment.requireContext(), "Please add at least one player", Toast.LENGTH_SHORT).show()
-    }
-        //útfæra
+        }
     }
     fun addPlayerFromSpinner(){
         lifecycleScope.launch{

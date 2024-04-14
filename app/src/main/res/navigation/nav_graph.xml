@@ -54,6 +54,9 @@
         <action
             android:id="@+id/action_InputScoreFragment_to_LeaderboardFragment"
         app:destination="@id/LeaderboardFragment" />
+        <action
+            android:id="@+id/action_InputScoreFragment_to_createGameFragment"
+            app:destination="@id/CreateGameFragment"/>
     </fragment>
 
 

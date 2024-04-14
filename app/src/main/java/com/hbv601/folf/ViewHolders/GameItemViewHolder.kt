@@ -4,7 +4,6 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.hbv601.folf.Entities.GameData
 import com.hbv601.folf.Entities.GameParcel
-import com.hbv601.folf.Game
 import com.hbv601.folf.databinding.GameItemBinding
 
 class GameItemViewHolder (private val binding:GameItemBinding): RecyclerView.ViewHolder(binding.root){
@@ -16,7 +15,7 @@ class GameItemViewHolder (private val binding:GameItemBinding): RecyclerView.Vie
     }
     fun bindGameClass(game: GameData){
         binding.Course.text = game.name
-        binding.DateTime.text = game.datetime
+        binding.DateTime.text = game.date_created
         binding.Creator.text = game.creator.toString()
     }
     fun onClick(){
