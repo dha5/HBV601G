@@ -57,7 +57,7 @@ class GameService : IntentService("GameService") {
                 val fieldId = intent.getIntExtra(GAME_FIELD_ID, -1)
                 val gameEntity = handleActionRegisterGame(title,course,time,registeringPlayer,fieldId)
                 if(gameEntity != null){
-                    val gameParcel = gameEntity.gameEntityToParcel();
+                    val gameParcel = gameEntity.toGameParcel();
                     val RTReturn: Intent = Intent(RECIEVE_GAMEPARCEL)
                     RTReturn.putExtra(GAME_PARCEL, gameParcel);
                     LocalBroadcastManager.getInstance(this).sendBroadcast(RTReturn)
@@ -111,7 +111,7 @@ class GameService : IntentService("GameService") {
         for(game in GamesList){
             Log.d("course",game.course)
             //if(game.players.contains(player)||game.creatingPlayer==player){
-                returnList.add(game.gameEntityToParcel())
+                returnList.add(game.toGameParcel())
             //}
         }
         val parcelList = GameParcel.newArray(returnList.size)
@@ -128,7 +128,7 @@ class GameService : IntentService("GameService") {
     private fun handleActionFetchGame(id:Int){
         println("intent Received")
         val gameEntity = GamesList[id];
-        val gameParcel = gameEntity.gameEntityToParcel();
+        val gameParcel = gameEntity.toGameParcel();
         val RTReturn: Intent = Intent(RECIEVE_GAMEPARCEL)
         RTReturn.putExtra(GAME_PARCEL, gameParcel);
         LocalBroadcastManager.getInstance(this).sendBroadcast(RTReturn)
