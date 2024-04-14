@@ -36,12 +36,8 @@ class CourseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Observe courses LiveData
         viewModel.courses.observe(viewLifecycleOwner) { courses ->
-            // Update UI or perform any necessary actions based on LiveData changes
         }
-
-        // Fetch courses
 
         lifecycleScope.launch {
             val resCourses = FolfApi.retrofitService.getFields()
@@ -51,6 +47,7 @@ class CourseFragment : Fragment() {
                 for (course in courses) {
                     Log.d("courseName", course.name)
                     val courseView = CourseViewHolder(CourseItemBinding.inflate(layoutInflater))
+                    val token = requireActivity().getSharedPreferences("USER",0).getString("AccessToken",null)
                     requireContext().let { courseView.bindItem(course, it) }
                     /*for(game in course.games){
                     val gameView = GameItemViewHolder(GameItemBinding.inflate(layoutInflater))
@@ -66,6 +63,7 @@ class CourseFragment : Fragment() {
             }
         }
     }
+
     fun getBestScore(course:String):View?{
         val scoreView = ScoreViewHolder(ScoreItemBinding.inflate(layoutInflater))
         scoreView.onBind("Strákafrolf í hádeginu","24. Mars 2023 12:30",22,21)

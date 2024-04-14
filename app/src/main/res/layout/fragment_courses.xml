@@ -9,32 +9,37 @@
 
     <!-- Your existing layout content goes here -->
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <!-- Header -->
-        <TextView
-            android:id="@+id/text_view_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Courses"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:padding="16dp"
-            android:background="@color/light_blue"/>
-
-        <!-- Course 1 -->
         <LinearLayout
-            android:id="@+id/CourseList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"></LinearLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <!-- Course 2 -->
+            <!-- Header -->
+            <TextView
+                android:id="@+id/text_view_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Courses"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:padding="16dp"
+                android:background="@color/light_blue"/>
+
+            <!-- Course 1 -->
+            <LinearLayout
+                android:id="@+id/CourseList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"></LinearLayout>
+
+            <!-- Course 2 -->
 
 
-    </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </layout>
