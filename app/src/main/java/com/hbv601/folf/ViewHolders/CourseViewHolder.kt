@@ -1,6 +1,7 @@
 package com.hbv601.folf.ViewHolders
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,10 +18,21 @@ class CourseViewHolder (private val binding: CourseItemBinding): RecyclerView.Vi
     suspend fun bindItem(course: CourseData, context: Context){
         binding.CourseName.text = course.name
 
-        val bearerToken = context.getSharedPreferences("User", 0).getString("AccessToken", null)
+        val bearerToken = context.getSharedPreferences("USER", 0).getString("AccessToken", null)
+        Log.d("AccessToken", bearerToken ?: "Token is null or empty")
 
         val resGamesByFieldId = FolfApi.retrofitService.getGamesByFieldId(course.id)
         val resUserGames = FolfApi.retrofitService.getLoggedInUserGames("Bearer ${bearerToken}")
+
+        if (!resGamesByFieldId.isSuccessful) {
+            Log.e("CourseViewHolder", "Failed to fetch games by Field ID: ${resGamesByFieldId.message()}")
+        }
+
+        if (!resUserGames.isSuccessful) {
+            Log.e("CourseViewHolder", "Failed to fetch user games: ${resUserGames.message()}")
+        }
+
+
         if (resGamesByFieldId.isSuccessful && resUserGames.isSuccessful) {
             val gamesByFieldId = resGamesByFieldId.body()
             val userGames = resUserGames.body()
