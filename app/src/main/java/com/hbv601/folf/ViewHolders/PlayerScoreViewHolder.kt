@@ -103,9 +103,7 @@ class PlayerScoreViewHolder(private val binding:ItemPlayerScoreBinding):Recycler
                     scoreData.strokes.toInt()
                 )
             )
-            binding.PostedScores.adapter =
-                PostedScoreAdapter(scoreList) { hole -> setSpecificHoleNum(hole) }
-        }
+            binding.PostedScores.adapter!!.notifyDataSetChanged()        }
     }
     fun holesDone(){}
     fun nextHole(){

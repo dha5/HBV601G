@@ -60,7 +60,9 @@ class InputScoreFragment : Fragment() {
             }
         }else Toast.makeText(requireContext(),"missing gameid",Toast.LENGTH_SHORT).show()
 
-
+        binding.buttonHome.setOnClickListener {
+            findNavController().navigate(R.id.action_InputScoreFragment_to_homePageFragment)
+        }
     }
 
     fun fetchGame(gameId:Long){

@@ -57,6 +57,9 @@
         <action
             android:id="@+id/action_InputScoreFragment_to_createGameFragment"
             app:destination="@id/CreateGameFragment"/>
+        <action
+            android:id="@+id/action_InputScoreFragment_to_homePageFragment"
+            app:destination="@id/homePageFragment"/>
     </fragment>
 
 
