@@ -79,27 +79,60 @@ class CourseFragment : Fragment() {
 
 
         var gamesOnThisCourse = ArrayList<GameData>()
-        var bestGame = null
-        var bestScore = 0
-        val bearerToken = requireActivity().getSharedPreferences("USER",0).getString("AccessToken",null)
-        val resUserGames = FolfApi.retrofitService.getLoggedInUserGames("Bearer ${bearerToken}")
-
-        if (resUserGames.isSuccessful){
-           var userGames = resUserGames.body()
-            if (userGames != null) {
-                for (game in userGames){
-                    if (game.id?.toInt() == course.id)
-                    gamesOnThisCourse.add(game)
+        var bestgame : GameData? = null
+        var bestScore = Int.MAX_VALUE
+        var par = 0
+        val resHoleData = FolfApi.retrofitService.getHolesByFieldId(course.id)
+        if (resHoleData.isSuccessful) {
+            val holeData = resHoleData.body()
+            if (holeData != null) {
+                for (hole in holeData){
+                    par += hole.par
                 }
+            }
 
-                return scoreView.itemView
+            val bearerToken =
+                requireActivity().getSharedPreferences("USER", 0).getString("AccessToken", null)
+            val resUserGames = FolfApi.retrofitService.getLoggedInUserGames("Bearer ${bearerToken}")
+
+            if (resUserGames.isSuccessful) {
+                var userGames = resUserGames.body()
+                if (userGames != null) {
+                    for (game in userGames) {
+                        if (game.id?.toInt() == course.id) {
+                            gamesOnThisCourse.add(game)
+                        }
+                    }
+                    for (game in gamesOnThisCourse) {
+                        var throws = 0
+                        if (game.id != null) {
+                            val resGameScores = FolfApi.retrofitService.getScoreByGameId(game.id)
+                            if (resGameScores.isSuccessful) {
+                                val gameScores = resGameScores.body()
+                                if (gameScores != null) {
+                                    for (score in gameScores) {
+                                        throws += (score.strokes).toInt()
+                                    }
+                                }
+                            }
+                        }
+                        if (throws < bestScore){
+                            bestScore = throws
+                            bestgame = game
+                        }
+                    }
+                    if (bestgame != null) {
+                        scoreView.onBind(bestgame.name, bestgame.date_created, bestScore, par)
+                        return scoreView.itemView
+                    }
+                }
             }
         }
 
 
 
-
         //scoreView.onBind("Strákafrolf í hádeginu","24. Mars 2023 12:30",22,21)
+        Log.d("getBestScore","skilar null")
         return null
 
     }
