@@ -106,13 +106,16 @@
         android:name="com.hbv601.folf.YourGamesFragment"
         android:label="YourGamesFragment">
         <action
-            android:id="@+id/action_homePageFragment_to_StatisticsFragment"
+            android:id="@+id/action_YourGames_to_StatisticsFragment"
             app:destination="@id/StatisticsFragment"
             app:argType="GameParcel"/>
         <action
-            android:id="@+id/action_yourGamesFragment_to_CreateGameFragment"
+            android:id="@+id/action_yourGames_to_createGameFragment"
             app:destination="@id/CreateGameFragment"
-            app:argType="GameParcel"/>
+            />
+        <action
+            android:id="@+id/action_yourGames_to_inputScorefragment"
+            app:destination="@id/InputScoreFragment"/>
     </fragment>
 
     <fragment

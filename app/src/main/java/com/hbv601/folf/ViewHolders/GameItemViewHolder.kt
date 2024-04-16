@@ -1,6 +1,7 @@
 package com.hbv601.folf.ViewHolders
 
 import android.view.View
+import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
 import com.hbv601.folf.Entities.GameData
 import com.hbv601.folf.Entities.GameEntity
@@ -37,6 +38,10 @@ class GameItemViewHolder (private val binding:GameItemBinding): RecyclerView.Vie
     fun bindButton(game: GameParcel, listener: View.OnClickListener) {
         binding.viewStatisticsButton.visibility = View.VISIBLE
         binding.viewStatisticsButton.setOnClickListener(listener)
+    }
+    fun bindButtonToBar(button:Button,listener: View.OnClickListener){
+        button.setOnClickListener(listener)
+        binding.buttonBar.addView(button)
     }
 
 }

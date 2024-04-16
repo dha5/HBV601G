@@ -38,6 +38,20 @@
                 android:text="creator" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/buttonBar"
+            android:layout_width="135dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"></LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="335dp">
+
         <Button
             android:id="@+id/ViewGameButton"
             android:layout_width="67dp"
