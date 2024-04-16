@@ -53,7 +53,7 @@
 
         <action
             android:id="@+id/action_InputScoreFragment_to_LeaderboardFragment"
-        app:destination="@id/LeaderboardFragment" />
+            app:destination="@id/StatisticsFragment" />
         <action
             android:id="@+id/action_InputScoreFragment_to_createGameFragment"
             app:destination="@id/CreateGameFragment"/>
@@ -108,7 +108,7 @@
         <action
             android:id="@+id/action_YourGames_to_StatisticsFragment"
             app:destination="@id/StatisticsFragment"
-            app:argType="GameParcel"/>
+            />
         <action
             android:id="@+id/action_yourGames_to_createGameFragment"
             app:destination="@id/CreateGameFragment"
@@ -130,13 +130,11 @@
         android:label="CourseFragment">
     </fragment>
     <fragment
-        android:id="@+id/LeaderboardFragment"
-        android:name="com.hbv601.folf.LeaderboardFragment"
-        android:label="StatisticsFragment">
-    </fragment>
-    <fragment
         android:id="@+id/StatisticsFragment"
         android:name="com.hbv601.folf.StatisticsFragment"
         android:label="StatisticsFragment">
+        <action
+            android:id="@+id/action_statistics_to_homepage"
+            app:destination="@id/homePageFragment"/>
     </fragment>
 </navigation>

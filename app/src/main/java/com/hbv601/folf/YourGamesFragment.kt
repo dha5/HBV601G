@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -83,7 +82,7 @@ class YourGamesFragment : Fragment() {
                     getOngoingGames()
                     getPastGames()
                     getUpcomingGames()
-                    getGameDataGames()
+                    //getGameDataGames()
                     getGameEntity()
                 }
                 displayGameLists()
@@ -152,7 +151,8 @@ class YourGamesFragment : Fragment() {
             btnViewStatistics.text = "View Statistics"
             val statisticsClickListener = View.OnClickListener {
                 val args = Bundle().apply {
-                    putParcelable("GAME_PARCEL", game.toGameParcel())
+                    putInt("GAME_ID",game.getId())
+                    putInt("FIELD_ID",game.fieldId)
                 }
                 findNavController().navigate(
                     R.id.action_YourGames_to_StatisticsFragment,
@@ -163,7 +163,7 @@ class YourGamesFragment : Fragment() {
             binding.PastGamesList.addView(gameItem.itemView)
         }
 
-        for (game in gameEntityGames) {
+        /*for (game in gameEntityGames) {
             val playDate = game.time
             Log.d("Game in gameEntityGames", game.toString())
             val gameItem = GameItemViewHolder(GameItemBinding.inflate(layoutInflater))
@@ -192,9 +192,9 @@ class YourGamesFragment : Fragment() {
                 //binding.GamesList.addView(btnViewStatistics)
 
 
-        }
+        }*/
     }
-    private suspend fun getGameDataGames(){
+    /*private suspend fun getGameDataGames(){
         gameDataGames.clear()
         val bearerToken = requireActivity().getSharedPreferences("USER",0).getString("AccessToken",null)
         if (bearerToken != null) {
@@ -222,7 +222,7 @@ class YourGamesFragment : Fragment() {
             return
         }
 
-    }
+    }*/
     private suspend fun getUpcomingGames(){
         val bearerToken = requireActivity().getSharedPreferences("USER",0).getString("AccessToken",null)
         val userId = requireActivity().getSharedPreferences("USER",0).getInt("UserId",-1)
@@ -246,8 +246,10 @@ class YourGamesFragment : Fragment() {
         val bearerToken = requireActivity().getSharedPreferences("USER",0).getString("AccessToken",null)
         if(bearerToken!=null){
             val res = FolfApi.retrofitService.getYourPastGames("Bearer $bearerToken")
+            Log.d("pastGames",res.toString())
             if(res.isSuccessful){
                 val games = res.body()
+                Log.d("pastGames",games.toString())
                 if(games!=null){
                     for(game in games){
                         gameDataPastGames.add(game)
@@ -258,7 +260,6 @@ class YourGamesFragment : Fragment() {
     }
     private suspend fun getOngoingGames(){
         val bearerToken = requireActivity().getSharedPreferences("USER",0).getString("AccessToken",null)
-        val userId = requireActivity().getSharedPreferences("USER",0).getInt("UserId",-1)
         if(bearerToken!=null){
             val res = FolfApi.retrofitService.getYourOngoingGames("Bearer $bearerToken")
             if(res.isSuccessful){

@@ -1,11 +1,11 @@
 package com.hbv601.folf.ViewHolders
 
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
 import com.hbv601.folf.Entities.GameData
 import com.hbv601.folf.Entities.GameEntity
-import com.hbv601.folf.Entities.GameParcel
 import com.hbv601.folf.databinding.GameItemBinding
 
 class GameItemViewHolder (private val binding:GameItemBinding): RecyclerView.ViewHolder(binding.root){
@@ -31,16 +31,14 @@ class GameItemViewHolder (private val binding:GameItemBinding): RecyclerView.Vie
     fun getGameData() : GameData{
         return gluedGameData
     }
-    fun onClick(){
-            binding.ViewGameButton.visibility = View.VISIBLE
-    }
 
-    fun bindButton(game: GameParcel, listener: View.OnClickListener) {
+    /*fun bindButton(game: GameParcel, listener: View.OnClickListener) {
         binding.viewStatisticsButton.visibility = View.VISIBLE
         binding.viewStatisticsButton.setOnClickListener(listener)
-    }
+    }*/
     fun bindButtonToBar(button:Button,listener: View.OnClickListener){
         button.setOnClickListener(listener)
+        button.layoutParams =ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         binding.buttonBar.addView(button)
     }
 
