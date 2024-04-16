@@ -292,7 +292,9 @@ class YourGamesFragment : Fragment() {
         if (gameData.field_id != null){
             tempFieldId = gameData.field_id
         }
-        return GameEntity(gameData.name, fieldname, gameDate, name, tempFieldId )
+        val gameEntity = GameEntity(gameData.name, fieldname, gameDate, name, tempFieldId )
+        gameEntity.setId(gameData.id!!.toInt())
+        return gameEntity
     }
     private suspend fun getGameEntity(){
         gameEntityGames.clear()
