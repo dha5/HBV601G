@@ -64,6 +64,7 @@ class PlayerScoreViewHolder(private val binding:ItemPlayerScoreBinding):Recycler
 
     }
     fun setCurrentScore(holeNum: Int){
+        Log.d("setCurrentScore", "Current hole:" + holeNum)
         currentHolenum = holeNum
         if(scoreMap[holeMap[holeNum]!!.id]!=null){
             currentScoreData = scoreMap[holeMap[holeNum]!!.id]!!

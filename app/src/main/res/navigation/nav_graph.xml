@@ -71,6 +71,9 @@
         <action
             android:id="@+id/action_registerFragment_to_homePageFragment"
             app:destination="@id/homePageFragment" />
+        <action
+            android:id="@+id/action_registerFragment_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
     </fragment>
     <fragment
         android:id="@+id/userFragment"
@@ -128,6 +131,9 @@
         android:id="@+id/CourseFragment"
         android:name="com.hbv601.folf.CourseFragment"
         android:label="CourseFragment">
+        <action
+            android:id="@+id/action_CourseFragment_to_StatisticsFragment"
+            app:destination="@id/StatisticsFragment" />
     </fragment>
     <fragment
         android:id="@+id/StatisticsFragment"

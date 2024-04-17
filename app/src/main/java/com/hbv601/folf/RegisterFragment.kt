@@ -42,6 +42,7 @@ class RegisterFragment : Fragment(){
 
         binding.registerButton.setOnClickListener {
             registerUser()
+
         }
     }
 
@@ -62,7 +63,7 @@ class RegisterFragment : Fragment(){
                 Log.d(TAG, res.toString())
 
                 if (res.isSuccessful && res.body() != null) {
-                    findNavController().navigate(R.id.action_registerFragment_to_homePageFragment)
+                    findNavController().navigate(R.id.action_registerFragment_to_FirstFragment)
                 }
                 else {
                     val text = "Registration was not successful!"

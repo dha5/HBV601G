@@ -2,15 +2,19 @@ package com.hbv601.folf.ViewHolders
 
 import android.app.Activity
 import android.content.Context
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hbv601.folf.Entities.CourseData
 import com.hbv601.folf.Entities.CourseEntity
 import com.hbv601.folf.Entities.GameData
+import com.hbv601.folf.R
 import com.hbv601.folf.databinding.CourseItemBinding
 import com.hbv601.folf.databinding.GameItemBinding
 import com.hbv601.folf.network.FolfApi
@@ -85,6 +89,16 @@ private class GamesAdapter(private val gamesList:List<GameData>): RecyclerView.A
     override fun onBindViewHolder(holder: GameItemViewHolder, position: Int) {
         val currentGame = gamesList[position]
         holder.bindGameClass(currentGame)
+        holder.itemView.setOnClickListener{
+            val args = Bundle().apply {
+                putInt("GAME_ID",currentGame.id!!.toInt())
+                putInt("FIELD_ID",currentGame.field_id!!)
+            }
+            findNavController(holder.itemView).navigate(
+                R.id.action_CourseFragment_to_StatisticsFragment,
+                args
+            )
+        }
     }
 
 }

@@ -78,7 +78,7 @@ class CourseFragment : Fragment() {
         val scoreView = ScoreViewHolder(ScoreItemBinding.inflate(layoutInflater))
 
 
-        var gamesOnThisCourse = ArrayList<GameData>()
+        val gamesOnThisCourse = ArrayList<GameData>()
         var bestgame : GameData? = null
         var bestScore = Int.MAX_VALUE
         var par = 0

@@ -78,8 +78,11 @@ class InputScoreFragment : Fragment() {
                 return@launch
             }
             val holes = FolfApi.retrofitService.getHolesByFieldId(game.body()!!.field_id!!)
+            Log.d("Náði að sækja holur", holes.isSuccessful.toString())
             if(holes.isSuccessful){
-                for(hole in holes.body()!!){
+                val holesreal = holes.body()
+                Log.d("holur sem sóttar eru" , holesreal.toString())
+                for(hole in holesreal!!){
                     holesList.add(hole)
                 }
             }
@@ -102,6 +105,7 @@ class InputScoreFragment : Fragment() {
             for(player in playersMap.values){
                 val playerScoreItemBinding = ItemPlayerScoreBinding.inflate(layoutInflater)
                 val viewHolder = PlayerScoreViewHolder(playerScoreItemBinding)
+                Log.d("fyrir onbind í PlayerScoreViewHolder holur", holesList.toString())
                 viewHolder.onBind(player,holesList.toList(),playerScoreItems[player.id]?.toList());
                 binding.playerScoresLayout.addView(viewHolder.itemView)
                 viewHolder.postScore.setOnClickListener { player.id?.let { it1 ->
