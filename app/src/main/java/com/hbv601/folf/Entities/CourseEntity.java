@@ -45,6 +45,10 @@ public class CourseEntity extends ViewModel {
         this.courseLocation = loc;
     }
 
+    public static CourseEntity generateFromCourseData(CourseData data){
+        return new CourseEntity(data.getName(), data.getLocation(), data.getDescription(), data.getId());
+    }
+
     public static CourseEntity generateDummy(){
         Location loc = new Location("dummy");
         loc.setLatitude(64.1397116);

@@ -139,7 +139,6 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
             val day = date[0]
             val month = date[1]
             val year = date[2]
-
             val newGame = PostGameData(
                 binding.titleField.text.toString(),
                 selectedCourseId!!.toLong(),
@@ -153,6 +152,19 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
                 Log.d("creategame",res.toString())
                 if(res.isSuccessful){
                     existingGame = res.body()!!
+
+                    val prefs = requireActivity().getSharedPreferences("USER",0)
+                    val bearerToken = prefs.getString("AccessToken",null)!!
+                    val userId = prefs.getInt("UserId",-1).toLong()
+                    val userName = prefs.getString("Username", "")
+                    val player = PlayerEntity(null,userId,userName!!,existingGame!!.id!!)
+                    val res = FolfApi.retrofitService.addPlayer("Bearer ${bearerToken}",player)
+                    if (res.isSuccessful) {
+                        playerList.add(player)
+                    }
+                        //Þessi kóði er til að bæta logged in user í leikinn sjálfkrafa
+
+
                     Log.d("existingGame",existingGame.toString())
                     extantGame()
                 }else{
