@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hbv601.folf.Entities.CourseData
@@ -36,22 +35,31 @@ class CourseViewHolder (private val binding: CourseItemBinding): RecyclerView.Vi
         val bearerToken = context.getSharedPreferences("USER", 0).getString("AccessToken", null)
         Log.d("AccessToken", bearerToken ?: "Token is null or empty")
 
-        val resGamesByFieldId = FolfApi.retrofitService.getGamesByFieldId(course.id)
-        val resUserGames = FolfApi.retrofitService.getLoggedInUserGames("Bearer ${bearerToken}")
+        //val resGamesByFieldId = FolfApi.retrofitService.getGamesByFieldId(course.id)
+        val resUserGames = FolfApi.retrofitService.getYourPastGames("Bearer $bearerToken")
 
-        if (!resGamesByFieldId.isSuccessful) {
+        /*if (!resGamesByFieldId.isSuccessful) {
             Log.e("CourseViewHolder", "Failed to fetch games by Field ID: ${resGamesByFieldId.message()}")
-        }
+        }*/
 
         if (!resUserGames.isSuccessful) {
             Log.e("CourseViewHolder", "Failed to fetch user games: ${resUserGames.message()}")
         }
 
 
-        if (resGamesByFieldId.isSuccessful && resUserGames.isSuccessful) {
-            val gamesByFieldId = resGamesByFieldId.body()
+        if (/*resGamesByFieldId.isSuccessful &&*/ resUserGames.isSuccessful) {
+            //val gamesByFieldId = resGamesByFieldId.body()
             val userGames = resUserGames.body()
-
+            userGames?.let{ allUserGames ->
+                val filteredGames = allUserGames.filter { userGame->
+                    userGame.field_id!! == course.id
+                }
+                val adapter = GamesAdapter(filteredGames)
+                binding.gameslist.layoutManager = LinearLayoutManager(context)
+                binding.gameslist.adapter = adapter
+                binding.bestScoreTitle.visibility = View.INVISIBLE
+            }
+            /*
             gamesByFieldId?.let { fieldGames ->
                 userGames?.let { allUserGames ->
                     val filteredGames = fieldGames.filter { fieldGame ->
@@ -64,7 +72,7 @@ class CourseViewHolder (private val binding: CourseItemBinding): RecyclerView.Vi
                     binding.gameslist.adapter = adapter
                     binding.bestScoreTitle.visibility = View.INVISIBLE
                 }
-            }
+            }*/
         }
     }
     fun bestScore(view:View){

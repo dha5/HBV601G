@@ -58,10 +58,10 @@ class CourseFragment : Fragment() {
                     gameView.bindGameClass(game)
                     courseView.addGame(gameView.itemView)
                 }*/
-                    val view = getBestScore(course)
+                    /*val view = getBestScore(course)
                     if (view != null) {
                         courseView.bestScore(view)
-                    }
+                    }*/
                     binding.CourseList.addView(courseView.itemView)
                 }
             }
@@ -91,7 +91,7 @@ class CourseFragment : Fragment() {
 
             val bearerToken =
                 requireActivity().getSharedPreferences("USER", 0).getString("AccessToken", null)
-            val resUserGames = FolfApi.retrofitService.getLoggedInUserGames("Bearer ${bearerToken}")
+            val resUserGames = FolfApi.retrofitService.getYourPastGames("Bearer ${bearerToken}")
 
             if (resUserGames.isSuccessful) {
                 var userGames = resUserGames.body()
