@@ -37,10 +37,9 @@ class HomePageFragment : Fragment() {
         //Notað til að testa CourseEntity classann
         */
         val userName = requireActivity().getSharedPreferences("USER",0).getString("Name","")!! // þarf að skipta út fyrir notendanafn
-        val numInvitations = 10 // þarf að skipta út fyrir fjölda invites sem notandi hefur fengið
-        val numOpenMatches = 10 // þarf að skipta út fyrir fjölda opnra leikja
 
-        val welcomeMessage = getString(R.string.home_page_welcome_message, userName, numInvitations, numOpenMatches)
+
+        val welcomeMessage = getString(R.string.home_page_welcome_message, userName)
         if(textView != null) {
             textView.text = welcomeMessage
         }

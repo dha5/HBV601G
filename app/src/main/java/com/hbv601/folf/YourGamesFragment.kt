@@ -66,6 +66,9 @@ class YourGamesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentYourGamesBinding.inflate(inflater, container, false)
+        binding.upcomingGames.removeAllViews()
+        binding.creatorGames.removeAllViews()
+        binding.ongoingGames.removeAllViews()
         binding.PastGamesList.removeAllViews()
         binding.GamesList.removeAllViews()
 
@@ -281,9 +284,12 @@ class YourGamesFragment : Fragment() {
             }
         }
         var gameDate : LocalDate
+        var gameDateString : String? = null
         try {
+            Log.d("date created",gameData.date_created)
             gameDate = LocalDate.parse(gameData.date_created)
         }catch (e: java.time.DateTimeException){
+            gameDateString = gameData.date_created
             Log.e("LocalDateError",e.toString())
             gameDate = LocalDate.parse("1996-01-20") //Þurfti að setja eithvað. afmælið mitt virkar :D
 
@@ -295,6 +301,7 @@ class YourGamesFragment : Fragment() {
         }
         val gameEntity = GameEntity(gameData.name, fieldname, gameDate, name, tempFieldId )
         gameEntity.setId(gameData.id!!.toInt())
+        if(gameDateString!=null) gameEntity.dateString = gameDateString
         return gameEntity
     }
     private suspend fun getGameEntity(){

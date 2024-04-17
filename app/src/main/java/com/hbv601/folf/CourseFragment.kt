@@ -1,5 +1,4 @@
 package com.hbv601.folf
-import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.hbv601.folf.Entities.CourseData
-import com.hbv601.folf.Entities.CourseEntity
 import com.hbv601.folf.Entities.GameData
 import com.hbv601.folf.ViewHolders.CourseViewHolder
 import com.hbv601.folf.ViewHolders.ScoreViewHolder
@@ -103,6 +101,7 @@ class CourseFragment : Fragment() {
                             gamesOnThisCourse.add(game)
                         }
                     }
+                    /*
                     for (game in gamesOnThisCourse) {
                         var throws = 0
                         if (game.id != null) {
@@ -120,7 +119,7 @@ class CourseFragment : Fragment() {
                             bestScore = throws
                             bestgame = game
                         }
-                    }
+                    }*/
                     if (bestgame != null) {
                         scoreView.onBind(bestgame.name, bestgame.date_created, bestScore, par)
                         return scoreView.itemView

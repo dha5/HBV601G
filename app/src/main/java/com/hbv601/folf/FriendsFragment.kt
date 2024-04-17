@@ -25,6 +25,7 @@ class FriendsFragment:  Fragment(), AdapterView.OnItemSelectedListener {
     private var userIds = ArrayList<Long>()
     private var hatedUser: UserEntity? = null
     private var newFriend: UserEntity? = null
+    lateinit var listAdapter:ArrayAdapter<String>
     val ACCESTOKEN = "AccessToken"
 
     override fun onCreateView(
@@ -70,25 +71,29 @@ class FriendsFragment:  Fragment(), AdapterView.OnItemSelectedListener {
                         "Ekki tókst að sækja vinalista",Toast.LENGTH_SHORT).show()
                     return@launch
                 }
-                val friends = myFriends.body()!!
-                friendsList = ArrayList<String>()
-                friendsIds = ArrayList<Long>()
-                for (friend in friends){
-                    Log.d("friendslist",friend.toString())
-                    if(friend.username in userList){
-                        userList.remove(friend.username)
-                        userIds.remove(friend.id)
+                if(myFriends.body()!=null){
+                    val friends = myFriends.body()!!
+                    friendsList = ArrayList<String>()
+                    friendsIds = ArrayList<Long>()
+                    for (friend in friends){
+                        Log.d("friendslist",friend.toString())
+                        if(friend.username in userList){
+                            userList.remove(friend.username)
+                            userIds.remove(friend.id)
+                        }
+                        friendsList.add(friend.username)
+                        friendsIds.add(friend.id)
                     }
-                    friendsList.add(friend.username)
-                    friendsIds.add(friend.id)
                 }
+
                 val arrayAdapter = ArrayAdapter<String>(this@FriendsFragment.requireContext(),
                     android.R.layout.simple_spinner_dropdown_item,friendsList)
                 binding.FriendsSpinner.adapter = arrayAdapter
                 binding.FriendsSpinner.onItemSelectedListener = this@FriendsFragment
-                val listAdapter = ArrayAdapter<String>(this@FriendsFragment.requireContext(),
+                listAdapter = ArrayAdapter<String>(this@FriendsFragment.requireContext(),
                     android.R.layout.simple_list_item_1,friendsList)
                 binding.friendsList.adapter = listAdapter
+
 
             }
         }}
@@ -138,6 +143,7 @@ class FriendsFragment:  Fragment(), AdapterView.OnItemSelectedListener {
             Toast.makeText(this@FriendsFragment.requireContext(),
                 "${newFriend} bætt við í vinalista",Toast.LENGTH_SHORT).show()
             friendsList.add(newFriend!!.username)
+            listAdapter.notifyDataSetChanged()
         }else{
             Toast.makeText(this@FriendsFragment.requireContext(),
                 "Ekki tókst að bæta vin í vinalista",Toast.LENGTH_SHORT).show()
@@ -162,6 +168,7 @@ class FriendsFragment:  Fragment(), AdapterView.OnItemSelectedListener {
             Toast.makeText(this@FriendsFragment.requireContext(),
                     "${hatedUser} fjarlægðir úr vinalista. megi hann rotna í helvíti (eða kvíla í friði eftir þörfum)",Toast.LENGTH_SHORT).show()
             friendsList.remove(hatedUser!!.username)
+            listAdapter.notifyDataSetChanged()
         }else{
             Toast.makeText(this@FriendsFragment.requireContext(),
                 "Ekki tókst að fjarlægja vin af lista, kannski eru það forlög",Toast.LENGTH_SHORT).show()

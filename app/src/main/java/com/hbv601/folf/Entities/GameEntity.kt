@@ -65,6 +65,7 @@ class GameParcel(
 
 class GameEntity(var gameTitle:String, var course:String, var time: LocalDate, var creatingPlayer:String, var fieldId: Int) {
     var players = ArrayList<String>()
+    var dateString = ""
 
     private var gameId: Int = -1
     fun setId(gameId: Int): Int {

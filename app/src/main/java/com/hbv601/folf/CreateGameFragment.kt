@@ -25,13 +25,6 @@ import java.time.LocalDate
 
 
 class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
-    //intent service deprecated, rethink
-    /*private val REGISTER_GAME = "com.hbv.folf.services.action.REGISTER_GAME"
-    private val UPDATE_GAME = "com.hbv.folf.services.action.UPDATE_GAME"
-    private val FETCH_GAME = "com.hbv.folf.services.action.FETCH_GAME"
-    private val ADD_PLAYER = "com.hbv.folf.services.action.ADD_PLAYER"
-    private val GAME_PARCEL = "com.hbv601.folf.services.extra.GAME_PARCEL"
-    private val RECIEVE_GAMEPARCEL = "com.hbv601.folf.RegisterFragment.GAMEPARCELRECIEVE"*/
     private var gameId:Number? = null
     private var existingGame: GameData? = null
     private var selectedCourse:String? = null
@@ -46,7 +39,7 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
     private val playerNamesList = ArrayList<String>()
     private val playerList = ArrayList<PlayerEntity>()
     private val storedCourses: MutableList<CourseEntity> = mutableListOf()
-
+    private lateinit var playerNameAdapter: ArrayAdapter<String>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,6 +69,7 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
             binding.textViewCreateGame.text = "Create a new game"
         }
         // Second layer
+        binding.timeField.setText(LocalDate.now().toString())
         binding.gameNowButton.setOnClickListener {
             // Set current date and time to timeField
             binding.timeField.setText(LocalDate.now().toString())
@@ -83,8 +77,8 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
         }
 
         // Third layer
-        val adapter = ArrayAdapter<String>(this@CreateGameFragment.requireContext(),android.R.layout.simple_list_item_1,playerNamesList)
-        binding.playerListView.adapter = adapter
+        playerNameAdapter = ArrayAdapter<String>(this@CreateGameFragment.requireContext(),android.R.layout.simple_list_item_1,playerNamesList)
+        binding.playerListView.adapter = playerNameAdapter
         binding.addPlayerButton.setOnClickListener {
             addPlayerFromTextfield()
         }
@@ -104,12 +98,15 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
         }
 
         binding.startGameButton.setOnClickListener {
-            if (playerNamesList.isNotEmpty()) {
+            if (playerList.isNotEmpty()) {
                 startGame()
             } else {
                 // Handle case where no players are added
                 Toast.makeText(requireContext(), "Please add at least one player", Toast.LENGTH_SHORT).show()
             }
+        }
+        binding.gameHomeButton.setOnClickListener {
+            findNavController().navigate(R.id.action_createGame_to_home)
         }
 
 
@@ -152,16 +149,20 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
                 Log.d("creategame",res.toString())
                 if(res.isSuccessful){
                     existingGame = res.body()!!
+                        val prefs = requireActivity().getSharedPreferences("USER",0)
+                        val userId = prefs.getInt("UserId",-1).toLong()
+                        val name = prefs.getString("Name",null)
+                        val userName = prefs.getString("Username", "")
+                        val player = if(name!=null && name.length>0){
+                            PlayerEntity(null,userId,name,existingGame!!.id!!)
+                        }else {
+                            PlayerEntity(null,userId,userName!!,existingGame!!.id!!)
+                        }
+                        val res = FolfApi.retrofitService.addPlayer("Bearer $bearerToken",player)
+                        if (res.isSuccessful) {
+                            playerNameAdapter.notifyDataSetChanged()
+                        }
 
-                    val prefs = requireActivity().getSharedPreferences("USER",0)
-                    val bearerToken = prefs.getString("AccessToken",null)!!
-                    val userId = prefs.getInt("UserId",-1).toLong()
-                    val userName = prefs.getString("Username", "")
-                    val player = PlayerEntity(null,userId,userName!!,existingGame!!.id!!)
-                    val res = FolfApi.retrofitService.addPlayer("Bearer ${bearerToken}",player)
-                    if (res.isSuccessful) {
-                        playerList.add(player)
-                    }
                         //Þessi kóði er til að bæta logged in user í leikinn sjálfkrafa
 
 
@@ -195,6 +196,7 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
                     if(!playerList.contains(player)){
                         playerNamesList.add(player.name)
                         playerList.add(player)
+                        playerNameAdapter.notifyDataSetChanged()
                     }
                 }
             }else{
@@ -278,6 +280,7 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
                             Toast.makeText(this@CreateGameFragment.requireContext(),"${newPlayer.name} bætt við leik",Toast.LENGTH_SHORT).show()
                             playerNamesList.add(newPlayer.name)
                             playerList.add(res.body()!!)
+                            playerNameAdapter.notifyDataSetChanged()
                         }
                     }else{
                         Toast.makeText(this@CreateGameFragment.requireContext(),"Ekkert login til staðar",Toast.LENGTH_SHORT).show()
@@ -307,6 +310,7 @@ class CreateGameFragment : Fragment(), AdapterView.OnItemSelectedListener{
                 playerNamesList.add(name)
                 playerList.add(res.body()!!)
                 binding.playerField.text.clear()
+                playerNameAdapter.notifyDataSetChanged()
             }
         }
     }

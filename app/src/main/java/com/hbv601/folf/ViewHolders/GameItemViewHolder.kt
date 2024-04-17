@@ -13,10 +13,12 @@ class GameItemViewHolder (private val binding:GameItemBinding): RecyclerView.Vie
     lateinit var gluedGame : GameEntity
     lateinit var gluedGameData : GameData
     fun bindItem(game: GameEntity){
+        val text = "${game.course} - ${game.gameTitle} "
         gluedGame = game
-        binding.Course.text = game.course
-        binding.DateTime.text = game.time.toString()
+        binding.Course.text = text
+        binding.DateTime.text = game.dateString
         binding.Creator.text = game.creatingPlayer
+
     }
     fun bindGameClass(game: GameData){
         gluedGameData = game
