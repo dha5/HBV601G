@@ -62,6 +62,9 @@ class HomePageFragment : Fragment() {
         binding.buttonFriends.setOnClickListener {
             findNavController().navigate(R.id.action_homePageFragment_to_FriendsFragment)
         }
+        binding.logOutButton.setOnClickListener {
+            findNavController().navigate(R.id.action_homepage_to_firstFragment)
+        }
     }
 
 }

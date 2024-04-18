@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.hbv601.folf.Entities.UserEntity
 import com.hbv601.folf.databinding.FragmentFriendsBinding
 import com.hbv601.folf.network.FolfApi
@@ -54,6 +55,9 @@ class FriendsFragment:  Fragment(), AdapterView.OnItemSelectedListener {
             lifecycleScope.launch {
                 removeFriend()
             }
+        }
+        binding.friendsHomeButton.setOnClickListener {
+            findNavController().navigate(R.id.action_friends_to_home)
         }
 
     }

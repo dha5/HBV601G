@@ -90,5 +90,11 @@
                 android:text="Remove Friend" />
         </LinearLayout>
 
+        <Button
+            android:id="@+id/friendsHomeButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Home" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

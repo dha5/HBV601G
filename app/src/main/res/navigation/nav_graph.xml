@@ -105,6 +105,9 @@
             <action
                 android:id="@+id/action_homePageFragment_to_FriendsFragment"
                 app:destination="@id/FriendsFragment"/>
+            <action
+                android:id="@+id/action_homepage_to_firstFragment"
+                app:destination="@id/FirstFragment"/>
     </fragment>
 
     <fragment
@@ -128,6 +131,9 @@
         android:id="@+id/FriendsFragment"
         android:name="com.hbv601.folf.FriendsFragment"
         android:label="FriendsFragment">
+        <action
+            android:id="@+id/action_friends_to_home"
+            app:destination="@id/homePageFragment"/>
     </fragment>
 
     <fragment
